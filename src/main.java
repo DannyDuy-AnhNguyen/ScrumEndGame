@@ -11,6 +11,7 @@ public class main {
         System.out.println("Speler " + name + " is er klaar voor!");
         System.out.println("Naar welke kamer wil je gaan?");
 
+
         // Adding 'kamer objects' based on the sub class.
         ArrayList<String> kamer = new ArrayList<>();
         kamer.add("kamer 1");
