@@ -3,30 +3,38 @@ package Game;
 import java.util.Scanner;
 
 public class KamerReview extends Kamer {
-
     public KamerReview() {
         super("Sprint Review");
     }
 
     @Override
     public void betreed(Speler speler) {
-        System.out.println("Je bent nu in de kamer: Sprint Review.");
-        System.out.println("Vraag: Wat gebeurt er tijdens een sprint review?");
-        System.out.println("a) Het team deelt de resultaten van de sprint met de stakeholders.");
-        System.out.println("b) Het team plant de taken voor de volgende sprint.");
-        System.out.println("c) Het team reflecteert op de samenwerking.");
-
+        boolean antwoordCorrect = false;
         Scanner scanner = new Scanner(System.in);
-        String antwoord = scanner.nextLine().trim().toLowerCase();
-        verwerkAntwoord(antwoord);
+
+        while (!antwoordCorrect) {
+            System.out.println("Je bent nu in de kamer: " + naam);
+            System.out.println("Wat gebeurt er tijdens een sprint review?");
+            System.out.println("a) Het presenteren van de opgeleverde software aan de stakeholders");
+            System.out.println("b) Het plannen van de volgende sprint");
+            System.out.println("c) Het uitvoeren van de sprint retrospective");
+
+            String antwoord = scanner.nextLine().trim().toLowerCase();
+            antwoordCorrect = verwerkAntwoord(antwoord);
+        }
+
+        System.out.println("Je hebt het juiste antwoord gegeven!");
+        setVoltooid(); // Zet de kamer als voltooid
     }
 
     @Override
-    public void verwerkAntwoord(String antwoord) {
+    public boolean verwerkAntwoord(String antwoord) {
         if (antwoord.equals("a")) {
-            System.out.println("Goed! Tijdens de sprint review deelt het team de resultaten.");
+            System.out.println("Goed! Tijdens een sprint review presenteer je het werk aan de stakeholders.");
+            return true; // Correct antwoord
         } else {
-            System.out.println("Fout! Monster 'Slechte Communicatie' verschijnt!");
+            System.out.println("Fout! Monster 'Sprint Confusie' blokkeert de deur!");
+            return false; // Fout antwoord
         }
     }
 }

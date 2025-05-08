@@ -19,7 +19,7 @@ public class Spel {
         kamers.add(new KamerReview());
         kamers.add(new KamerScrumBoard());
         kamers.add(new KamerRetrospective());
-        kamers.add(new KamerFinaleTIA());
+        kamers.add(new KamerDailyScrum());
     }
 
     public void start() {
@@ -29,23 +29,39 @@ public class Spel {
 
         System.out.println("Welkom, " + speler.getNaam() + "! Typ 'status' of 'ga naar kamer X' of 'stop'.");
 
-        toonKamerOpties();
-
-        while (true) {
+        boolean gameInProgress = true;
+        while (gameInProgress) {
+            toonKamerOpties();
             System.out.print("> ");
             String input = scanner.nextLine().trim().toLowerCase();
 
             if (input.equals("stop")) {
                 System.out.println("Tot ziens!");
-                break;
+                gameInProgress = false;
             } else if (input.equals("status")) {
                 speler.status();
             } else if (input.startsWith("ga naar kamer")) {
                 try {
                     int nummer = Integer.parseInt(input.split(" ")[3]) - 1;
                     if (nummer >= 0 && nummer < kamers.size()) {
-                        speler.setPositie(nummer);
-                        kamers.get(nummer).betreed(speler);
+                        Kamer gekozenKamer = kamers.get(nummer);
+                        if (!gekozenKamer.isVoltooid()) {
+                            gekozenKamer.betreed(speler);
+                            // Als de kamer is voltooid, markeer deze als voltooid.
+                            if (gekozenKamer.isVoltooid()) {
+                                System.out.println("Deze kamer is voltooid!");
+                            }
+                        } else {
+                            System.out.println("Deze kamer is al voltooid.");
+                        }
+
+                        // Nadat een kamer is voltooid, geef de speler de keuze om naar een andere kamer te gaan.
+                        if (alleKamersVoltooid()) {
+                            System.out.println("Alle kamers voltooid! Je gaat nu naar de Finale TIA kamer.");
+                            Kamer finaleKamer = new KamerFinaleTIA();
+                            finaleKamer.betreed(speler);
+                            gameInProgress = false;  // Einde van het spel
+                        }
                     } else {
                         System.out.println("Ongeldig kamernummer.");
                     }
@@ -53,7 +69,7 @@ public class Spel {
                     System.out.println("Gebruik: ga naar kamer X");
                 }
             } else {
-                System.out.println("Onbekend commando.");
+                System.out.println("Onbekend commando. Typ 'status' of 'ga naar kamer X' of 'stop'.");
             }
         }
     }
@@ -61,7 +77,18 @@ public class Spel {
     private void toonKamerOpties() {
         System.out.println("Beschikbare kamers:");
         for (int i = 0; i < kamers.size(); i++) {
-            System.out.println((i + 1) + ". " + kamers.get(i).getNaam());
+            if (!kamers.get(i).isVoltooid()) {
+                System.out.println((i + 1) + ". " + kamers.get(i).getNaam());
+            }
         }
+    }
+
+    private boolean alleKamersVoltooid() {
+        for (Kamer kamer : kamers) {
+            if (!kamer.isVoltooid()) {
+                return false;
+            }
+        }
+        return true;
     }
 }
