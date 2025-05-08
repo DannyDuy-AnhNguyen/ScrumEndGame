@@ -10,10 +10,9 @@ public class KamerDailyScrum extends Kamer {
 
     @Override
     public void betreed(Speler speler) {
-        boolean antwoordCorrect = false;
         Scanner scanner = new Scanner(System.in);
 
-        while (!antwoordCorrect) {
+        while (!isVraagBeantwoord()) {  // Gebruik de nieuwe methode om te controleren of de vraag beantwoord is
             System.out.println("Je betreedt de kamer: " + naam);
             System.out.println("Wat is het doel van de Daily Scrum?");
             System.out.println("a) Het delen van persoonlijke verhalen");
@@ -21,7 +20,13 @@ public class KamerDailyScrum extends Kamer {
             System.out.println("c) Het plannen van de volgende sprint");
 
             String antwoord = scanner.nextLine().trim().toLowerCase();
-            antwoordCorrect = verwerkAntwoord(antwoord);
+            boolean antwoordCorrect = verwerkAntwoord(antwoord);
+
+            if (antwoordCorrect) {
+                setVraagBeantwoord(true);  // Zet vraag als beantwoord bij correct antwoord
+            } else {
+                System.out.println("Je moet de vraag correct beantwoorden voordat je verder kunt.");
+            }
         }
 
         System.out.println("Goed gedaan! Je mag nu naar de volgende kamer.");

@@ -47,15 +47,16 @@ public class Spel {
                         Kamer gekozenKamer = kamers.get(nummer);
                         if (!gekozenKamer.isVoltooid()) {
                             gekozenKamer.betreed(speler);
-                            // Als de kamer is voltooid, markeer deze als voltooid.
-                            if (gekozenKamer.isVoltooid()) {
-                                System.out.println("Deze kamer is voltooid!");
+                            // Als de kamer wordt verlaten en voltooid, kan de speler verder.
+                            if (gekozenKamer.isVraagBeantwoord()) {
+                                gekozenKamer.setVoltooid();
+                                System.out.println("Kamer voltooid! Je kunt nu naar een andere kamer.");
                             }
                         } else {
                             System.out.println("Deze kamer is al voltooid.");
                         }
 
-                        // Nadat een kamer is voltooid, geef de speler de keuze om naar een andere kamer te gaan.
+                        // Nadat alle kamers voltooid zijn, kan de speler naar de finale kamer gaan.
                         if (alleKamersVoltooid()) {
                             System.out.println("Alle kamers voltooid! Je gaat nu naar de Finale TIA kamer.");
                             Kamer finaleKamer = new KamerFinaleTIA();
