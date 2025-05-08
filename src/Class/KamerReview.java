@@ -4,6 +4,10 @@ import java.util.Scanner;
 
 public class KamerReview extends Kamer {
 
+    public KamerReview(String naam) {
+        super(naam);
+    }
+
     @Override
     public void betreed() {
         System.out.println("Je betreedt de Sprint Review Kamer.");
