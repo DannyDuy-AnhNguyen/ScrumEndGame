@@ -1,4 +1,4 @@
-package Class;
+package Game;
 
 import java.util.Scanner;
 
@@ -9,7 +9,7 @@ public class KamerFinaleTIA extends Kamer {
     }
 
     @Override
-    public void betreed() {
+    public void betreed(Speler speler) {
         System.out.println("Welkom in de laatste kamer: " + naam);
         System.out.println("Wat is het ultieme doel van Scrum?");
         System.out.println("a) Strikte processen volgen");
@@ -25,7 +25,6 @@ public class KamerFinaleTIA extends Kamer {
     public void verwerkAntwoord(String antwoord) {
         if (antwoord.equals("c")) {
             System.out.println("Gefeliciteerd! Je begrijpt het hart van Scrum en hebt het spel voltooid!");
-            voltooid = true;
         } else {
             System.out.println("Fout! Monster 'Scrum Misverstanden' probeert je tegen te houden!");
         }

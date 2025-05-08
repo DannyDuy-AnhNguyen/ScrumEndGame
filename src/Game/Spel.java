@@ -17,7 +17,9 @@ public class Spel {
         // Voeg kamers toe
         kamers.add(new KamerPlanning());
         kamers.add(new KamerReview());
-        // Hier kun je meer kamers toevoegen
+        kamers.add(new KamerScrumBoard());
+        kamers.add(new KamerRetrospective());
+        kamers.add(new KamerFinaleTIA());
     }
 
     public void start() {
@@ -26,6 +28,7 @@ public class Spel {
         speler.setNaam(scanner.nextLine());
 
         System.out.println("Welkom, " + speler.getNaam() + "! Typ 'status' of 'ga naar kamer X' of 'stop'.");
+
         toonKamerOpties();
 
         while (true) {

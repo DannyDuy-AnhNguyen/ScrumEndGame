@@ -1,7 +1,16 @@
 package Game;
 
 public abstract class Kamer {
-    public abstract String getNaam();
-    public abstract void betreed(Speler speler);
-}
+    protected String naam;
 
+    public Kamer(String naam) {
+        this.naam = naam;
+    }
+
+    public String getNaam() {
+        return naam;
+    }
+
+    public abstract void betreed(Speler speler);
+    public abstract void verwerkAntwoord(String antwoord);
+}

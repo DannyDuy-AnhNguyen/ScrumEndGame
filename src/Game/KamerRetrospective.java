@@ -1,4 +1,4 @@
-package Class;
+package Game;
 
 import java.util.Scanner;
 
@@ -9,7 +9,7 @@ public class KamerRetrospective extends Kamer {
     }
 
     @Override
-    public void betreed() {
+    public void betreed(Speler speler) {
         System.out.println("Je betreedt de kamer: " + naam);
         System.out.println("Wat is een goed onderwerp voor een retrospective?");
         System.out.println("a) Hoe het weekend van iedereen was");
@@ -25,7 +25,6 @@ public class KamerRetrospective extends Kamer {
     public void verwerkAntwoord(String antwoord) {
         if (antwoord.equals("b")) {
             System.out.println("Goed! Reflectie en verbetering zijn de kern.");
-            voltooid = true;
         } else {
             System.out.println("Fout! Monster 'Blame Game' blokkeert de deur!");
         }

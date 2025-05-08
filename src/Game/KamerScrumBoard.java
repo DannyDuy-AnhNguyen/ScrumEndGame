@@ -1,4 +1,4 @@
-package Class;
+package Game;
 
 import java.util.Scanner;
 
@@ -9,7 +9,7 @@ public class KamerScrumBoard extends Kamer {
     }
 
     @Override
-    public void betreed() {
+    public void betreed(Speler speler) {
         System.out.println("Je betreedt de kamer: " + naam);
         System.out.println("Wat hoort op het Scrum Board?");
         System.out.println("a) Gebruikersverhalen, taken, voortgang");
@@ -25,7 +25,6 @@ public class KamerScrumBoard extends Kamer {
     public void verwerkAntwoord(String antwoord) {
         if (antwoord.equals("a")) {
             System.out.println("Correct! Het bord toont werk en voortgang.");
-            voltooid = true;
         } else {
             System.out.println("Fout! Monster 'Chaos op het bord' verschijnt!");
         }

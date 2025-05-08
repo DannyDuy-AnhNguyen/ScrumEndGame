@@ -1,4 +1,4 @@
-package Class;
+package Game;
 
 import java.util.Scanner;
 
@@ -9,12 +9,12 @@ public class KamerDailyScrum extends Kamer {
     }
 
     @Override
-    public void betreed() {
+    public void betreed(Speler speler) {
         System.out.println("Je betreedt de kamer: " + naam);
-        System.out.println("Wie zou in een Daily Scrum zeggen: 'Ik ben gisteren begonnen met taak X, maar had een blokkade bij de testomgeving'?");
-        System.out.println("a) Scrum Master");
-        System.out.println("b) Developer");
-        System.out.println("c) Product Owner");
+        System.out.println("Wat is het doel van de Daily Scrum?");
+        System.out.println("a) Het delen van persoonlijke verhalen");
+        System.out.println("b) Het bespreken van de voortgang van het werk");
+        System.out.println("c) Het plannen van de volgende sprint");
 
         Scanner scanner = new Scanner(System.in);
         String antwoord = scanner.nextLine().trim().toLowerCase();
@@ -24,10 +24,9 @@ public class KamerDailyScrum extends Kamer {
     @Override
     public void verwerkAntwoord(String antwoord) {
         if (antwoord.equals("b")) {
-            System.out.println("Goed! De Developer deelt voortgang en blokkades.");
-            voltooid = true;
+            System.out.println("Correct! Het doel van de Daily Scrum is om de voortgang van het werk te bespreken.");
         } else {
-            System.out.println("Fout! Monster 'Vertraging' blokkeert je pad!");
+            System.out.println("Fout! Monster 'Verlies van Focus' verschijnt!");
         }
     }
 }
