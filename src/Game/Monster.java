@@ -1,4 +1,4 @@
-package Class;
+package Game;
 
 public class Monster {
     private String naam;
