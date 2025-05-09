@@ -38,4 +38,10 @@ public class KamerScrumBoard extends Kamer {
             return false; // Fout antwoord
         }
     }
+
+    @Override
+    public void stelVraag(Speler speler) {
+        // Deze methode roept de betreed-methode aan om de vraag te stellen
+        betreed(speler);
+    }
 }

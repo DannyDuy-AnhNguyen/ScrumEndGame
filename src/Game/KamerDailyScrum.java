@@ -10,9 +10,11 @@ public class KamerDailyScrum extends Kamer {
 
     @Override
     public void betreed(Speler speler) {
+        boolean antwoordCorrect = false;
         Scanner scanner = new Scanner(System.in);
+        setInVraag(true); // De speler is nu in de vraag
 
-        while (!isVraagBeantwoord()) {  // Gebruik de nieuwe methode om te controleren of de vraag beantwoord is
+        while (!antwoordCorrect) {
             System.out.println("Je betreedt de kamer: " + naam);
             System.out.println("Wat is het doel van de Daily Scrum?");
             System.out.println("a) Het delen van persoonlijke verhalen");
@@ -20,17 +22,20 @@ public class KamerDailyScrum extends Kamer {
             System.out.println("c) Het plannen van de volgende sprint");
 
             String antwoord = scanner.nextLine().trim().toLowerCase();
-            boolean antwoordCorrect = verwerkAntwoord(antwoord);
 
-            if (antwoordCorrect) {
-                setVraagBeantwoord(true);  // Zet vraag als beantwoord bij correct antwoord
-            } else {
-                System.out.println("Je moet de vraag correct beantwoorden voordat je verder kunt.");
+            // Als het commando 'status' is, geven we de status weer
+            if (antwoord.equals("status")) {
+                speler.status(); // Geef de status weer zonder monster
+                continue; // Herhaal de vraag zonder de fout
             }
+
+            // Verwerk antwoord als het geen 'status' is
+            antwoordCorrect = verwerkAntwoord(antwoord);
         }
 
         System.out.println("Goed gedaan! Je mag nu naar de volgende kamer.");
         setVoltooid(); // Zet de kamer als voltooid
+        setInVraag(false); // De vraag is beantwoord
     }
 
     @Override
@@ -42,5 +47,11 @@ public class KamerDailyScrum extends Kamer {
             System.out.println("Fout! Monster 'Verlies van Focus' verschijnt! Probeer het opnieuw.");
             return false; // Fout antwoord
         }
+    }
+
+    @Override
+    public void stelVraag(Speler speler) {
+        // Deze methode roept de betreed-methode aan om de vraag te stellen
+        betreed(speler);
     }
 }
