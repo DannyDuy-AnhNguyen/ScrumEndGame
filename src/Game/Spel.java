@@ -27,7 +27,10 @@ public class Spel {
         System.out.print("Wat is je naam? ");
         speler.setNaam(scanner.nextLine());
 
-        System.out.println("Welkom, " + speler.getNaam() + "! Typ 'status' of 'ga naar kamer X' of 'stop'.");
+        System.out.println("Welkom, " + speler.getNaam() + "! Deze commando's kan je op elk moment gebruiken:");
+        System.out.println("'status', 'help', 'ga naar kamer X' of 'stop'.");
+        System.out.println("Kies a, b of c als je een vraag krijgt.");
+        System.out.println();  // Extra enter voor overzichtelijkheid
 
         boolean gameInProgress = true;
         while (gameInProgress) {
@@ -40,6 +43,10 @@ public class Spel {
                 gameInProgress = false;
             } else if (input.equals("status")) {
                 speler.status();
+                System.out.println(); // Extra enter voor overzichtelijkheid
+            } else if (input.equals("help")) {
+                toonHelp();
+                System.out.println(); // Extra enter na help
             } else if (input.startsWith("ga naar kamer")) {
                 try {
                     int nummer = Integer.parseInt(input.split(" ")[3]) - 1;
@@ -64,12 +71,15 @@ public class Spel {
                         }
                     } else {
                         System.out.println("Ongeldig kamernummer.");
+                        System.out.println();  // Extra enter na foutmelding
                     }
                 } catch (Exception e) {
                     System.out.println("Gebruik: ga naar kamer X");
+                    System.out.println();  // Extra enter na foutmelding
                 }
             } else {
-                System.out.println("Onbekend commando. Typ 'status' of 'ga naar kamer X' of 'stop'.");
+                System.out.println("Onbekend commando. Kies a, b of c.");
+                System.out.println();  // Extra enter na onbekend commando
             }
         }
     }
@@ -90,5 +100,14 @@ public class Spel {
             }
         }
         return true;
+    }
+
+    private void toonHelp() {
+        System.out.println("Help:");
+        System.out.println("Gebruik de volgende commando's:");
+        System.out.println("'status' - Bekijk je huidige status.");
+        System.out.println("'help' - Toon deze hulptekst.");
+        System.out.println("'ga naar kamer X' - Ga naar de kamer die je wilt betreden (X = kamer nummer).");
+        System.out.println("'stop' - Stop het spel.");
     }
 }

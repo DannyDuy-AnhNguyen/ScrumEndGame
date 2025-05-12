@@ -23,4 +23,15 @@ public abstract class Kamer {
     public abstract void betreed(Speler speler);
 
     public abstract boolean verwerkAntwoord(String antwoord);
+
+    // Toegevoegde help-methode
+    public void toonHelp() {
+        System.out.println();
+        System.out.println("📜 Beschikbare commando's:");
+        System.out.println("- a / b / c      : Kies een antwoordoptie");
+        System.out.println("- help           : Toon deze uitleg");
+        System.out.println("- status         : Bekijk je huidige status");
+        System.out.println("- naar kamer [x] : Ga handmatig naar een andere kamer (als dit ondersteund is)");
+        System.out.println();
+    }
 }
