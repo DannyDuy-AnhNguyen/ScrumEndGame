@@ -3,6 +3,7 @@ package Game;
 import java.util.Scanner;
 
 public class KamerFinaleTIA extends Kamer {
+    private int huidigeVraag = 0;
 
     public KamerFinaleTIA() {
         super("Finale TIA Kamer – Waarom Scrum?");
@@ -10,20 +11,32 @@ public class KamerFinaleTIA extends Kamer {
 
     @Override
     public void betreed(Speler speler) {
-        boolean antwoordCorrect = false;
         Scanner scanner = new Scanner(System.in);
 
-        while (!antwoordCorrect) {
+        while (huidigeVraag < 3) {
             System.out.println("Welkom in de laatste kamer: " + naam);
-            System.out.println("Wat is het ultieme doel van Scrum?");
-            System.out.println("a) Strikte processen volgen");
-            System.out.println("b) Zo snel mogelijk software opleveren");
-            System.out.println("c) Transparantie, Inspectie en Aanpassing (TIA)");
-            System.out.println("Typ 'help' voor uitleg, 'status' voor je status of 'naar andere kamer' om deze kamer te verlaten.\n");
+
+            if (huidigeVraag == 0) {
+                System.out.println("1. Wat vind je van Scrum?");
+                System.out.println("a) Uitstekend");
+                System.out.println("b) Neutraal");
+                System.out.println("c) Slecht");
+            } else if (huidigeVraag == 1) {
+                System.out.println("2. Uit welk jaar is Scrum ontstaan?");
+                System.out.println("a) 1993");
+                System.out.println("b) 1995");
+                System.out.println("c) 2001");
+                System.out.println("d) 2010");
+            } else if (huidigeVraag == 2) {
+                System.out.println("3. Is Scrum gay?");
+                System.out.println("a) Ja");
+                System.out.println("b) Ja");
+                System.out.println("c) Ja");
+                System.out.println("d) Ja");
+            }
 
             String antwoord = scanner.nextLine().trim().toLowerCase();
 
-            // Keuzes verwerken
             if (antwoord.equals("help")) {
                 toonHelp();
                 System.out.println();
@@ -33,26 +46,32 @@ public class KamerFinaleTIA extends Kamer {
             } else if (antwoord.equals("naar andere kamer")) {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
-            } else if (antwoord.equals("a") || antwoord.equals("b") || antwoord.equals("c")) {
-                antwoordCorrect = verwerkAntwoord(antwoord);
-                System.out.println();
+            } else if (antwoord.matches("[a-d]")) {
+                if (verwerkAntwoord(antwoord)) {
+                    huidigeVraag++;
+                    System.out.println();
+                } else {
+                    System.out.println("Monster 'Scrum Misverstanden' verschijnt! Probeer het opnieuw.\n");
+                }
             } else {
-                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'status', 'help' of 'naar andere kamer'.\n");
+                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help' of 'naar andere kamer'.\n");
             }
         }
 
-        System.out.println("Gefeliciteerd! Je hebt het ultieme doel van Scrum goed beantwoord.\n");
+        System.out.println("Gefeliciteerd! Je hebt alle vragen goed beantwoord en de laatste kamer voltooid.\n");
         setVoltooid();
     }
 
     @Override
     public boolean verwerkAntwoord(String antwoord) {
-        if (antwoord.equals("c")) {
-            System.out.println("Correct! Het ultieme doel van Scrum is transparantie, inspectie en aanpassing.");
-            return true; // Correct antwoord
+        if (huidigeVraag == 0) {
+            return antwoord.equals("a");
+        } else if (huidigeVraag == 1) {
+            return antwoord.equals("a");
+        } else if (huidigeVraag == 2) {
+            return antwoord.equals("e");
         } else {
-            System.out.println("Fout! Monster 'Scrum Misverstanden' verschijnt! Probeer het opnieuw.");
-            return false; // Fout antwoord
+            return false;
         }
     }
 }

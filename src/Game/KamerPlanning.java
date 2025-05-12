@@ -4,22 +4,32 @@ import java.util.Scanner;
 
 public class KamerPlanning extends Kamer {
 
+    private int huidigeVraag = 1; // Vraag 1 of 2
+
     public KamerPlanning() {
         super("Sprint Planning");
     }
 
     @Override
     public void betreed(Speler speler) {
-        boolean antwoordCorrect = false;
         Scanner scanner = new Scanner(System.in);
+        boolean antwoordCorrect = false;
 
-        while (!antwoordCorrect) {
+        while (huidigeVraag <= 2) {
             System.out.println("Je bent nu in de kamer: " + naam);
-            System.out.println("Wat gebeurt er tijdens een sprint review?");
-            System.out.println("a) Het presenteren van de opgeleverde software aan de stakeholders");
-            System.out.println("b) Het plannen van de volgende sprint");
-            System.out.println("c) Het uitvoeren van de sprint retrospective");
-            System.out.println("Typ 'help' voor uitleg, 'status' voor je status of 'naar andere kamer' om deze kamer te verlaten.\n");
+
+            if (huidigeVraag == 1) {
+                System.out.println("Wie neemt deel aan de Sprint Planning?");
+                System.out.println("a) Alleen de Scrum Master");
+                System.out.println("b) Product Owner en Scrum Master");
+                System.out.println("c) Product Owner Scum Master en het hele Development Team");
+                System.out.println("d) Product Owner Scrum Master en het hele Development Team");
+            } else if (huidigeVraag == 2) {
+                System.out.println("Wat wordt er tijdens de Sprint Planning vastgesteld?");
+                System.out.println("a) Welke teamleden vakantie hebben");
+                System.out.println("b) Wat het doel van de sprint is en welke backlog-items worden opgepakt");
+                System.out.println("c) Hoe de vorige sprint geëvalueerd");
+            }
 
             String antwoord = scanner.nextLine().trim().toLowerCase();
 
@@ -32,26 +42,43 @@ public class KamerPlanning extends Kamer {
             } else if (antwoord.equals("naar andere kamer")) {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
-            } else if (antwoord.equals("a") || antwoord.equals("b") || antwoord.equals("c")) {
+            } else if (antwoord.matches("[a-d]")) {
                 antwoordCorrect = verwerkAntwoord(antwoord);
                 System.out.println();
+                if (antwoordCorrect) {
+                    huidigeVraag++;
+                }
             } else {
-                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'status', 'help' of 'naar andere kamer'.\n");
+                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help' of 'naar andere kamer'.\n");
             }
         }
 
-        System.out.println("Je hebt het juiste antwoord gegeven!\n");
+        System.out.println("Je hebt beide vragen goed beantwoord!\n");
         setVoltooid();
     }
 
     @Override
     public boolean verwerkAntwoord(String antwoord) {
-        if (antwoord.equals("b")) {
-            System.out.println("Correct! De sprintplanning zorgt ervoor dat het team begrijpt wat er gedaan moet worden.");
-            return true;
-        } else {
-            System.out.println("Fout! Monster 'Misverstand' verschijnt! Probeer het opnieuw.");
-            return false;
+        if (huidigeVraag == 1) {
+            if (antwoord.equals("d")) {
+                System.out.println("Correct! Het hele Scrum Team neemt deel aan de Sprint Planning.");
+                return true;
+            } else {
+                System.out.println("Fout! Monster 'Misverstand' verschijnt! Probeer het opnieuw.");
+                // Hier kun je later een straf implementeren
+                return false;
+            }
+        } else if (huidigeVraag == 2) {
+            if (antwoord.equals("b")) {
+                System.out.println("Correct! Tijdens de Sprint Planning worden het sprintdoel en de backlog-items vastgesteld.");
+                return true;
+            } else {
+                System.out.println("Fout! Monster 'Verwarring' verschijnt! Probeer het opnieuw.");
+                // Ook hier later straf mogelijk
+                return false;
+            }
         }
+
+        return false;
     }
 }

@@ -3,6 +3,7 @@ package Game;
 import java.util.Scanner;
 
 public class KamerRetrospective extends Kamer {
+    private int huidigeVraag = 0;
 
     public KamerRetrospective() {
         super("Sprint Retrospective");
@@ -10,16 +11,22 @@ public class KamerRetrospective extends Kamer {
 
     @Override
     public void betreed(Speler speler) {
-        boolean antwoordCorrect = false;
         Scanner scanner = new Scanner(System.in);
 
-        while (!antwoordCorrect) {
-            System.out.println("Je bent nu in de kamer: " + naam);
-            System.out.println("Wat gebeurt er tijdens een sprint review?");
-            System.out.println("a) Het presenteren van de opgeleverde software aan de stakeholders");
-            System.out.println("b) Het plannen van de volgende sprint");
-            System.out.println("c) Het uitvoeren van de sprint retrospective");
-            System.out.println("Typ 'help' voor uitleg, 'status' voor je status of 'naar andere kamer' om deze kamer te verlaten.\n");
+        while (huidigeVraag < 2) {
+            System.out.println("Je betreedt de kamer: " + naam);
+
+            if (huidigeVraag == 0) {
+                System.out.println("1. Wat is het hoofddoel van de Sprint Retrospective?");
+                System.out.println("a) De resultaten van het product demonstreren aan de klant.");
+                System.out.println("b) De product backlog aanpassen.");
+                System.out.println("c) Terugkijken op het proces en verbeteren waar mogelijk is.");
+            } else if (huidigeVraag == 1) {
+                System.out.println("2. Wanneer vindt de Sprint Retrospective plaats?");
+                System.out.println("a) Aan het begin van de sprint");
+                System.out.println("b) Direct na de Sprint Review, aan het einde van de sprint");
+                System.out.println("c) Halverwege de Sprint");
+            }
 
             String antwoord = scanner.nextLine().trim().toLowerCase();
 
@@ -32,25 +39,29 @@ public class KamerRetrospective extends Kamer {
             } else if (antwoord.equals("naar andere kamer")) {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
-            } else if (antwoord.equals("a") || antwoord.equals("b") || antwoord.equals("c")) {
-                antwoordCorrect = verwerkAntwoord(antwoord);
-                System.out.println();
+            } else if (antwoord.matches("[a-c]")) {
+                if (verwerkAntwoord(antwoord)) {
+                    huidigeVraag++;
+                    System.out.println();
+                } else {
+                    System.out.println("Monster 'Blame Game' verschijnt! Probeer het opnieuw.\n");
+                }
             } else {
                 System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'status', 'help' of 'naar andere kamer'.\n");
             }
         }
 
-        System.out.println("Je hebt het juiste antwoord gegeven!\n");
+        System.out.println("Je hebt alle vragen juist beantwoord!\n");
         setVoltooid();
     }
 
     @Override
     public boolean verwerkAntwoord(String antwoord) {
-        if (antwoord.equals("b")) {
-            System.out.println("Goed! Reflectie en verbetering zijn de kern.");
-            return true;
+        if (huidigeVraag == 0) {
+            return antwoord.equals("c");
+        } else if (huidigeVraag == 1) {
+            return antwoord.equals("b");
         } else {
-            System.out.println("Fout! Monster 'Blame Game' blokkeert de deur!");
             return false;
         }
     }

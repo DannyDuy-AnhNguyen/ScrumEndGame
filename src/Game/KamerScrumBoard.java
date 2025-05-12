@@ -3,6 +3,7 @@ package Game;
 import java.util.Scanner;
 
 public class KamerScrumBoard extends Kamer {
+    private int huidigeVraag = 0;
 
     public KamerScrumBoard() {
         super("Scrum Board");
@@ -10,20 +11,25 @@ public class KamerScrumBoard extends Kamer {
 
     @Override
     public void betreed(Speler speler) {
-        boolean antwoordCorrect = false;
         Scanner scanner = new Scanner(System.in);
 
-        while (!antwoordCorrect) {
+        while (huidigeVraag < 2) {
             System.out.println("Je betreedt de kamer: " + naam);
-            System.out.println("Wat hoort op het Scrum Board?");
-            System.out.println("a) Gebruikersverhalen, taken, voortgang");
-            System.out.println("b) Persoonlijke notities van teamleden");
-            System.out.println("c) Salarisinformatie");
-            System.out.println("Typ 'help' voor uitleg, 'status' voor je status of 'naar andere kamer' om deze kamer te verlaten.\n");
+
+            if (huidigeVraag == 0) {
+                System.out.println("1. Wat is de volgorde om een scrum process te maken?");
+                System.out.println("a) Epics > Userstories > Taken");
+                System.out.println("b) Epics > Taken > Userstories");
+                System.out.println("c) Userstories > Epics > Taken");
+            } else if (huidigeVraag == 1) {
+                System.out.println("2. Welke borden gebruik je in de scrumboard?");
+                System.out.println("a) Product Backlog > Sprint Backlog > Doing > Testing > Done");
+                System.out.println("b) Product Backlog > Sprint Backlog > To Do > Doing > Testing > Done");
+                System.out.println("c) Sprint Backlog > To Do > Doing > Testing > Done");
+            }
 
             String antwoord = scanner.nextLine().trim().toLowerCase();
 
-            // Keuzes verwerken
             if (antwoord.equals("help")) {
                 toonHelp();
                 System.out.println();
@@ -33,26 +39,30 @@ public class KamerScrumBoard extends Kamer {
             } else if (antwoord.equals("naar andere kamer")) {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
-            } else if (antwoord.equals("a") || antwoord.equals("b") || antwoord.equals("c")) {
-                antwoordCorrect = verwerkAntwoord(antwoord);
-                System.out.println();
+            } else if (antwoord.matches("[a-c]")) {
+                if (verwerkAntwoord(antwoord)) {
+                    huidigeVraag++;
+                    System.out.println();
+                } else {
+                    System.out.println("Monster 'Scrum Chaos' verschijnt! Probeer het opnieuw.\n");
+                }
             } else {
                 System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'status', 'help' of 'naar andere kamer'.\n");
             }
         }
 
-        System.out.println("Je hebt het juiste antwoord gegeven!\n");
+        System.out.println("Je hebt alle vragen juist beantwoord!\n");
         setVoltooid();
     }
 
     @Override
     public boolean verwerkAntwoord(String antwoord) {
-        if (antwoord.equals("a")) {
-            System.out.println("Correct! Het bord toont werk en voortgang.");
-            return true; // Correct antwoord
+        if (huidigeVraag == 0) {
+            return antwoord.equals("a");
+        } else if (huidigeVraag == 1) {
+            return antwoord.equals("b");
         } else {
-            System.out.println("Fout! Monster 'Chaos op het bord' verschijnt!");
-            return false; // Fout antwoord
+            return false;
         }
     }
 }

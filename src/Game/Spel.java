@@ -78,7 +78,7 @@ public class Spel {
                     System.out.println();  // Extra enter na foutmelding
                 }
             } else {
-                System.out.println("Onbekend commando. Kies a, b of c.");
+                System.out.println("Onbekend commando. Kies 'status', 'help', 'ga naar kamer X' of 'stop'.");
                 System.out.println();  // Extra enter na onbekend commando
             }
         }

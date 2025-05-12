@@ -3,6 +3,7 @@ package Game;
 import java.util.Scanner;
 
 public class KamerDailyScrum extends Kamer {
+    private int huidigeVraag = 0;
 
     public KamerDailyScrum() {
         super("Daily Scrum");
@@ -10,20 +11,26 @@ public class KamerDailyScrum extends Kamer {
 
     @Override
     public void betreed(Speler speler) {
-        boolean antwoordCorrect = false;
         Scanner scanner = new Scanner(System.in);
 
-        while (!antwoordCorrect) {
+        while (huidigeVraag < 2) {
             System.out.println("Je betreedt de kamer: " + naam);
-            System.out.println("Wat is het doel van de Daily Scrum?");
-            System.out.println("a) Het delen van persoonlijke verhalen");
-            System.out.println("b) Het bespreken van de voortgang van het werk");
-            System.out.println("c) Het plannen van de volgende sprint");
-            System.out.println("Typ 'help' voor uitleg, 'status' voor je status of 'naar andere kamer' om deze kamer te verlaten.\n");
+
+            if (huidigeVraag == 0) {
+                System.out.println("1. Welke van de volgende rollen bestaat niet binnen Scrum?");
+                System.out.println("a) Projectleider");
+                System.out.println("b) Scrum Master");
+                System.out.println("c) Development Team");
+            } else if (huidigeVraag == 1) {
+                System.out.println("2. Hoelang duurt een standaard sprint meestal?");
+                System.out.println("a) 1 tot 4 weken");
+                System.out.println("b) 1 tot 4 maanden");
+                System.out.println("c) 1 tot 4 dagen");
+                System.out.println("d) 1 tot 4 jaren");
+            }
 
             String antwoord = scanner.nextLine().trim().toLowerCase();
 
-            // Keuzes verwerken
             if (antwoord.equals("help")) {
                 toonHelp();
                 System.out.println();
@@ -33,26 +40,30 @@ public class KamerDailyScrum extends Kamer {
             } else if (antwoord.equals("naar andere kamer")) {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
-            } else if (antwoord.equals("a") || antwoord.equals("b") || antwoord.equals("c")) {
-                antwoordCorrect = verwerkAntwoord(antwoord);
-                System.out.println();
+            } else if (antwoord.matches("[a-d]")) {
+                if (verwerkAntwoord(antwoord)) {
+                    huidigeVraag++;
+                    System.out.println();
+                } else {
+                    System.out.println("Monster 'Verlies van Focus' verschijnt! Probeer het opnieuw.\n");
+                }
             } else {
                 System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'status', 'help' of 'naar andere kamer'.\n");
             }
         }
 
-        System.out.println("Goed gedaan! Je mag nu naar de volgende kamer.\n");
+        System.out.println("Je hebt alle vragen juist beantwoord!\n");
         setVoltooid();
     }
 
     @Override
     public boolean verwerkAntwoord(String antwoord) {
-        if (antwoord.equals("b")) {
-            System.out.println("Correct! Het doel van de Daily Scrum is om de voortgang van het werk te bespreken.");
-            return true; // Correct antwoord
+        if (huidigeVraag == 0) {
+            return antwoord.equals("a");
+        } else if (huidigeVraag == 1) {
+            return antwoord.equals("a");
         } else {
-            System.out.println("Fout! Monster 'Verlies van Focus' verschijnt! Probeer het opnieuw.");
-            return false; // Fout antwoord
+            return false;
         }
     }
 }
