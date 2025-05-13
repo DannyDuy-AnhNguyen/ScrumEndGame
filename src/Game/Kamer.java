@@ -26,12 +26,24 @@ public abstract class Kamer {
 
     // Toegevoegde help-methode
     public void toonHelp() {
-        System.out.println();
-        System.out.println("📜 Beschikbare commando's:");
-        System.out.println("- a / b / c      : Kies een antwoordoptie");
-        System.out.println("- help           : Toon deze uitleg");
-        System.out.println("- status         : Bekijk je huidige status");
-        System.out.println("- naar kamer [x] : Ga handmatig naar een andere kamer (als dit ondersteund is)");
-        System.out.println();
+        typeText("\n📜 Beschikbare commando's:", 30);
+        typeText("- a / b / c      : Kies een antwoordoptie", 30);
+        typeText("- help           : Toon deze uitleg", 30);
+        typeText("- status         : Bekijk je huidige status", 30);
+        typeText("- naar kamer [x] : Ga handmatig naar een andere kamer (als dit ondersteund is)\n", 30);
+    }
+
+    // ✅ NIEUWE typ-effect methode
+    public void typeText(String text, int delay) {
+        // Deze versie blokkeert gebruikersinvoer totdat de tekst volledig getypt is.
+        for (char c : text.toCharArray()) {
+            System.out.print(c);
+            try {
+                Thread.sleep(delay); // Wacht een beetje tussen de letters
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println(); // Zorgt voor een nieuwe regel na het typen van de tekst
     }
 }

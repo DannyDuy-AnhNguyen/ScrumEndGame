@@ -29,7 +29,7 @@ public class Spel {
 
         System.out.println("Welkom, " + speler.getNaam() + "! Deze commando's kan je op elk moment gebruiken:");
         System.out.println("'status', 'help', 'ga naar kamer X' of 'stop'.");
-        System.out.println("Kies a, b of c als je een vraag krijgt.");
+        System.out.println("Kies a, b, c of d als je een vraag krijgt.");
         System.out.println();  // Extra enter voor overzichtelijkheid
 
         boolean gameInProgress = true;

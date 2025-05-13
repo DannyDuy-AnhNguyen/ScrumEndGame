@@ -2,7 +2,10 @@ package Game;
 
 public class Main {
     public static void main(String[] args) {
-        Spel spel = new Spel();
-        spel.start();
+        Speler testSpeler = new Speler();
+        testSpeler.setNaam("Testpersoon");
+
+        Kamer finale = new KamerFinaleTIA();
+        finale.betreed(testSpeler);
     }
 }
