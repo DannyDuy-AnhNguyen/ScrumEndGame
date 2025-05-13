@@ -3,9 +3,11 @@ package Game;
 public abstract class Kamer {
     protected String naam;
     protected boolean voltooid = false;
+    protected Antwoord antwoordStrategie;
 
-    public Kamer(String naam) {
+    public Kamer(String naam, Antwoord strategie) {
         this.naam = naam;
+        this.antwoordStrategie = strategie;
     }
 
     public String getNaam() {

@@ -6,11 +6,9 @@ import java.util.Scanner;
 
 public class KamerRetrospective extends Kamer {
     private int huidigeVraag = 0;
-    private final Antwoord antwoordStrategie;
 
     public KamerRetrospective(Antwoord strategie) {
-        super("Sprint Retrospective");
-        this.antwoordStrategie = strategie;
+        super("Sprint Retrospective", strategie);
     }
 
     @Override

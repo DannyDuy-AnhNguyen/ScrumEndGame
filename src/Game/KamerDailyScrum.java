@@ -5,11 +5,9 @@ import java.util.Scanner;
 //de context klasse van AntwoordDailyScrum
 public class KamerDailyScrum extends Kamer {
     private int huidigeVraag = 0;
-    private final Antwoord antwoordStrategie;
 
     public KamerDailyScrum(Antwoord strategie) {
-        super("Daily Scrum");
-        this.antwoordStrategie = strategie;
+        super("Daily Scrum", strategie);
     }
 
     @Override

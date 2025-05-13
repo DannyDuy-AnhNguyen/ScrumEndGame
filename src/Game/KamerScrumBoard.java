@@ -5,11 +5,9 @@ import java.util.Scanner;
 //de context klasse van AntwoordScrumBoard
 public class KamerScrumBoard extends Kamer {
     private int huidigeVraag = 0;
-    private final Antwoord antwoordStrategie;
 
     public KamerScrumBoard(Antwoord strategie) {
-        super("Scrum Board");
-        this.antwoordStrategie = strategie;
+        super("Scrum Board", strategie);
     }
 
     @Override

@@ -6,11 +6,9 @@ import java.util.Scanner;
 
 public class KamerReview extends Kamer {
     private int huidigeVraag = 0;
-    private final Antwoord antwoordStrategie;
 
     public KamerReview(Antwoord strategie) {
-        super("Sprint Review");
-        this.antwoordStrategie = strategie;
+        super("Sprint Review", strategie);
     }
 
     //    Strategy Pattern with Abstract method
