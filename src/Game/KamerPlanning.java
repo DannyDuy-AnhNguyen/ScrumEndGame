@@ -2,6 +2,7 @@ package Game;
 
 import java.util.Scanner;
 
+//de context klasse van AntwoordPlanning
 public class KamerPlanning extends Kamer {
 
     private int huidigeVraag = 1; // Vraag 1 of 2

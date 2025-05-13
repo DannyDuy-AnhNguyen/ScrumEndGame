@@ -2,6 +2,7 @@ package Game;
 
 import java.util.Scanner;
 
+//de context klasse van AntwoordDailyScrum
 public class KamerDailyScrum extends Kamer {
     private int huidigeVraag = 0;
     private final Antwoord antwoordStrategie;

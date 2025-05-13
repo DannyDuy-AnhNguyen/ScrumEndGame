@@ -1,5 +1,6 @@
 package Game;
 
+//de strategy klasse voor KamerReview
 public class AntwoordReview implements Antwoord{
     public boolean verwerkAntwoord(String antwoord, int huidigeVraag) {
         if (huidigeVraag == 0) {

@@ -2,6 +2,7 @@ package Game;
 
 import java.util.Scanner;
 
+//de context klasse van AntwoordFinaleTia
 public class KamerFinaleTIA extends Kamer {
     private int huidigeVraag = 0;
     private final Antwoord antwoordStrategie;

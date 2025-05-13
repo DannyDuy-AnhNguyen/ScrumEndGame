@@ -1,6 +1,7 @@
 package Game;
 
-public class AntwoordScrum implements Antwoord{
+//de strategy klasse voor KamerDailyScrum
+public class AntwoordDailyScrum implements Antwoord{
     public boolean verwerkAntwoord(String antwoord, int huidigeVraag) {
         if (huidigeVraag == 0) {
             return antwoord.equals("a");

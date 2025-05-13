@@ -1,6 +1,7 @@
 package Game;
 
-public class AntwoordFinal implements Antwoord{
+//de strategy klasse voor KamerFinalTia
+public class AntwoordFinalTIA implements Antwoord{
     @Override
     public boolean verwerkAntwoord(String antwoord, int vraagIndex) {
         if (vraagIndex == 0) {

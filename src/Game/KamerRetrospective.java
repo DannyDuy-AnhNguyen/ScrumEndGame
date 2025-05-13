@@ -2,6 +2,8 @@ package Game;
 
 import java.util.Scanner;
 
+//de context klasse van AntwoordRetrospective
+
 public class KamerRetrospective extends Kamer {
     private int huidigeVraag = 0;
     private final Antwoord antwoordStrategie;

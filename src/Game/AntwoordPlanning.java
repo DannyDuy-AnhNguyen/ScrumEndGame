@@ -1,5 +1,6 @@
 package Game;
 
+//de strategy klasse voor KamerPlanning
 public class AntwoordPlanning implements Antwoord {
     @Override
     public boolean verwerkAntwoord(String antwoord, int huidigeVraag) {

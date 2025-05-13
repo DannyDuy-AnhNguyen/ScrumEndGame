@@ -1,6 +1,6 @@
 package Game;
 
-public class AntwoordRetro implements Antwoord{
+public class AntwoordRetrospective implements Antwoord{
     public boolean verwerkAntwoord(String antwoord, int huidigeVraag) {
         if (huidigeVraag == 0) {
             return antwoord.equals("c");

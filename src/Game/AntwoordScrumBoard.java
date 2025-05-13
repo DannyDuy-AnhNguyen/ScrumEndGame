@@ -1,6 +1,7 @@
 package Game;
 
-public class AntwoordBoard implements Antwoord{
+//de strategy klasse voor KamerBoard
+public class AntwoordScrumBoard implements Antwoord{
     public boolean verwerkAntwoord(String antwoord, int huidigeVraag) {
         if (huidigeVraag == 0) {
             return antwoord.equals("a");
