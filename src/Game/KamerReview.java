@@ -4,11 +4,14 @@ import java.util.Scanner;
 
 public class KamerReview extends Kamer {
     private int huidigeVraag = 0;
+    private final Antwoord antwoordStrategie;
 
-    public KamerReview() {
+    public KamerReview(Antwoord strategie) {
         super("Sprint Review");
+        this.antwoordStrategie = strategie;
     }
 
+    //    Strategy Pattern with Abstract method
     @Override
     public void betreed(Speler speler) {
         Scanner scanner = new Scanner(System.in);
@@ -47,7 +50,7 @@ public class KamerReview extends Kamer {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
             } else if (antwoord.matches("[a-d]")) {
-                if (verwerkAntwoord(antwoord)) {
+                if (antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag)) {
                     huidigeVraag++;
                     System.out.println();
                 } else {
@@ -62,16 +65,16 @@ public class KamerReview extends Kamer {
         setVoltooid();
     }
 
-    @Override
-    public boolean verwerkAntwoord(String antwoord) {
-        if (huidigeVraag == 0) {
-            return antwoord.equals("c");
-        } else if (huidigeVraag == 1) {
-            return antwoord.equals("b");
-        } else if (huidigeVraag == 2) {
-            return antwoord.equals("b");
-        } else {
-            return false;
-        }
-    }
+//    @Override
+//    public boolean verwerkAntwoord(String antwoord) {
+//        if (huidigeVraag == 0) {
+//            return antwoord.equals("c");
+//        } else if (huidigeVraag == 1) {
+//            return antwoord.equals("b");
+//        } else if (huidigeVraag == 2) {
+//            return antwoord.equals("b");
+//        } else {
+//            return false;
+//        }
+//    }
 }

@@ -15,11 +15,11 @@ public class Spel {
         this.kamers = new ArrayList<>();
 
         // Voeg kamers toe
-        kamers.add(new KamerPlanning());
-        kamers.add(new KamerReview());
-        kamers.add(new KamerScrumBoard());
-        kamers.add(new KamerRetrospective());
-        kamers.add(new KamerDailyScrum());
+        kamers.add(new KamerPlanning(new AntwoordPlanning()));
+        kamers.add(new KamerReview(new AntwoordReview()));
+        kamers.add(new KamerScrumBoard(new AntwoordBoard()));
+        kamers.add(new KamerRetrospective(new AntwoordRetro()));
+        kamers.add(new KamerDailyScrum(new AntwoordScrum()));
     }
 
     public void start() {
@@ -65,7 +65,7 @@ public class Spel {
                         // Nadat een kamer is voltooid, geef de speler de keuze om naar een andere kamer te gaan.
                         if (alleKamersVoltooid()) {
                             System.out.println("Alle kamers voltooid! Je gaat nu naar de Finale TIA kamer.");
-                            Kamer finaleKamer = new KamerFinaleTIA();
+                            Kamer finaleKamer = new KamerFinaleTIA(new AntwoordFinal());
                             finaleKamer.betreed(speler);
                             gameInProgress = false;  // Einde van het spel
                         }

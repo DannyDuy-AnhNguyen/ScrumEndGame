@@ -4,9 +4,11 @@ import java.util.Scanner;
 
 public class KamerDailyScrum extends Kamer {
     private int huidigeVraag = 0;
+    private final Antwoord antwoordStrategie;
 
-    public KamerDailyScrum() {
+    public KamerDailyScrum(Antwoord strategie) {
         super("Daily Scrum");
+        this.antwoordStrategie = strategie;
     }
 
     @Override
@@ -41,7 +43,7 @@ public class KamerDailyScrum extends Kamer {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
             } else if (antwoord.matches("[a-d]")) {
-                if (verwerkAntwoord(antwoord)) {
+                if (antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag)) {
                     huidigeVraag++;
                     System.out.println();
                 } else {
@@ -56,14 +58,14 @@ public class KamerDailyScrum extends Kamer {
         setVoltooid();
     }
 
-    @Override
-    public boolean verwerkAntwoord(String antwoord) {
-        if (huidigeVraag == 0) {
-            return antwoord.equals("a");
-        } else if (huidigeVraag == 1) {
-            return antwoord.equals("a");
-        } else {
-            return false;
-        }
-    }
+//    @Override
+//    public boolean verwerkAntwoord(String antwoord) {
+//        if (huidigeVraag == 0) {
+//            return antwoord.equals("a");
+//        } else if (huidigeVraag == 1) {
+//            return antwoord.equals("a");
+//        } else {
+//            return false;
+//        }
+//    }
 }

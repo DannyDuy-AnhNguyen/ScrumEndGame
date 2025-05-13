@@ -20,9 +20,10 @@ public abstract class Kamer {
         this.voltooid = true;
     }
 
+//    Strategy Pattern with Abstract method
     public abstract void betreed(Speler speler);
 
-    public abstract boolean verwerkAntwoord(String antwoord);
+//    public abstract boolean verwerkAntwoord(String antwoord);
 
     // Toegevoegde help-methode
     public void toonHelp() {

@@ -1,0 +1,13 @@
+package Game;
+
+public class AntwoordBoard implements Antwoord{
+    public boolean verwerkAntwoord(String antwoord, int huidigeVraag) {
+        if (huidigeVraag == 0) {
+            return antwoord.equals("a");
+        } else if (huidigeVraag == 1) {
+            return antwoord.equals("b");
+        } else {
+            return false;
+        }
+    }
+}

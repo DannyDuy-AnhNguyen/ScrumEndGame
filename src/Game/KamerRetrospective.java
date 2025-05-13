@@ -4,9 +4,11 @@ import java.util.Scanner;
 
 public class KamerRetrospective extends Kamer {
     private int huidigeVraag = 0;
+    private final Antwoord antwoordStrategie;
 
-    public KamerRetrospective() {
+    public KamerRetrospective(Antwoord strategie) {
         super("Sprint Retrospective");
+        this.antwoordStrategie = strategie;
     }
 
     @Override
@@ -40,7 +42,7 @@ public class KamerRetrospective extends Kamer {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
             } else if (antwoord.matches("[a-c]")) {
-                if (verwerkAntwoord(antwoord)) {
+                if (antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag)) {
                     huidigeVraag++;
                     System.out.println();
                 } else {
@@ -55,14 +57,14 @@ public class KamerRetrospective extends Kamer {
         setVoltooid();
     }
 
-    @Override
-    public boolean verwerkAntwoord(String antwoord) {
-        if (huidigeVraag == 0) {
-            return antwoord.equals("c");
-        } else if (huidigeVraag == 1) {
-            return antwoord.equals("b");
-        } else {
-            return false;
-        }
-    }
+//    @Override
+//    public boolean verwerkAntwoord(String antwoord) {
+//        if (huidigeVraag == 0) {
+//            return antwoord.equals("c");
+//        } else if (huidigeVraag == 1) {
+//            return antwoord.equals("b");
+//        } else {
+//            return false;
+//        }
+//    }
 }

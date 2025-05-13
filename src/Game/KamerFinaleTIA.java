@@ -4,9 +4,12 @@ import java.util.Scanner;
 
 public class KamerFinaleTIA extends Kamer {
     private int huidigeVraag = 0;
+    private final Antwoord antwoordStrategie;
 
-    public KamerFinaleTIA() {
+
+    public KamerFinaleTIA(Antwoord strategie) {
         super("Finale TIA Kamer – Waarom Scrum?");
+        this.antwoordStrategie = strategie;
     }
 
     @Override
@@ -47,7 +50,7 @@ public class KamerFinaleTIA extends Kamer {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
             } else if (antwoord.matches("[a-d]")) {
-                if (verwerkAntwoord(antwoord)) {
+                if (antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag)) {
                     huidigeVraag++;
                     System.out.println();
                 } else {
@@ -62,16 +65,15 @@ public class KamerFinaleTIA extends Kamer {
         setVoltooid();
     }
 
-    @Override
-    public boolean verwerkAntwoord(String antwoord) {
-        if (huidigeVraag == 0) {
-            return antwoord.equals("a");
-        } else if (huidigeVraag == 1) {
-            return antwoord.equals("a");
-        } else if (huidigeVraag == 2) {
-            return antwoord.equals("e");
-        } else {
-            return false;
-        }
-    }
+//    @Override
+//    public boolean verwerkAntwoord(String antwoord, int vraagIndex) {
+//        if (vraagIndex == 0) {
+//            return antwoord.equals("a");
+//        } else if (vraagIndex == 1) {
+//            return antwoord.equals("a");
+//        } else if (vraagIndex == 2) {
+//            return antwoord.matches("[a-d]");
+//        }
+//        return false;
+//    }
 }
