@@ -21,6 +21,7 @@ public class KamerDailyScrum extends Kamer {
                 System.out.println("a) Projectleider");
                 System.out.println("b) Scrum Master");
                 System.out.println("c) Development Team");
+                System.out.println("d) Product Owner");
             } else if (huidigeVraag == 1) {
                 System.out.println("2. Hoelang duurt een standaard sprint meestal?");
                 System.out.println("a) 1 tot 4 weken");
@@ -45,14 +46,14 @@ public class KamerDailyScrum extends Kamer {
                     huidigeVraag++;
                     System.out.println();
                 } else {
-                    System.out.println("Monster 'Verlies van Focus' verschijnt! Probeer het opnieuw.\n");
+                    System.out.println("Fout antwoord! De deur blijft gesloten en Monster 'Verlies van Focus' verschijnt!\n");
                 }
             } else {
-                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'status', 'help' of 'naar andere kamer'.\n");
+                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd' 'status', 'help' of 'naar andere kamer'.\n");
             }
         }
 
-        System.out.println("Je hebt alle vragen juist beantwoord!\n");
+        System.out.println("Je hebt alle vragen juist beantwoord! De deur gaat open.\n");
         setVoltooid();
     }
 

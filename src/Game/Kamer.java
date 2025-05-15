@@ -27,7 +27,7 @@ public abstract class Kamer {
     // Toegevoegde help-methode
     public void toonHelp() {
         typeText("\n📜 Beschikbare commando's:", 30);
-        typeText("- a / b / c      : Kies een antwoordoptie", 30);
+        typeText("- a / b / c / d     : Kies een antwoordoptie", 30);
         typeText("- help           : Toon deze uitleg", 30);
         typeText("- status         : Bekijk je huidige status", 30);
         typeText("- naar kamer [x] : Ga handmatig naar een andere kamer (als dit ondersteund is)\n", 30);

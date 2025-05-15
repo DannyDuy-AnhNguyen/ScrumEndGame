@@ -29,6 +29,7 @@ public class KamerPlanning extends Kamer {
                 System.out.println("a) Welke teamleden vakantie hebben");
                 System.out.println("b) Wat het doel van de sprint is en welke backlog-items worden opgepakt");
                 System.out.println("c) Hoe de vorige sprint geëvalueerd");
+                System.out.println("d) Wat de vastgestelde items van de backlog zijn als de product owner tevreden is met het product.");
             }
 
             String antwoord = scanner.nextLine().trim().toLowerCase();

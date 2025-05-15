@@ -57,7 +57,7 @@ public class KamerFinaleTIA extends Kamer {
                     huidigeVraag++;
                     System.out.println();
                 } else {
-                    System.out.println("Monster 'Scrum Misverstanden' verschijnt! Probeer het opnieuw.");
+                    System.out.println("Fout antwoord! De deur blijft gesloten en Monster 'Scrum Misverstanden' verschijnt!\n");
                 }
             } else {
                 System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help' of 'naar andere kamer'.");
@@ -84,6 +84,6 @@ public class KamerFinaleTIA extends Kamer {
     // Methode voor de open vraag
     public boolean verwerkAntwoordOpenVraag(String antwoord) {
         // Reguliere expressie die controleert of het antwoord 0, sprint 0 of nul is
-        return antwoord.matches("^(0|sprint 0|nul)$");
+        return antwoord.matches("^(0|sprint 0|nul|sprintnul|sprint0|)$");
     }
 }
