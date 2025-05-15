@@ -47,7 +47,8 @@ public class KamerReview extends Kamer {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
             } else if (antwoord.matches("[a-d]")) {
-                if (verwerkAntwoord(antwoord)) {
+                boolean correct = verwerkAntwoord(antwoord, speler);
+                if (correct) {
                     huidigeVraag++;
                     System.out.println();
                 } else {
@@ -63,15 +64,21 @@ public class KamerReview extends Kamer {
     }
 
     @Override
-    public boolean verwerkAntwoord(String antwoord) {
+    public boolean verwerkAntwoord(String antwoord, Speler speler) {
+        boolean correct = false;
+
         if (huidigeVraag == 0) {
-            return antwoord.equals("c");
+            correct = antwoord.equals("c");
+            System.out.println(correct ? "Correct! De Review is aan het einde van de sprint." : "Fout! De Review is aan het einde, niet aan het begin of midden.");
         } else if (huidigeVraag == 1) {
-            return antwoord.equals("b");
+            correct = antwoord.equals("b");
+            System.out.println(correct ? "Correct! Feedback verzamelen en inspectie van het increment is het doel." : "Fout! Dat is niet het belangrijkste doel.");
         } else if (huidigeVraag == 2) {
-            return antwoord.equals("b");
-        } else {
-            return false;
+            correct = antwoord.equals("b");
+            System.out.println(correct ? "Correct! Transparantie, feedback en afstemming zijn de voordelen." : "Fout! Dit zijn geen echte voordelen van een Sprint Review.");
         }
+
+        updateScore(correct, speler);
+        return correct;
     }
 }

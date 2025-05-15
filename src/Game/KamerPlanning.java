@@ -44,7 +44,7 @@ public class KamerPlanning extends Kamer {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
             } else if (antwoord.matches("[a-d]")) {
-                antwoordCorrect = verwerkAntwoord(antwoord);
+                antwoordCorrect = verwerkAntwoord(antwoord, speler);
                 System.out.println();
                 if (antwoordCorrect) {
                     huidigeVraag++;
@@ -58,28 +58,25 @@ public class KamerPlanning extends Kamer {
         setVoltooid();
     }
 
-    @Override
-    public boolean verwerkAntwoord(String antwoord) {
+    // Nu met Speler parameter en score update
+    public boolean verwerkAntwoord(String antwoord, Speler speler) {
+        boolean correct = false;
         if (huidigeVraag == 1) {
             if (antwoord.equals("d")) {
                 System.out.println("Correct! Het hele Scrum Team neemt deel aan de Sprint Planning.");
-                return true;
+                correct = true;
             } else {
                 System.out.println("Fout! Monster 'Misverstand' verschijnt! Probeer het opnieuw.");
-                // Hier kun je later een straf implementeren
-                return false;
             }
         } else if (huidigeVraag == 2) {
             if (antwoord.equals("b")) {
                 System.out.println("Correct! Tijdens de Sprint Planning worden het sprintdoel en de backlog-items vastgesteld.");
-                return true;
+                correct = true;
             } else {
                 System.out.println("Fout! Monster 'Verwarring' verschijnt! Probeer het opnieuw.");
-                // Ook hier later straf mogelijk
-                return false;
             }
         }
-
-        return false;
+        updateScore(correct, speler);
+        return correct;
     }
 }

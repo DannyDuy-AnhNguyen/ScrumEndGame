@@ -8,11 +8,13 @@ public class Spel {
     private Speler speler;
     private List<Kamer> kamers;
     private Scanner scanner;
+    private Scorebord scoreboard;
 
     public Spel() {
         this.scanner = new Scanner(System.in);
         this.speler = new Speler();
         this.kamers = new ArrayList<>();
+        this.scoreboard = new Scorebord(speler);
 
         // Voeg kamers toe
         kamers.add(new KamerPlanning());
@@ -42,7 +44,8 @@ public class Spel {
                 System.out.println("Tot ziens!");
                 gameInProgress = false;
             } else if (input.equals("status")) {
-                speler.status();
+                // Vervang speler.status() door scoreboard update
+                scoreboard.update();
                 System.out.println(); // Extra enter voor overzichtelijkheid
             } else if (input.equals("help")) {
                 toonHelp();
@@ -54,6 +57,9 @@ public class Spel {
                         Kamer gekozenKamer = kamers.get(nummer);
                         if (!gekozenKamer.isVoltooid()) {
                             gekozenKamer.betreed(speler);
+                            // Na kamer bezoek update scoreboard
+                            scoreboard.update();
+
                             // Als de kamer is voltooid, markeer deze als voltooid.
                             if (gekozenKamer.isVoltooid()) {
                                 System.out.println("Deze kamer is voltooid!");
@@ -62,11 +68,14 @@ public class Spel {
                             System.out.println("Deze kamer is al voltooid.");
                         }
 
-                        // Nadat een kamer is voltooid, geef de speler de keuze om naar een andere kamer te gaan.
+                        // Check of alle kamers voltooid zijn
                         if (alleKamersVoltooid()) {
                             System.out.println("Alle kamers voltooid! Je gaat nu naar de Finale TIA kamer.");
                             Kamer finaleKamer = new KamerFinaleTIA();
                             finaleKamer.betreed(speler);
+                            // Laat scoreboard ook de finale status zien
+                            scoreboard.update();
+
                             gameInProgress = false;  // Einde van het spel
                         }
                     } else {

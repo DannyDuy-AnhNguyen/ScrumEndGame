@@ -42,7 +42,8 @@ public class KamerDailyScrum extends Kamer {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
             } else if (antwoord.matches("[a-d]")) {
-                if (verwerkAntwoord(antwoord)) {
+                // Let op: hier nu verwerkAntwoord met speler meegeven
+                if (verwerkAntwoord(antwoord, speler)) {
                     huidigeVraag++;
                     System.out.println();
                 } else {
@@ -58,13 +59,12 @@ public class KamerDailyScrum extends Kamer {
     }
 
     @Override
-    public boolean verwerkAntwoord(String antwoord) {
-        if (huidigeVraag == 0) {
-            return antwoord.equals("a");
-        } else if (huidigeVraag == 1) {
-            return antwoord.equals("a");
-        } else {
-            return false;
+    public boolean verwerkAntwoord(String antwoord, Speler speler) {
+        boolean isCorrect = antwoord.equalsIgnoreCase("a"); // voorbeeldcheck
+        updateScore(isCorrect, speler);
+        if (isCorrect) {
+            setVoltooid();
         }
+        return isCorrect;
     }
 }

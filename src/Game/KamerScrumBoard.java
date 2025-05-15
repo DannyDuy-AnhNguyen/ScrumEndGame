@@ -17,12 +17,12 @@ public class KamerScrumBoard extends Kamer {
             System.out.println("Je betreedt de kamer: " + naam);
 
             if (huidigeVraag == 0) {
-                System.out.println("1. Wat is de volgorde om een scrum process te maken?");
+                System.out.println("1. Wat is de volgorde om een Scrum-proces te maken?");
                 System.out.println("a) Epics > Userstories > Taken");
                 System.out.println("b) Epics > Taken > Userstories");
                 System.out.println("c) Userstories > Epics > Taken");
             } else if (huidigeVraag == 1) {
-                System.out.println("2. Welke borden gebruik je in de scrumboard?");
+                System.out.println("2. Welke borden gebruik je in het Scrumboard?");
                 System.out.println("a) Product Backlog > Sprint Backlog > Doing > Testing > Done");
                 System.out.println("b) Product Backlog > Sprint Backlog > To Do > Doing > Testing > Done");
                 System.out.println("c) Sprint Backlog > To Do > Doing > Testing > Done");
@@ -40,7 +40,8 @@ public class KamerScrumBoard extends Kamer {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
             } else if (antwoord.matches("[a-c]")) {
-                if (verwerkAntwoord(antwoord)) {
+                boolean correct = verwerkAntwoord(antwoord, speler);
+                if (correct) {
                     huidigeVraag++;
                     System.out.println();
                 } else {
@@ -56,13 +57,22 @@ public class KamerScrumBoard extends Kamer {
     }
 
     @Override
-    public boolean verwerkAntwoord(String antwoord) {
+    public boolean verwerkAntwoord(String antwoord, Speler speler) {
+        boolean correct = false;
+
         if (huidigeVraag == 0) {
-            return antwoord.equals("a");
+            correct = antwoord.equals("a");
+            System.out.println(correct
+                    ? "Correct! De juiste volgorde is Epics > Userstories > Taken."
+                    : "Fout! De juiste volgorde is Epics > Userstories > Taken.");
         } else if (huidigeVraag == 1) {
-            return antwoord.equals("b");
-        } else {
-            return false;
+            correct = antwoord.equals("b");
+            System.out.println(correct
+                    ? "Correct! Een volledig Scrumboard bevat To Do, Doing, Testing en Done."
+                    : "Fout! Denk aan het volledige proces vanaf de backlog tot aan done.");
         }
+
+        updateScore(correct, speler);
+        return correct;
     }
 }

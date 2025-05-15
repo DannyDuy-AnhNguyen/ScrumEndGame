@@ -53,7 +53,7 @@ public class KamerFinaleTIA extends Kamer {
                 System.out.println("Je hebt de open vraag goed beantwoord!");
                 System.out.println();
             } else if (antwoord.matches("[a-e]")) {
-                if (verwerkAntwoord(antwoord)) {
+                if (verwerkAntwoord(antwoord, speler)) {
                     huidigeVraag++;
                     System.out.println();
                 } else {
@@ -68,17 +68,23 @@ public class KamerFinaleTIA extends Kamer {
         setVoltooid();
     }
 
-    @Override
-    public boolean verwerkAntwoord(String antwoord) {
+    // Gewijzigd: nu met Speler speler parameter
+    public boolean verwerkAntwoord(String antwoord, Speler speler) {
+        boolean correct = false;
         if (huidigeVraag == 0) {
-            return antwoord.equals("a");
+            correct = antwoord.equals("a");
         } else if (huidigeVraag == 1) {
-            return antwoord.equals("a");
+            correct = antwoord.equals("a");
         } else if (huidigeVraag == 2) {
-            return antwoord.equals("e");
-        } else {
-            return false;
+            correct = antwoord.equals("e");
         }
+        // Score alleen updaten als correct
+        if (correct) {
+            updateScore(true, speler);
+        } else {
+            updateScore(false, speler);
+        }
+        return correct;
     }
 
     // Methode voor de open vraag

@@ -40,7 +40,8 @@ public class KamerRetrospective extends Kamer {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
             } else if (antwoord.matches("[a-c]")) {
-                if (verwerkAntwoord(antwoord)) {
+                boolean correct = verwerkAntwoord(antwoord, speler);
+                if (correct) {
                     huidigeVraag++;
                     System.out.println();
                 } else {
@@ -56,13 +57,24 @@ public class KamerRetrospective extends Kamer {
     }
 
     @Override
-    public boolean verwerkAntwoord(String antwoord) {
+    public boolean verwerkAntwoord(String antwoord, Speler speler) {
+        boolean correct = false;
         if (huidigeVraag == 0) {
-            return antwoord.equals("c");
+            correct = antwoord.equals("c");
+            if (correct) {
+                System.out.println("Correct! Terugkijken en verbeteren is het doel.");
+            } else {
+                System.out.println("Fout! Dit is niet het hoofddoel.");
+            }
         } else if (huidigeVraag == 1) {
-            return antwoord.equals("b");
-        } else {
-            return false;
+            correct = antwoord.equals("b");
+            if (correct) {
+                System.out.println("Correct! De Retrospective vindt direct na de Review plaats.");
+            } else {
+                System.out.println("Fout! Dit is niet het juiste moment.");
+            }
         }
+        updateScore(correct, speler);
+        return correct;
     }
 }
