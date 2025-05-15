@@ -1,76 +1,121 @@
 package Game;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Speler {
     private String naam;
-    private Kamer huidigeKamer;
-    private List<Kamer> kamers;
-    private boolean heeftMonster;  // Houdt bij of er een monster actief is
+    private int positie;
+    private int score = 0;
+    private int streak = 0;
+    private List<Integer> voltooideKamers = new ArrayList<>();
+    private List<String> monsters = new ArrayList<>();
+    private List<Observer> observers = new ArrayList<>();
 
-    public Speler() {
-        this.heeftMonster = false;  // Begin zonder monsters
-    }
-
+    // === Naam ===
     public void setNaam(String naam) {
         this.naam = naam;
+        notifyObservers();
     }
 
     public String getNaam() {
         return naam;
     }
 
-    public void setHuidigeKamer(Kamer kamer) {
-        this.huidigeKamer = kamer;
+    // === Positie ===
+    public void setPositie(int positie) {
+        this.positie = positie;
+        notifyObservers();
     }
 
-    public Kamer getHuidigeKamer() {
-        return huidigeKamer;
+    public int getPositie() {
+        return positie;
     }
 
-    public void setKamers(List<Kamer> kamers) {
-        this.kamers = kamers;
+    // === Score en streak ===
+    public int getScore() {
+        return score;
     }
 
-    // Methode om monsterstatus bij te werken
-    public void setHeeftMonster(boolean heeftMonster) {
-        this.heeftMonster = heeftMonster;
+    public void verhoogScore(int punten) {
+        score += punten;
+        notifyObservers();
     }
 
-    // Verkrijg monsterstatus
-    public boolean heeftMonster() {
-        return heeftMonster;
+    public void verlaagScore(int punten) {
+        this.score -= punten;
+        if (this.score < 0) {
+            this.score = 0;
+        }
     }
 
+    public int getStreak() {
+        return streak;
+    }
+
+    public void setStreak(int streak) {
+        this.streak = streak;
+        notifyObservers();
+    }
+
+    // === Voltooide kamers ===
+    public void voegVoltooideKamerToe(int kamerIndex) {
+        if (!voltooideKamers.contains(kamerIndex)) {
+            voltooideKamers.add(kamerIndex);
+            notifyObservers();
+        }
+    }
+
+    public List<Integer> getVoltooideKamers() {
+        return voltooideKamers;
+    }
+
+    // === Monsters ===
+    public void voegMonsterToe(String monster) {
+        if (!monsters.contains(monster)) {
+            monsters.add(monster);
+            notifyObservers();
+        }
+    }
+
+    public void verwijderMonster(String monster) {
+        monsters.remove(monster);
+        notifyObservers();
+    }
+
+    public List<String> getMonsters() {
+        return monsters;
+    }
+
+    // === Observer pattern ===
+    public void voegObserverToe(Observer observer) {
+        observers.add(observer);
+    }
+
+    public void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.update(this);
+        }
+    }
+
+    // === Statusweergave ===
     public void status() {
-        System.out.println("\n===== STATUS =====");
+        System.out.println("=== STATUS ===");
+        System.out.println("Speler: " + naam);
+        System.out.println("Huidige kamer: " + (positie + 1));
+        System.out.println("Score: " + score);
+        System.out.println("Streak: " + streak);
+        System.out.println("Voltooide kamers: " + voltooideKamers.size());
 
-        if (huidigeKamer != null) {
-            System.out.println("Je bent momenteel in kamer " + huidigeKamer.getKamerNummer() + ". " + huidigeKamer.getNaam());
-        } else {
-            System.out.println("Je bent nog niet in een kamer geweest.");
-        }
-
-        int voltooidAantal = 0;
-        boolean heeftMonsters = false;
-
-        if (kamers != null) {
-            for (Kamer kamer : kamers) {
-                if (kamer.isVoltooid()) {
-                    voltooidAantal++;
-                }
-                // Controleer of er monsters zijn door te kijken of de kamer nog niet is voltooid en of er nog een actieve vraag is
-                if (!kamer.isVraagBeantwoord() && !kamer.isInVraag()) {
-                    heeftMonsters = true;
-                }
+        if (!monsters.isEmpty()) {
+            System.out.println("Actieve monsters:");
+            for (String monster : monsters) {
+                System.out.println("👾 " + monster);
             }
+        } else {
+            System.out.println("Geen actieve monsters.");
         }
 
-        // Toon de voortgang van de speler
-        System.out.println("Aantal voltooide kamers: " + voltooidAantal);
-        // Toon monsterstatus op basis van of er nog monsters zijn
-        System.out.println("Heb je nog monsters (impediments) op te lossen? " + (heeftMonsters || heeftMonster ? "Ja" : "Nee"));
-
-        System.out.println("Je kunt op elk moment 'status' intypen om te zien waar je bent, hoeveel kamers je al hebt gehaald, en of je nog monsters (impediments) hebt om op te lossen.\n");
+        System.out.println("====================");
     }
 }

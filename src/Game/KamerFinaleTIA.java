@@ -3,6 +3,7 @@ package Game;
 import java.util.Scanner;
 
 public class KamerFinaleTIA extends Kamer {
+    private int huidigeVraag = 0;
 
     public KamerFinaleTIA() {
         super("Finale TIA Kamer – Waarom Scrum?");
@@ -10,64 +11,85 @@ public class KamerFinaleTIA extends Kamer {
 
     @Override
     public void betreed(Speler speler) {
-        boolean antwoordCorrect = false;
         Scanner scanner = new Scanner(System.in);
-        setInVraag(true); // De speler is nu in de vraag
 
-        while (!antwoordCorrect) {
+        while (huidigeVraag < 4) {  // Verhoog het aantal vragen naar 4
             System.out.println("Welkom in de laatste kamer: " + naam);
-            System.out.println("Wat is het ultieme doel van Scrum?");
-            System.out.println("a) Strikte processen volgen");
-            System.out.println("b) Zo snel mogelijk software opleveren");
-            System.out.println("c) Transparantie, Inspectie en Aanpassing (TIA)");
+
+            if (huidigeVraag == 0) {
+                System.out.println("1. Wat vind je van Scrum?");
+                System.out.println("a) Uitstekend");
+                System.out.println("b) Neutraal");
+                System.out.println("c) Slecht");
+            } else if (huidigeVraag == 1) {
+                System.out.println("2. Uit welk jaar is Scrum ontstaan?");
+                System.out.println("a) 1993");
+                System.out.println("b) 1995");
+                System.out.println("c) 2001");
+                System.out.println("d) 2010");
+            } else if (huidigeVraag == 2) {
+                System.out.println("3. Is Scrum gay?");
+                System.out.println("a) Ja");
+                System.out.println("b) Ja");
+                System.out.println("c) Ja");
+                System.out.println("d) Ja");
+            } else if (huidigeVraag == 3) {  // De nieuwe open vraag
+                System.out.println("4. Bij welke sprint hoort deze userstory?");
+            }
 
             String antwoord = scanner.nextLine().trim().toLowerCase();
 
-            // Als het commando 'status' is, geven we de status weer
-            if (antwoord.equals("status")) {
-                speler.status(); // Geef de status weer zonder monster
-                continue; // Herhaal de vraag zonder de fout
+            if (antwoord.equals("help")) {
+                toonHelp();
+                System.out.println();
+            } else if (antwoord.equals("status")) {
+                speler.status();
+                System.out.println();
+            } else if (antwoord.equals("naar andere kamer")) {
+                System.out.println("Je verlaat deze kamer.");
+                return;
+            } else if (huidigeVraag == 3 && verwerkAntwoordOpenVraag(antwoord)) {
+                huidigeVraag++;
+                System.out.println("Je hebt de open vraag goed beantwoord!");
+                System.out.println();
+            } else if (antwoord.matches("[a-e]")) {
+                if (verwerkAntwoord(antwoord, speler)) {
+                    huidigeVraag++;
+                    System.out.println();
+                } else {
+                    System.out.println("Fout antwoord! De deur blijft gesloten en Monster 'Scrum Misverstanden' verschijnt!\n");
+                }
+            } else {
+                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help' of 'naar andere kamer'.");
             }
-
-            // Als de speler kiest om naar een andere kamer te gaan
-            else if (antwoord.equals("naar andere kamer")) {
-                System.out.println("Je kiest ervoor om naar een andere kamer te gaan.");
-                break; // Breek de loop en stop het vragen
-            }
-
-            // Als de invoer geen a, b of c is, geef een foutmelding en herhaal de vraag
-            if (!antwoord.equals("a") && !antwoord.equals("b") && !antwoord.equals("c")) {
-                System.out.println("Ongeldige keuze! Kies a, b of c. Of typ 'status' om je status te zien, of 'naar andere kamer' om verder te gaan.");
-                continue; // Herhaal de vraag zonder de fout
-            }
-
-            // Verwerk antwoord als het een geldige keuze is
-            antwoordCorrect = verwerkAntwoord(antwoord);
         }
 
-        System.out.println("Gefeliciteerd! Je hebt het ultieme doel van Scrum goed beantwoord.");
-        setVoltooid(); // Zet de kamer als voltooid
-        setInVraag(false); // De vraag is beantwoord
+        System.out.println("Gefeliciteerd! Je hebt alle vragen goed beantwoord en de laatste kamer voltooid.");
+        setVoltooid();
     }
 
-    @Override
-    public boolean verwerkAntwoord(String antwoord) {
-        if (antwoord.equals("c")) {
-            System.out.println("Correct! Het ultieme doel van Scrum is transparantie, inspectie en aanpassing.");
-            return true; // Correct antwoord
-        } else {
-            System.out.println("Fout! Monster 'Scrum Misverstanden' verschijnt! Probeer het opnieuw.");
-            return false; // Fout antwoord
+    // Gewijzigd: nu met Speler speler parameter
+    public boolean verwerkAntwoord(String antwoord, Speler speler) {
+        boolean correct = false;
+        if (huidigeVraag == 0) {
+            correct = antwoord.equals("a");
+        } else if (huidigeVraag == 1) {
+            correct = antwoord.equals("a");
+        } else if (huidigeVraag == 2) {
+            correct = antwoord.equals("e");
         }
+        // Score alleen updaten als correct
+        if (correct) {
+            updateScore(true, speler);
+        } else {
+            updateScore(false, speler);
+        }
+        return correct;
     }
 
-    @Override
-    public void stelVraag(Speler speler) {
-        // Deze methode roept de betreed-methode aan om de vraag te stellen
-        if (isInVraag()) {  // Alleen de vraag stellen als we in een vraag zitten
-            betreed(speler);
-        } else {
-            System.out.println("Je kunt de vraag pas beantwoorden als je in de kamer bent.");
-        }
+    // Methode voor de open vraag
+    public boolean verwerkAntwoordOpenVraag(String antwoord) {
+        // Reguliere expressie die controleert of het antwoord 0, sprint 0 of nul is
+        return antwoord.matches("^(0|sprint 0|nul|sprintnul|sprint0|)$");
     }
 }

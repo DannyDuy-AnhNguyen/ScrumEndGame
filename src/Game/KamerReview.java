@@ -3,70 +3,82 @@ package Game;
 import java.util.Scanner;
 
 public class KamerReview extends Kamer {
+    private int huidigeVraag = 0;
+
     public KamerReview() {
         super("Sprint Review");
     }
 
     @Override
     public void betreed(Speler speler) {
-        boolean antwoordCorrect = false;
         Scanner scanner = new Scanner(System.in);
-        setInVraag(true); // De speler is nu in de vraag
 
-        while (!antwoordCorrect) {
+        while (huidigeVraag < 3) {
             System.out.println("Je bent nu in de kamer: " + naam);
-            System.out.println("Wat gebeurt er tijdens een sprint review?");
-            System.out.println("a) Het presenteren van de opgeleverde software aan de stakeholders");
-            System.out.println("b) Het plannen van de volgende sprint");
-            System.out.println("c) Het uitvoeren van de sprint retrospective");
+
+            if (huidigeVraag == 0) {
+                System.out.println("1. Wanneer wordt er een sprintreview gehouden?");
+                System.out.println("a) Aan het begin van de sprint");
+                System.out.println("b) Tijdens de sprint");
+                System.out.println("c) Aan het einde van de sprint");
+            } else if (huidigeVraag == 1) {
+                System.out.println("2. Wat is het belangrijkste doel van de Sprint Review?");
+                System.out.println("a) De Scrum Master Evalueren");
+                System.out.println("b) Het increment inspecteren en feedback verzamelen");
+                System.out.println("c) De volgende sprint alvast plannen");
+                System.out.println("d) Vorige sprint doornemen");
+            } else if (huidigeVraag == 2) {
+                System.out.println("3. De voordelen van een Sprint Review zijn...?");
+                System.out.println("a) Meer vergaderingen = meer productiviteit");
+                System.out.println("b) Transparantie, snelle feedback, alignment met stakeholders");
+                System.out.println("c) Langer werken zonder pauzes");
+                System.out.println("d) De product owner tevreden houden");
+            }
 
             String antwoord = scanner.nextLine().trim().toLowerCase();
 
-            // Als het commando 'status' is, geven we de status weer
-            if (antwoord.equals("status")) {
-                speler.status(); // Geef de status weer zonder monster
-                continue; // Herhaal de vraag zonder de fout
+            if (antwoord.equals("help")) {
+                toonHelp();
+                System.out.println();
+            } else if (antwoord.equals("status")) {
+                speler.status();
+                System.out.println();
+            } else if (antwoord.equals("naar andere kamer")) {
+                System.out.println("Je verlaat deze kamer.\n");
+                return;
+            } else if (antwoord.matches("[a-d]")) {
+                boolean correct = verwerkAntwoord(antwoord, speler);
+                if (correct) {
+                    huidigeVraag++;
+                    System.out.println();
+                } else {
+                    System.out.println("Monster 'Sprint Confusie' verschijnt! Probeer het opnieuw.\n");
+                }
+            } else {
+                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help' of 'naar andere kamer'.\n");
             }
-
-            // Als de speler kiest om naar een andere kamer te gaan
-            else if (antwoord.equals("naar andere kamer")) {
-                System.out.println("Je kiest ervoor om naar een andere kamer te gaan.");
-                break; // Breek de loop en stop het vragen
-            }
-
-            // Als de invoer geen a, b of c is, geef een foutmelding en herhaal de vraag
-            if (!antwoord.equals("a") && !antwoord.equals("b") && !antwoord.equals("c")) {
-                System.out.println("Ongeldige keuze! Kies a, b of c. Of typ 'status' om je status te zien, of 'naar andere kamer' om verder te gaan.");
-                continue; // Herhaal de vraag zonder de fout
-            }
-
-            // Verwerk antwoord als het een geldige keuze is
-            antwoordCorrect = verwerkAntwoord(antwoord);
         }
 
-        System.out.println("Je hebt het juiste antwoord gegeven!");
-        setVoltooid(); // Zet de kamer als voltooid
-        setInVraag(false); // De vraag is beantwoord
+        System.out.println("Je hebt alle vragen juist beantwoord!\n");
+        setVoltooid();
     }
 
     @Override
-    public boolean verwerkAntwoord(String antwoord) {
-        if (antwoord.equals("a")) {
-            System.out.println("Goed! Tijdens een sprint review presenteer je het werk aan de stakeholders.");
-            return true; // Correct antwoord
-        } else {
-            System.out.println("Fout! Monster 'Sprint Confusie' blokkeert de deur!");
-            return false; // Fout antwoord
-        }
-    }
+    public boolean verwerkAntwoord(String antwoord, Speler speler) {
+        boolean correct = false;
 
-    @Override
-    public void stelVraag(Speler speler) {
-        // Deze methode roept de betreed-methode aan om de vraag te stellen
-        if (isInVraag()) {  // Alleen de vraag stellen als we in een vraag zitten
-            betreed(speler);
-        } else {
-            System.out.println("Je kunt de vraag pas beantwoorden als je in de kamer bent.");
+        if (huidigeVraag == 0) {
+            correct = antwoord.equals("c");
+            System.out.println(correct ? "Correct! De Review is aan het einde van de sprint." : "Fout! De Review is aan het einde, niet aan het begin of midden.");
+        } else if (huidigeVraag == 1) {
+            correct = antwoord.equals("b");
+            System.out.println(correct ? "Correct! Feedback verzamelen en inspectie van het increment is het doel." : "Fout! Dat is niet het belangrijkste doel.");
+        } else if (huidigeVraag == 2) {
+            correct = antwoord.equals("b");
+            System.out.println(correct ? "Correct! Transparantie, feedback en afstemming zijn de voordelen." : "Fout! Dit zijn geen echte voordelen van een Sprint Review.");
         }
+
+        updateScore(correct, speler);
+        return correct;
     }
 }

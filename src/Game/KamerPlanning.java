@@ -4,70 +4,79 @@ import java.util.Scanner;
 
 public class KamerPlanning extends Kamer {
 
+    private int huidigeVraag = 1; // Vraag 1 of 2
+
     public KamerPlanning() {
         super("Sprint Planning");
     }
 
     @Override
     public void betreed(Speler speler) {
-        boolean antwoordCorrect = false;
         Scanner scanner = new Scanner(System.in);
-        setInVraag(true); // De speler is nu in de vraag
+        boolean antwoordCorrect = false;
 
-        while (!antwoordCorrect) {
-            System.out.println("Je bent nu in de kamer: Sprint Planning.");
-            System.out.println("Vraag: Wat is het doel van een sprint planning?");
-            System.out.println("a) Het doel van de sprint is om de planning te maken");
-            System.out.println("b) De sprintplanning moet ervoor zorgen dat het team goed begrijpt wat er gedaan moet worden");
-            System.out.println("c) De sprintplanning is een kans om alle technische beslissingen te nemen");
+        while (huidigeVraag <= 2) {
+            System.out.println("Je bent nu in de kamer: " + naam);
+
+            if (huidigeVraag == 1) {
+                System.out.println("Wie neemt deel aan de Sprint Planning?");
+                System.out.println("a) Alleen de Scrum Master");
+                System.out.println("b) Product Owner en Scrum Master");
+                System.out.println("c) Product Owner Scum Master en het hele Development Team");
+                System.out.println("d) Product Owner Scrum Master en het hele Development Team");
+            } else if (huidigeVraag == 2) {
+                System.out.println("Wat wordt er tijdens de Sprint Planning vastgesteld?");
+                System.out.println("a) Welke teamleden vakantie hebben");
+                System.out.println("b) Wat het doel van de sprint is en welke backlog-items worden opgepakt");
+                System.out.println("c) Hoe de vorige sprint geëvalueerd");
+                System.out.println("d) Wat de vastgestelde items van de backlog zijn als de product owner tevreden is met het product.");
+            }
 
             String antwoord = scanner.nextLine().trim().toLowerCase();
 
-            // Als het commando 'status' is, geven we de status weer
-            if (antwoord.equals("status")) {
-                speler.status(); // Geef de status weer zonder monster
-                continue; // Herhaal de vraag zonder de fout
+            if (antwoord.equals("help")) {
+                toonHelp();
+                System.out.println();
+            } else if (antwoord.equals("status")) {
+                speler.status();
+                System.out.println();
+            } else if (antwoord.equals("naar andere kamer")) {
+                System.out.println("Je verlaat deze kamer.\n");
+                return;
+            } else if (antwoord.matches("[a-d]")) {
+                antwoordCorrect = verwerkAntwoord(antwoord, speler);
+                System.out.println();
+                if (antwoordCorrect) {
+                    huidigeVraag++;
+                }
+            } else {
+                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help' of 'naar andere kamer'.\n");
             }
-
-            // Als de speler kiest om naar een andere kamer te gaan
-            else if (antwoord.equals("naar andere kamer")) {
-                System.out.println("Je kiest ervoor om naar een andere kamer te gaan.");
-                break; // Breek de loop en stop het vragen
-            }
-
-            // Als de invoer geen a, b of c is, geef een foutmelding en herhaal de vraag
-            if (!antwoord.equals("a") && !antwoord.equals("b") && !antwoord.equals("c")) {
-                System.out.println("Ongeldige keuze! Kies a, b of c. Of typ 'status' om je status te zien, of 'naar andere kamer' om verder te gaan.");
-                continue; // Herhaal de vraag zonder de fout
-            }
-
-            // Verwerk antwoord als het een geldige keuze is
-            antwoordCorrect = verwerkAntwoord(antwoord);
         }
 
-        System.out.println("Je hebt het juiste antwoord gegeven!");
-        setVoltooid(); // Zet de kamer als voltooid
-        setInVraag(false); // De vraag is beantwoord
+        System.out.println("Je hebt beide vragen goed beantwoord!\n");
+        setVoltooid();
     }
 
-    @Override
-    public boolean verwerkAntwoord(String antwoord) {
-        if (antwoord.equals("b")) {
-            System.out.println("Correct! De sprintplanning zorgt ervoor dat het team begrijpt wat er gedaan moet worden.");
-            return true; // Correct antwoord
-        } else {
-            System.out.println("Fout! Monster 'Misverstand' verschijnt! Probeer het opnieuw.");
-            return false; // Fout antwoord
+    // Nu met Speler parameter en score update
+    public boolean verwerkAntwoord(String antwoord, Speler speler) {
+        boolean correct = false;
+        if (huidigeVraag == 1) {
+            if (antwoord.equals("d")) {
+                System.out.println("Correct! Het hele Scrum Team neemt deel aan de Sprint Planning.");
+                correct = true;
+            } else {
+                System.out.println("Fout! Monster 'Misverstand' verschijnt! Probeer het opnieuw.");
+            }
+        } else if (huidigeVraag == 2) {
+            if (antwoord.equals("b")) {
+                System.out.println("Correct! Tijdens de Sprint Planning worden het sprintdoel en de backlog-items vastgesteld.");
+                correct = true;
+            } else {
+                System.out.println("Fout! Monster 'Verwarring' verschijnt! Probeer het opnieuw.");
+            }
         }
-    }
-
-    @Override
-    public void stelVraag(Speler speler) {
-        // Deze methode roept de betreed-methode aan om de vraag te stellen
-        if (isInVraag()) {  // Alleen de vraag stellen als we in een vraag zitten
-            betreed(speler);
-        } else {
-            System.out.println("Je kunt de vraag pas beantwoorden als je in de kamer bent.");
-        }
+        updateScore(correct, speler);
+        return correct;
     }
 }

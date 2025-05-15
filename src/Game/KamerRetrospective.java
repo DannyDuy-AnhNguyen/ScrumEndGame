@@ -3,6 +3,7 @@ package Game;
 import java.util.Scanner;
 
 public class KamerRetrospective extends Kamer {
+    private int huidigeVraag = 0;
 
     public KamerRetrospective() {
         super("Sprint Retrospective");
@@ -10,64 +11,70 @@ public class KamerRetrospective extends Kamer {
 
     @Override
     public void betreed(Speler speler) {
-        boolean antwoordCorrect = false;
         Scanner scanner = new Scanner(System.in);
-        setInVraag(true); // De speler is nu in de vraag
 
-        while (!antwoordCorrect) {
+        while (huidigeVraag < 2) {
             System.out.println("Je betreedt de kamer: " + naam);
-            System.out.println("Wat is een goed onderwerp voor een retrospective?");
-            System.out.println("a) Hoe het weekend van iedereen was");
-            System.out.println("b) Wat goed ging, wat beter kan, en actiepunten");
-            System.out.println("c) Wie verantwoordelijk is voor fouten");
+
+            if (huidigeVraag == 0) {
+                System.out.println("1. Wat is het hoofddoel van de Sprint Retrospective?");
+                System.out.println("a) De resultaten van het product demonstreren aan de klant.");
+                System.out.println("b) De product backlog aanpassen.");
+                System.out.println("c) Terugkijken op het proces en verbeteren waar mogelijk is.");
+            } else if (huidigeVraag == 1) {
+                System.out.println("2. Wanneer vindt de Sprint Retrospective plaats?");
+                System.out.println("a) Aan het begin van de sprint");
+                System.out.println("b) Direct na de Sprint Review, aan het einde van de sprint");
+                System.out.println("c) Halverwege de Sprint");
+            }
 
             String antwoord = scanner.nextLine().trim().toLowerCase();
 
-            // Als het commando 'status' is, geven we de status weer
-            if (antwoord.equals("status")) {
-                speler.status(); // Geef de status weer zonder monster
-                continue; // Herhaal de vraag zonder de fout
+            if (antwoord.equals("help")) {
+                toonHelp();
+                System.out.println();
+            } else if (antwoord.equals("status")) {
+                speler.status();
+                System.out.println();
+            } else if (antwoord.equals("naar andere kamer")) {
+                System.out.println("Je verlaat deze kamer.\n");
+                return;
+            } else if (antwoord.matches("[a-c]")) {
+                boolean correct = verwerkAntwoord(antwoord, speler);
+                if (correct) {
+                    huidigeVraag++;
+                    System.out.println();
+                } else {
+                    System.out.println("Monster 'Blame Game' verschijnt! Probeer het opnieuw.\n");
+                }
+            } else {
+                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'status', 'help' of 'naar andere kamer'.\n");
             }
-
-            // Als de speler kiest om naar een andere kamer te gaan
-            else if (antwoord.equals("naar andere kamer")) {
-                System.out.println("Je kiest ervoor om naar een andere kamer te gaan.");
-                break; // Breek de loop en stop het vragen
-            }
-
-            // Als de invoer geen a, b of c is, geef een foutmelding en herhaal de vraag
-            if (!antwoord.equals("a") && !antwoord.equals("b") && !antwoord.equals("c")) {
-                System.out.println("Ongeldige keuze! Kies a, b of c. Of typ 'status' om je status te zien, of 'naar andere kamer' om verder te gaan.");
-                continue; // Herhaal de vraag zonder de fout
-            }
-
-            // Verwerk antwoord als het een geldige keuze is
-            antwoordCorrect = verwerkAntwoord(antwoord);
         }
 
-        System.out.println("Je hebt het juiste antwoord gegeven!");
-        setVoltooid(); // Zet de kamer als voltooid
-        setInVraag(false); // De vraag is beantwoord
+        System.out.println("Je hebt alle vragen juist beantwoord!\n");
+        setVoltooid();
     }
 
     @Override
-    public boolean verwerkAntwoord(String antwoord) {
-        if (antwoord.equals("b")) {
-            System.out.println("Goed! Reflectie en verbetering zijn de kern.");
-            return true; // Correct antwoord
-        } else {
-            System.out.println("Fout! Monster 'Blame Game' blokkeert de deur!");
-            return false; // Fout antwoord
+    public boolean verwerkAntwoord(String antwoord, Speler speler) {
+        boolean correct = false;
+        if (huidigeVraag == 0) {
+            correct = antwoord.equals("c");
+            if (correct) {
+                System.out.println("Correct! Terugkijken en verbeteren is het doel.");
+            } else {
+                System.out.println("Fout! Dit is niet het hoofddoel.");
+            }
+        } else if (huidigeVraag == 1) {
+            correct = antwoord.equals("b");
+            if (correct) {
+                System.out.println("Correct! De Retrospective vindt direct na de Review plaats.");
+            } else {
+                System.out.println("Fout! Dit is niet het juiste moment.");
+            }
         }
-    }
-
-    @Override
-    public void stelVraag(Speler speler) {
-        // Deze methode roept de betreed-methode aan om de vraag te stellen
-        if (isInVraag()) {  // Alleen de vraag stellen als we in een vraag zitten
-            betreed(speler);
-        } else {
-            System.out.println("Je kunt de vraag pas beantwoorden als je in de kamer bent.");
-        }
+        updateScore(correct, speler);
+        return correct;
     }
 }
