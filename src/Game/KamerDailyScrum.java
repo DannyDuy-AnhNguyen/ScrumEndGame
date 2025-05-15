@@ -14,16 +14,16 @@ public class KamerDailyScrum extends Kamer {
         Scanner scanner = new Scanner(System.in);
 
         while (huidigeVraag < 2) {
-            System.out.println("Je betreedt de kamer: " + naam);
+            typeText("\n🚪 Je betreedt de kamer: " + naam, 30);
 
             if (huidigeVraag == 0) {
-                System.out.println("1. Welke van de volgende rollen bestaat niet binnen Scrum?");
+                typeText("1. Welke van de volgende rollen bestaat niet binnen Scrum?", 30);
                 System.out.println("a) Projectleider");
                 System.out.println("b) Scrum Master");
                 System.out.println("c) Development Team");
                 System.out.println("d) Product Owner");
             } else if (huidigeVraag == 1) {
-                System.out.println("2. Hoelang duurt een standaard sprint meestal?");
+                typeText("2. Hoelang duurt een standaard sprint meestal?", 30);
                 System.out.println("a) 1 tot 4 weken");
                 System.out.println("b) 1 tot 4 maanden");
                 System.out.println("c) 1 tot 4 dagen");
@@ -34,26 +34,25 @@ public class KamerDailyScrum extends Kamer {
 
             if (antwoord.equals("help")) {
                 toonHelp();
-                System.out.println();
             } else if (antwoord.equals("status")) {
                 speler.status();
-                System.out.println();
             } else if (antwoord.equals("naar andere kamer")) {
-                System.out.println("Je verlaat deze kamer.\n");
+                System.out.println("⬅️ Je verlaat deze kamer.");
                 return;
             } else if (antwoord.matches("[a-d]")) {
-                if (verwerkAntwoord(antwoord)) {
+                boolean correct = verwerkAntwoord(antwoord);
+                if (correct) {
+                    deurActie(true, "");
                     huidigeVraag++;
-                    System.out.println();
                 } else {
-                    System.out.println("Fout antwoord! De deur blijft gesloten en Monster 'Verlies van Focus' verschijnt!\n");
+                    deurActie(false, "Verlies van Focus");
                 }
             } else {
-                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd' 'status', 'help' of 'naar andere kamer'.\n");
+                System.out.println("⚠️ Ongeldige invoer. Typ 'a' t/m 'd', 'status', 'help' of 'naar andere kamer'.");
             }
         }
 
-        System.out.println("Je hebt alle vragen juist beantwoord! De deur gaat open.\n");
+        typeText("🎉 Je hebt alle vragen juist beantwoord! De deur opent volledig.\n", 30);
         setVoltooid();
     }
 
@@ -63,8 +62,7 @@ public class KamerDailyScrum extends Kamer {
             return antwoord.equals("a");
         } else if (huidigeVraag == 1) {
             return antwoord.equals("a");
-        } else {
-            return false;
         }
+        return false;
     }
 }

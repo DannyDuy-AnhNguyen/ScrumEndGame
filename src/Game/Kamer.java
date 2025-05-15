@@ -24,7 +24,7 @@ public abstract class Kamer {
 
     public abstract boolean verwerkAntwoord(String antwoord);
 
-    // Toegevoegde help-methode
+    // Toon help-commando's
     public void toonHelp() {
         typeText("\n📜 Beschikbare commando's:", 30);
         typeText("- a / b / c / d     : Kies een antwoordoptie", 30);
@@ -33,17 +33,27 @@ public abstract class Kamer {
         typeText("- naar kamer [x] : Ga handmatig naar een andere kamer (als dit ondersteund is)\n", 30);
     }
 
-    // ✅ NIEUWE typ-effect methode
+    // Typ-effect
     public void typeText(String text, int delay) {
-        // Deze versie blokkeert gebruikersinvoer totdat de tekst volledig getypt is.
         for (char c : text.toCharArray()) {
             System.out.print(c);
             try {
-                Thread.sleep(delay); // Wacht een beetje tussen de letters
+                Thread.sleep(delay);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        System.out.println(); // Zorgt voor een nieuwe regel na het typen van de tekst
+        System.out.println();
+    }
+
+    // ✅ Deur- en monsterhandeling
+    public void deurActie(boolean juist, String monsterNaam) {
+        if (juist) {
+            typeText("✅ Het antwoord is correct. De deur opent langzaam... Je mag verder!", 30);
+            setVoltooid();
+        } else {
+            typeText("❌ Fout antwoord! De deur blijft gesloten.", 30);
+            typeText("👾 Monster verschijnt: " + monsterNaam + "!", 30);
+        }
     }
 }

@@ -54,7 +54,7 @@ public class KamerPlanning extends Kamer {
             }
         }
 
-        System.out.println("Je hebt beide vragen goed beantwoord!\n");
+        typeText("🎉 Je hebt beide vragen goed beantwoord! De deur opent volledig. \n", 30);
         setVoltooid();
     }
 

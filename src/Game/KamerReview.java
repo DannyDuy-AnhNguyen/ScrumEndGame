@@ -14,7 +14,7 @@ public class KamerReview extends Kamer {
         Scanner scanner = new Scanner(System.in);
 
         while (huidigeVraag < 3) {
-            System.out.println("Je bent nu in de kamer: " + naam);
+            typeText("\n🚪 Je bent nu in de kamer: " + naam, 30);
 
             if (huidigeVraag == 0) {
                 System.out.println("1. Wanneer wordt er een sprintreview gehouden?");
@@ -39,39 +39,53 @@ public class KamerReview extends Kamer {
 
             if (antwoord.equals("help")) {
                 toonHelp();
-                System.out.println();
             } else if (antwoord.equals("status")) {
                 speler.status();
-                System.out.println();
             } else if (antwoord.equals("naar andere kamer")) {
-                System.out.println("Je verlaat deze kamer.\n");
+                System.out.println("⬅️ Je verlaat deze kamer.");
                 return;
             } else if (antwoord.matches("[a-d]")) {
-                if (verwerkAntwoord(antwoord)) {
+                boolean juist = verwerkAntwoord(antwoord);
+                if (juist) {
                     huidigeVraag++;
-                    System.out.println();
-                } else {
-                    System.out.println("Monster 'Sprint Confusie' verschijnt! Probeer het opnieuw.\n");
                 }
             } else {
-                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help' of 'naar andere kamer'.\n");
+                System.out.println("⚠️ Ongeldige invoer. Typ 'a' t/m 'd', 'status', 'help' of 'naar andere kamer'.");
             }
         }
 
-        System.out.println("Je hebt alle vragen juist beantwoord!\n");
+        typeText("🎉 Je hebt alle vragen juist beantwoord! De deur opent volledig.\n", 30);
         setVoltooid();
     }
 
     @Override
     public boolean verwerkAntwoord(String antwoord) {
         if (huidigeVraag == 0) {
-            return antwoord.equals("c");
+            if (antwoord.equals("c")) {
+                deurActie(true, "");
+                return true;
+            } else {
+                deurActie(false, "Sprint Confusie");
+                return false;
+            }
         } else if (huidigeVraag == 1) {
-            return antwoord.equals("b");
+            if (antwoord.equals("b")) {
+                deurActie(true, "");
+                return true;
+            } else {
+                deurActie(false, "Sprint Confusie");
+                return false;
+            }
         } else if (huidigeVraag == 2) {
-            return antwoord.equals("b");
-        } else {
-            return false;
+            if (antwoord.equals("b")) {
+                deurActie(true, "");
+                return true;
+            } else {
+                deurActie(false, "Sprint Confusie");
+                return false;
+            }
         }
+        return false;
     }
 }
+
