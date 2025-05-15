@@ -3,10 +3,12 @@ package Game;
 import java.util.Scanner;
 
 public class KamerReview extends Kamer {
+    private Antwoord antwoordStrategie;
     private int huidigeVraag = 0;
 
-    public KamerReview() {
+    public KamerReview(Antwoord antwoordStrategie) {
         super("Sprint Review");
+        this.antwoordStrategie = antwoordStrategie;
     }
 
     @Override
@@ -23,7 +25,7 @@ public class KamerReview extends Kamer {
                 System.out.println("c) Aan het einde van de sprint");
             } else if (huidigeVraag == 1) {
                 System.out.println("2. Wat is het belangrijkste doel van de Sprint Review?");
-                System.out.println("a) De Scrum Master Evalueren");
+                System.out.println("a) De Scrum Master evalueren");
                 System.out.println("b) Het increment inspecteren en feedback verzamelen");
                 System.out.println("c) De volgende sprint alvast plannen");
                 System.out.println("d) Vorige sprint doornemen");
@@ -47,7 +49,7 @@ public class KamerReview extends Kamer {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
             } else if (antwoord.matches("[a-d]")) {
-                boolean correct = verwerkAntwoord(antwoord, speler);
+                boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
                 if (correct) {
                     huidigeVraag++;
                     System.out.println();
@@ -65,20 +67,15 @@ public class KamerReview extends Kamer {
 
     @Override
     public boolean verwerkAntwoord(String antwoord, Speler speler) {
-        boolean correct = false;
+        // Niet meer gebruikt hier, want strategie doet het
+        return false;
+    }
 
-        if (huidigeVraag == 0) {
-            correct = antwoord.equals("c");
-            System.out.println(correct ? "Correct! De Review is aan het einde van de sprint." : "Fout! De Review is aan het einde, niet aan het begin of midden.");
-        } else if (huidigeVraag == 1) {
-            correct = antwoord.equals("b");
-            System.out.println(correct ? "Correct! Feedback verzamelen en inspectie van het increment is het doel." : "Fout! Dat is niet het belangrijkste doel.");
-        } else if (huidigeVraag == 2) {
-            correct = antwoord.equals("b");
-            System.out.println(correct ? "Correct! Transparantie, feedback en afstemming zijn de voordelen." : "Fout! Dit zijn geen echte voordelen van een Sprint Review.");
-        }
-
-        updateScore(correct, speler);
-        return correct;
+    @Override
+    public void toonHelp() {
+        System.out.println("Typ het letterantwoord: a, b, c of d");
+        System.out.println("Gebruik 'status' om je huidige status te zien.");
+        System.out.println("Gebruik 'help' om deze hulp te zien.");
+        System.out.println("Gebruik 'naar andere kamer' om deze kamer te verlaten.");
     }
 }

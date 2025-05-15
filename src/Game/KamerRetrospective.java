@@ -3,10 +3,12 @@ package Game;
 import java.util.Scanner;
 
 public class KamerRetrospective extends Kamer {
+    private Antwoord antwoordStrategie;
     private int huidigeVraag = 0;
 
-    public KamerRetrospective() {
+    public KamerRetrospective(Antwoord antwoordStrategie) {
         super("Sprint Retrospective");
+        this.antwoordStrategie = antwoordStrategie;
     }
 
     @Override
@@ -16,16 +18,19 @@ public class KamerRetrospective extends Kamer {
         while (huidigeVraag < 2) {
             System.out.println("Je betreedt de kamer: " + naam);
 
-            if (huidigeVraag == 0) {
-                System.out.println("1. Wat is het hoofddoel van de Sprint Retrospective?");
-                System.out.println("a) De resultaten van het product demonstreren aan de klant.");
-                System.out.println("b) De product backlog aanpassen.");
-                System.out.println("c) Terugkijken op het proces en verbeteren waar mogelijk is.");
-            } else if (huidigeVraag == 1) {
-                System.out.println("2. Wanneer vindt de Sprint Retrospective plaats?");
-                System.out.println("a) Aan het begin van de sprint");
-                System.out.println("b) Direct na de Sprint Review, aan het einde van de sprint");
-                System.out.println("c) Halverwege de Sprint");
+            switch (huidigeVraag) {
+                case 0:
+                    System.out.println("1. Wat is het hoofddoel van de Sprint Retrospective?");
+                    System.out.println("a) De resultaten van het product demonstreren aan de klant.");
+                    System.out.println("b) De product backlog aanpassen.");
+                    System.out.println("c) Terugkijken op het proces en verbeteren waar mogelijk is.");
+                    break;
+                case 1:
+                    System.out.println("2. Wanneer vindt de Sprint Retrospective plaats?");
+                    System.out.println("a) Aan het begin van de sprint");
+                    System.out.println("b) Direct na de Sprint Review, aan het einde van de sprint");
+                    System.out.println("c) Halverwege de Sprint");
+                    break;
             }
 
             String antwoord = scanner.nextLine().trim().toLowerCase();
@@ -40,11 +45,13 @@ public class KamerRetrospective extends Kamer {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
             } else if (antwoord.matches("[a-c]")) {
-                boolean correct = verwerkAntwoord(antwoord, speler);
+                boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
                 if (correct) {
+                    updateScore(true, speler);
                     huidigeVraag++;
                     System.out.println();
                 } else {
+                    updateScore(false, speler);
                     System.out.println("Monster 'Blame Game' verschijnt! Probeer het opnieuw.\n");
                 }
             } else {
@@ -58,23 +65,14 @@ public class KamerRetrospective extends Kamer {
 
     @Override
     public boolean verwerkAntwoord(String antwoord, Speler speler) {
-        boolean correct = false;
-        if (huidigeVraag == 0) {
-            correct = antwoord.equals("c");
-            if (correct) {
-                System.out.println("Correct! Terugkijken en verbeteren is het doel.");
-            } else {
-                System.out.println("Fout! Dit is niet het hoofddoel.");
-            }
-        } else if (huidigeVraag == 1) {
-            correct = antwoord.equals("b");
-            if (correct) {
-                System.out.println("Correct! De Retrospective vindt direct na de Review plaats.");
-            } else {
-                System.out.println("Fout! Dit is niet het juiste moment.");
-            }
-        }
-        updateScore(correct, speler);
-        return correct;
+        return false;
+    }
+
+    @Override
+    public void toonHelp() {
+        System.out.println("Typ 'a', 'b' of 'c' om een antwoord te kiezen.");
+        System.out.println("Typ 'status' om je huidige status te zien.");
+        System.out.println("Typ 'naar andere kamer' om deze kamer te verlaten.");
+        System.out.println("Typ 'help' om deze hulp te tonen.");
     }
 }

@@ -1,15 +1,34 @@
 package Game;
 
-//de strategy klasse voor KamerFinalTia
-public class AntwoordFinalTIA implements Antwoord{
+// De strategy klasse voor KamerFinalTia
+public class AntwoordFinalTIA implements Antwoord {
+
     @Override
     public boolean verwerkAntwoord(String antwoord, int vraagIndex) {
         if (vraagIndex == 0) {
-            return antwoord.equals("a");
+            if (antwoord.equals("a")) {
+                System.out.println("Correct! Antwoord bij vraag 1 is juist.");
+                return true;
+            } else {
+                System.out.println("Fout! Probeer het opnieuw.");
+                return false;
+            }
         } else if (vraagIndex == 1) {
-            return antwoord.equals("a");
+            if (antwoord.equals("a")) {
+                System.out.println("Correct! Antwoord bij vraag 2 is juist.");
+                return true;
+            } else {
+                System.out.println("Fout! Probeer het opnieuw.");
+                return false;
+            }
         } else if (vraagIndex == 2) {
-            return antwoord.matches("[a-d]");
+            if (antwoord.matches("[a-d]")) {
+                System.out.println("Correct! Antwoord bij vraag 3 is geaccepteerd.");
+                return true;
+            } else {
+                System.out.println("Fout! Probeer het opnieuw.");
+                return false;
+            }
         }
         return false;
     }

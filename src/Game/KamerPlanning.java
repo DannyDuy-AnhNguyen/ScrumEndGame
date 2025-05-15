@@ -3,28 +3,28 @@ package Game;
 import java.util.Scanner;
 
 public class KamerPlanning extends Kamer {
+    private Antwoord antwoordStrategie;
+    private int huidigeVraag = 0;
 
-    private int huidigeVraag = 1; // Vraag 1 of 2
-
-    public KamerPlanning() {
+    public KamerPlanning(Antwoord antwoordStrategie) {
         super("Sprint Planning");
+        this.antwoordStrategie = antwoordStrategie;
     }
 
     @Override
     public void betreed(Speler speler) {
         Scanner scanner = new Scanner(System.in);
-        boolean antwoordCorrect = false;
 
-        while (huidigeVraag <= 2) {
+        while (huidigeVraag < 2) {
             System.out.println("Je bent nu in de kamer: " + naam);
 
-            if (huidigeVraag == 1) {
+            if (huidigeVraag == 0) {
                 System.out.println("Wie neemt deel aan de Sprint Planning?");
                 System.out.println("a) Alleen de Scrum Master");
                 System.out.println("b) Product Owner en Scrum Master");
-                System.out.println("c) Product Owner Scum Master en het hele Development Team");
+                System.out.println("c) Product Owner Scrum Master en het hele Development Team");
                 System.out.println("d) Product Owner Scrum Master en het hele Development Team");
-            } else if (huidigeVraag == 2) {
+            } else if (huidigeVraag == 1) {
                 System.out.println("Wat wordt er tijdens de Sprint Planning vastgesteld?");
                 System.out.println("a) Welke teamleden vakantie hebben");
                 System.out.println("b) Wat het doel van de sprint is en welke backlog-items worden opgepakt");
@@ -44,7 +44,7 @@ public class KamerPlanning extends Kamer {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
             } else if (antwoord.matches("[a-d]")) {
-                antwoordCorrect = verwerkAntwoord(antwoord, speler);
+                boolean antwoordCorrect = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
                 System.out.println();
                 if (antwoordCorrect) {
                     huidigeVraag++;
@@ -58,25 +58,16 @@ public class KamerPlanning extends Kamer {
         setVoltooid();
     }
 
-    // Nu met Speler parameter en score update
+    @Override
     public boolean verwerkAntwoord(String antwoord, Speler speler) {
-        boolean correct = false;
-        if (huidigeVraag == 1) {
-            if (antwoord.equals("d")) {
-                System.out.println("Correct! Het hele Scrum Team neemt deel aan de Sprint Planning.");
-                correct = true;
-            } else {
-                System.out.println("Fout! Monster 'Misverstand' verschijnt! Probeer het opnieuw.");
-            }
-        } else if (huidigeVraag == 2) {
-            if (antwoord.equals("b")) {
-                System.out.println("Correct! Tijdens de Sprint Planning worden het sprintdoel en de backlog-items vastgesteld.");
-                correct = true;
-            } else {
-                System.out.println("Fout! Monster 'Verwarring' verschijnt! Probeer het opnieuw.");
-            }
-        }
-        updateScore(correct, speler);
-        return correct;
+        return false;
+    }
+
+    @Override
+    public void toonHelp() {
+        System.out.println("Typ het letterantwoord: a, b, c of d");
+        System.out.println("Gebruik 'status' om je huidige status te zien.");
+        System.out.println("Gebruik 'help' om deze hulp te zien.");
+        System.out.println("Gebruik 'naar andere kamer' om deze kamer te verlaten.");
     }
 }

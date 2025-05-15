@@ -3,10 +3,13 @@ package Game;
 import java.util.Scanner;
 
 public class KamerDailyScrum extends Kamer {
+    private Antwoord antwoordStrategie;
     private int huidigeVraag = 0;
 
-    public KamerDailyScrum() {
-        super("Daily Scrum");
+    // Constructor ontvangt het Antwoord object, zoals KamerPlanning
+    public KamerDailyScrum(Antwoord antwoordStrategie) {
+        super("Daily Scrum");  // alleen naam doorgeven aan Kamer superclass
+        this.antwoordStrategie = antwoordStrategie;
     }
 
     @Override
@@ -42,15 +45,15 @@ public class KamerDailyScrum extends Kamer {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
             } else if (antwoord.matches("[a-d]")) {
-                // Let op: hier nu verwerkAntwoord met speler meegeven
-                if (verwerkAntwoord(antwoord, speler)) {
+                boolean antwoordCorrect = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
+                System.out.println();
+                if (antwoordCorrect) {
                     huidigeVraag++;
-                    System.out.println();
                 } else {
                     System.out.println("Fout antwoord! De deur blijft gesloten en Monster 'Verlies van Focus' verschijnt!\n");
                 }
             } else {
-                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd' 'status', 'help' of 'naar andere kamer'.\n");
+                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help' of 'naar andere kamer'.\n");
             }
         }
 
@@ -60,11 +63,17 @@ public class KamerDailyScrum extends Kamer {
 
     @Override
     public boolean verwerkAntwoord(String antwoord, Speler speler) {
-        boolean isCorrect = antwoord.equalsIgnoreCase("a"); // voorbeeldcheck
+        boolean isCorrect = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
         updateScore(isCorrect, speler);
-        if (isCorrect) {
-            setVoltooid();
-        }
+        if (isCorrect) setVoltooid();
         return isCorrect;
+    }
+
+    @Override
+    public void toonHelp() {
+        System.out.println("Typ het letterantwoord: a, b, c of d");
+        System.out.println("Gebruik 'status' om je huidige status te zien.");
+        System.out.println("Gebruik 'help' om deze hulp te zien.");
+        System.out.println("Gebruik 'naar andere kamer' om deze kamer te verlaten.");
     }
 }
