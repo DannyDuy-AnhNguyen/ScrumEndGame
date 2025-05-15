@@ -6,6 +6,24 @@ public class KamerRetrospective extends Kamer {
     private Antwoord antwoordStrategie;
     private int huidigeVraag = 0;
 
+    private final String[] vragen = {
+            "Wat is het hoofddoel van de Sprint Retrospective?",
+            "Wanneer vindt de Sprint Retrospective plaats?"
+    };
+
+    private final String[][] opties = {
+            {
+                    "a) De resultaten van het product demonstreren aan de klant.",
+                    "b) De product backlog aanpassen.",
+                    "c) Terugkijken op het proces en verbeteren waar mogelijk is."
+            },
+            {
+                    "a) Aan het begin van de sprint",
+                    "b) Direct na de Sprint Review, aan het einde van de sprint",
+                    "c) Halverwege de Sprint"
+            }
+    };
+
     public KamerRetrospective(Antwoord antwoordStrategie) {
         super("Sprint Retrospective");
         this.antwoordStrategie = antwoordStrategie;
@@ -15,22 +33,12 @@ public class KamerRetrospective extends Kamer {
     public void betreed(Speler speler) {
         Scanner scanner = new Scanner(System.in);
 
-        while (huidigeVraag < 2) {
+        while (huidigeVraag < vragen.length) {
             System.out.println("Je betreedt de kamer: " + naam);
+            System.out.println((huidigeVraag + 1) + ". " + vragen[huidigeVraag]);
 
-            switch (huidigeVraag) {
-                case 0:
-                    System.out.println("1. Wat is het hoofddoel van de Sprint Retrospective?");
-                    System.out.println("a) De resultaten van het product demonstreren aan de klant.");
-                    System.out.println("b) De product backlog aanpassen.");
-                    System.out.println("c) Terugkijken op het proces en verbeteren waar mogelijk is.");
-                    break;
-                case 1:
-                    System.out.println("2. Wanneer vindt de Sprint Retrospective plaats?");
-                    System.out.println("a) Aan het begin van de sprint");
-                    System.out.println("b) Direct na de Sprint Review, aan het einde van de sprint");
-                    System.out.println("c) Halverwege de Sprint");
-                    break;
+            for (String optie : opties[huidigeVraag]) {
+                System.out.println(optie);
             }
 
             String antwoord = scanner.nextLine().trim().toLowerCase();
@@ -46,12 +54,11 @@ public class KamerRetrospective extends Kamer {
                 return;
             } else if (antwoord.matches("[a-c]")) {
                 boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
+                updateScore(correct, speler);
                 if (correct) {
-                    updateScore(true, speler);
                     huidigeVraag++;
-                    System.out.println();
+                    System.out.println("Correct!\n");
                 } else {
-                    updateScore(false, speler);
                     System.out.println("Monster 'Blame Game' verschijnt! Probeer het opnieuw.\n");
                 }
             } else {
@@ -65,7 +72,7 @@ public class KamerRetrospective extends Kamer {
 
     @Override
     public boolean verwerkAntwoord(String antwoord, Speler speler) {
-        return false;
+        return false; // niet gebruikt in deze kamer
     }
 
     @Override

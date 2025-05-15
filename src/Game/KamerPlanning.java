@@ -45,9 +45,14 @@ public class KamerPlanning extends Kamer {
                 return;
             } else if (antwoord.matches("[a-d]")) {
                 boolean antwoordCorrect = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
-                System.out.println();
+
                 if (antwoordCorrect) {
+                    speler.verhoogScore(10);  // Score verhogen bij goed antwoord
                     huidigeVraag++;
+                    System.out.println("Correct! Je krijgt 10 punten.\n");
+                } else {
+                    speler.voegMonsterToe("Misverstand"); // Voorbeeld monster bij fout antwoord
+                    System.out.println("Fout! Monster 'Misverstand' verschijnt! Probeer het opnieuw.\n");
                 }
             } else {
                 System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help' of 'naar andere kamer'.\n");
@@ -56,6 +61,9 @@ public class KamerPlanning extends Kamer {
 
         System.out.println("Je hebt beide vragen goed beantwoord!\n");
         setVoltooid();
+
+        // Kamer als voltooid registreren (kamerIndex hier hardcoded 1, pas aan naar jouw situatie)
+        speler.voegVoltooideKamerToe(1);
     }
 
     @Override

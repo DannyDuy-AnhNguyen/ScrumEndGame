@@ -18,19 +18,16 @@ public class KamerScrumBoard extends Kamer {
         while (huidigeVraag < 2) {
             System.out.println("Je betreedt de kamer: " + naam);
 
-            switch (huidigeVraag) {
-                case 0 -> {
-                    System.out.println("1. Wat is de volgorde om een Scrum-proces te maken?");
-                    System.out.println("a) Epics > Userstories > Taken");
-                    System.out.println("b) Epics > Taken > Userstories");
-                    System.out.println("c) Userstories > Epics > Taken");
-                }
-                case 1 -> {
-                    System.out.println("2. Welke borden gebruik je in het Scrumboard?");
-                    System.out.println("a) Product Backlog > Sprint Backlog > Doing > Testing > Done");
-                    System.out.println("b) Product Backlog > Sprint Backlog > To Do > Doing > Testing > Done");
-                    System.out.println("c) Sprint Backlog > To Do > Doing > Testing > Done");
-                }
+            if (huidigeVraag == 0) {
+                System.out.println("1. Wat is de volgorde om een Scrum-proces te maken?");
+                System.out.println("a) Epics > Userstories > Taken");
+                System.out.println("b) Epics > Taken > Userstories");
+                System.out.println("c) Userstories > Epics > Taken");
+            } else if (huidigeVraag == 1) {
+                System.out.println("2. Welke borden gebruik je in het Scrumboard?");
+                System.out.println("a) Product Backlog > Sprint Backlog > Doing > Testing > Done");
+                System.out.println("b) Product Backlog > Sprint Backlog > To Do > Doing > Testing > Done");
+                System.out.println("c) Sprint Backlog > To Do > Doing > Testing > Done");
             }
 
             String antwoord = scanner.nextLine().trim().toLowerCase();
@@ -46,10 +43,14 @@ public class KamerScrumBoard extends Kamer {
                 return;
             } else if (antwoord.matches("[a-c]")) {
                 boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
-                System.out.println(correct ? "Correct!" : "Fout, probeer opnieuw.");
                 if (correct) {
+                    System.out.println("Correct!");
+                    updateScore(true, speler);
                     huidigeVraag++;
                     System.out.println();
+                } else {
+                    System.out.println("Fout, probeer opnieuw.");
+                    updateScore(false, speler);
                 }
             } else {
                 System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'status', 'help' of 'naar andere kamer'.\n");

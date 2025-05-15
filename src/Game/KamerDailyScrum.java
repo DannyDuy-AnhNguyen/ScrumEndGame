@@ -6,9 +6,8 @@ public class KamerDailyScrum extends Kamer {
     private Antwoord antwoordStrategie;
     private int huidigeVraag = 0;
 
-    // Constructor ontvangt het Antwoord object, zoals KamerPlanning
     public KamerDailyScrum(Antwoord antwoordStrategie) {
-        super("Daily Scrum");  // alleen naam doorgeven aan Kamer superclass
+        super("Daily Scrum");
         this.antwoordStrategie = antwoordStrategie;
     }
 
@@ -46,10 +45,13 @@ public class KamerDailyScrum extends Kamer {
                 return;
             } else if (antwoord.matches("[a-d]")) {
                 boolean antwoordCorrect = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
-                System.out.println();
+
                 if (antwoordCorrect) {
+                    speler.verhoogScore(10);
                     huidigeVraag++;
+                    System.out.println("Correct! Je krijgt 10 punten.\n");
                 } else {
+                    speler.voegMonsterToe("Verlies van Focus");
                     System.out.println("Fout antwoord! De deur blijft gesloten en Monster 'Verlies van Focus' verschijnt!\n");
                 }
             } else {
@@ -59,14 +61,15 @@ public class KamerDailyScrum extends Kamer {
 
         System.out.println("Je hebt alle vragen juist beantwoord! De deur gaat open.\n");
         setVoltooid();
+
+        // Registreer dat deze kamer voltooid is (bijv. met index 2, pas aan naar jouw situatie)
+        speler.voegVoltooideKamerToe(2);
     }
 
     @Override
     public boolean verwerkAntwoord(String antwoord, Speler speler) {
-        boolean isCorrect = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
-        updateScore(isCorrect, speler);
-        if (isCorrect) setVoltooid();
-        return isCorrect;
+        // Dit gebruik je blijkbaar niet in deze kamer, want antwoorden worden direct in 'betreed' afgehandeld
+        return false;
     }
 
     @Override

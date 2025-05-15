@@ -6,7 +6,6 @@ public class KamerFinaleTIA extends Kamer {
     private Antwoord antwoordStrategie;
     private int huidigeVraag = 0;
 
-    // Constructor met Antwoord parameter
     public KamerFinaleTIA(Antwoord antwoordStrategie) {
         super("Finale TIA Kamer – Waarom Scrum?");
         this.antwoordStrategie = antwoordStrategie;
@@ -42,6 +41,7 @@ public class KamerFinaleTIA extends Kamer {
                     break;
                 case 3:
                     System.out.println("4. Bij welke sprint hoort deze userstory?");
+                    System.out.println("(Typ je antwoord, bijvoorbeeld 'Sprint 0')");
                     break;
             }
 
@@ -63,7 +63,7 @@ public class KamerFinaleTIA extends Kamer {
                 boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
                 if (correct) {
                     huidigeVraag++;
-                    System.out.println();
+                    System.out.println("Correct!\n");
                 } else {
                     System.out.println("Fout antwoord! De deur blijft gesloten en Monster 'Scrum Misverstanden' verschijnt!\n");
                 }
@@ -76,15 +76,18 @@ public class KamerFinaleTIA extends Kamer {
         setVoltooid();
     }
 
-    // verwerkAntwoord bestaat nu alleen nog om updateScore te doen via strategie
-    // maar kan eventueel ook weg, als dat al in AntwoordFinaleTIA zit
     @Override
     public boolean verwerkAntwoord(String antwoord, Speler speler) {
+        // Update de score via de strategie, mocht dat nodig zijn
         boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
         updateScore(correct, speler);
         return correct;
     }
 
+    /**
+     * Controleert of het antwoord op de open vraag klopt.
+     * Toegestane antwoorden zijn o.a.: "0", "sprint 0", "nul", "sprintnul", "sprint0"
+     */
     public boolean verwerkAntwoordOpenVraag(String antwoord) {
         return antwoord.matches("^(0|sprint 0|nul|sprintnul|sprint0)$");
     }
