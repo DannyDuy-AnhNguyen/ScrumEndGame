@@ -1,5 +1,5 @@
 package Game;
-
+//hallo
 // De strategy klasse voor KamerDailyScrum
 public class AntwoordDailyScrum implements Antwoord {
 
