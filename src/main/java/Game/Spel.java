@@ -9,20 +9,21 @@ public class Spel {
     private List<Kamer> kamers;
     private Scanner scanner;
     private Scorebord scoreboard;
+    private KamerFactory kamerFactory;
 
     public Spel() {
         this.scanner = new Scanner(System.in);
         this.speler = new Speler();
         this.kamers = new ArrayList<>();
         this.scoreboard = new Scorebord(speler);
+        this.kamerFactory = new KamerFactory();
 
-        // Voeg kamers toe
-        // Bij de toegevoegde kamers zijn ook de bijbehorende antwoord (Strategy Klasse) bij toegevoegd.
-        kamers.add(new KamerPlanning(new AntwoordPlanning()));
-        kamers.add(new KamerReview(new AntwoordReview()));
-        kamers.add(new KamerScrumBoard(new AntwoordScrumBoard()));
-        kamers.add(new KamerRetrospective(new AntwoordRetrospective()));
-        kamers.add(new KamerDailyScrum(new AntwoordDailyScrum()));
+        // Voeg kamers toe in de klasse "KamersFactory"
+        //In deze lijst wordt de lijst met bestaande kamer keys opgeslagen en in de for each loop wordt de kamers toegevoegd in de array list.
+        List<String> kamerKeys = kamerFactory.getKamerKeys();
+        for (String key : kamerKeys) {
+            kamers.add(kamerFactory.getKamer(key));
+        }
     }
 
     public void start() {
@@ -33,7 +34,7 @@ public class Spel {
         System.out.println("Welkom, " + speler.getNaam() + "! Deze commando's kan je op elk moment gebruiken:");
         System.out.println("'status', 'help', 'ga naar kamer X' of 'stop'.");
         System.out.println("Kies a, b, c of d als je een vraag krijgt.");
-        System.out.println();  // Extra enter voor overzichtelijkheid
+        System.out.println();
 
         boolean gameInProgress = true;
         while (gameInProgress) {
@@ -45,23 +46,31 @@ public class Spel {
                 System.out.println("Tot ziens!");
                 gameInProgress = false;
             } else if (input.equals("status")) {
-                // Vervang speler.status() door scoreboard update
                 scoreboard.update();
-                System.out.println(); // Extra enter voor overzichtelijkheid
+                System.out.println();
             } else if (input.equals("help")) {
                 toonHelp();
-                System.out.println(); // Extra enter na help
+                System.out.println();
             } else if (input.startsWith("ga naar kamer")) {
                 try {
-                    int nummer = Integer.parseInt(input.split(" ")[3]) - 1;
-                    if (nummer >= 0 && nummer < kamers.size()) {
-                        Kamer gekozenKamer = kamers.get(nummer);
+                    String argument = input.substring("ga naar kamer".length()).trim();
+                    Kamer gekozenKamer = null;
+
+                    // Probeer nummer
+                    try {
+                        int nummer = Integer.parseInt(argument) - 1;
+                        if (nummer >= 0 && nummer < kamers.size()) {
+                            gekozenKamer = kamers.get(nummer);
+                        }
+                    } catch (NumberFormatException e) {
+                        // Probeer naam via factory
+                        gekozenKamer = kamerFactory.getKamer(argument.replaceAll("\\s+", "").toLowerCase());
+                    }
+
+                    if (gekozenKamer != null) {
                         if (!gekozenKamer.isVoltooid()) {
                             gekozenKamer.betreed(speler);
-                            // Na kamer bezoek update scoreboard
                             scoreboard.update();
-
-                            // Als de kamer is voltooid, markeer deze als voltooid.
                             if (gekozenKamer.isVoltooid()) {
                                 System.out.println("Deze kamer is voltooid!");
                             }
@@ -69,31 +78,29 @@ public class Spel {
                             System.out.println("Deze kamer is al voltooid.");
                         }
 
-                        // Check of alle kamers voltooid zijn
                         if (alleKamersVoltooid()) {
                             System.out.println("Alle kamers voltooid! Je gaat nu naar de Finale TIA kamer.");
-                            Kamer finaleKamer = new KamerFinaleTIA(new AntwoordFinalTIA());
+                            Kamer finaleKamer = kamerFactory.getKamer("Finale TIA Kamer – Waarom Scrum?");
                             finaleKamer.betreed(speler);
-                            // Laat scoreboard ook de finale status zien
                             scoreboard.update();
-
-                            gameInProgress = false;  // Einde van het spel
+                            gameInProgress = false;
                         }
                     } else {
-                        System.out.println("Ongeldig kamernummer.");
-                        System.out.println();  // Extra enter na foutmelding
+                        System.out.println("Onbekende kamer: " + argument);
+                        System.out.println();
                     }
                 } catch (Exception e) {
                     System.out.println("Gebruik: ga naar kamer X");
-                    System.out.println();  // Extra enter na foutmelding
+                    System.out.println();
                 }
             } else {
                 System.out.println("Onbekend commando. Kies 'status', 'help', 'ga naar kamer X' of 'stop'.");
-                System.out.println();  // Extra enter na onbekend commando
+                System.out.println();
             }
         }
     }
 
+//    Toont hoeveel kamers je nog moet voltooien exclusief je de finale kamer.
     private void toonKamerOpties() {
         System.out.println("Beschikbare kamers:");
         for (int i = 0; i < kamers.size(); i++) {
@@ -117,7 +124,8 @@ public class Spel {
         System.out.println("Gebruik de volgende commando's:");
         System.out.println("'status' - Bekijk je huidige status.");
         System.out.println("'help' - Toon deze hulptekst.");
-        System.out.println("'ga naar kamer X' - Ga naar de kamer die je wilt betreden (X = kamer nummer).");
+        System.out.println("'ga naar kamer X' - Ga naar een kamer via nummer of naam. Voorbeeld:");
+        System.out.println("  'ga naar kamer 1' of 'ga naar kamer Scrum Board'");
         System.out.println("'stop' - Stop het spel.");
     }
 }

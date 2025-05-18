@@ -22,7 +22,7 @@ public class KamerPlanning extends Kamer {
                 System.out.println("Wie neemt deel aan de Sprint Planning?");
                 System.out.println("a) Alleen de Scrum Master");
                 System.out.println("b) Product Owner en Scrum Master");
-                System.out.println("c) Product Owner Scrum Master en het hele Development Team");
+                System.out.println("c) Product Owner Scum Master en het hele Development Team");
                 System.out.println("d) Product Owner Scrum Master en het hele Development Team");
             } else if (huidigeVraag == 1) {
                 System.out.println("Wat wordt er tijdens de Sprint Planning vastgesteld?");
