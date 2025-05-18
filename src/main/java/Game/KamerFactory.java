@@ -29,7 +29,7 @@ public class KamerFactory {
         return kamers.get(normaliseer(key));
     }
 
-//    De lijst van bestaande
+//    De lijst van bestaande kamers.
     public List<String> getKamerKeys(){
         return List.of("Sprint Planning", "Sprint Review", "Scrum Board", "Sprint Retrospective", "Daily Scrum");
     }

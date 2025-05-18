@@ -63,9 +63,16 @@ public class Spel {
                             gekozenKamer = kamers.get(nummer);
                         }
                     } catch (NumberFormatException e) {
-                        // Probeer naam via factory
-                        gekozenKamer = kamerFactory.getKamer(argument.replaceAll("\\s+", "").toLowerCase());
+                        // Blokkeer directe toegang tot de finale kamer
+                        String normaleNaam = argument.replaceAll("\\s+", "").toLowerCase();
+                        if (normaleNaam.equals("finaletiakamer–waaromscrum?")) {
+                            System.out.println("Je dacht dat je slim was he😏? Dacht het niet!!!");
+                            continue;
+                        } else {
+                            gekozenKamer = kamerFactory.getKamer(normaleNaam);
+                        }
                     }
+
 
                     if (gekozenKamer != null) {
                         if (!gekozenKamer.isVoltooid()) {
