@@ -5,11 +5,12 @@ import java.util.Scanner;
 public class KamerFinaleTIA extends Kamer {
     private Antwoord antwoordStrategie;
     private int huidigeVraag = 0;
+    private Deur deur;
 
-    // Constructor met Antwoord parameter
-    public KamerFinaleTIA(Antwoord antwoordStrategie) {
+    public KamerFinaleTIA(Antwoord antwoordStrategie, Deur deur) {
         super("Finale TIA Kamer – Waarom Scrum?");
         this.antwoordStrategie = antwoordStrategie;
+        this.deur = deur;
     }
 
     @Override
@@ -20,64 +21,77 @@ public class KamerFinaleTIA extends Kamer {
             System.out.println("Welkom in de laatste kamer: " + naam);
 
             switch (huidigeVraag) {
-                case 0:
-                    System.out.println("1. Wat vind je van Scrum?");
-                    System.out.println("a) Uitstekend");
-                    System.out.println("b) Neutraal");
-                    System.out.println("c) Slecht");
-                    break;
-                case 1:
+                case 0 -> {
+                    System.out.println("1. Wat is het ultieme doel van Scrum?");
+                    System.out.println("a) Strikte processen volgen");
+                    System.out.println("b) Zo snel mogelijk software opleveren");
+                    System.out.println("c) Transparantie, Inspectie en Aanpassing (TIA)");
+                    System.out.println("d) Alleen werken in sprints");
+                }
+                case 1 -> {
                     System.out.println("2. Uit welk jaar is Scrum ontstaan?");
                     System.out.println("a) 1993");
                     System.out.println("b) 1995");
                     System.out.println("c) 2001");
                     System.out.println("d) 2010");
-                    break;
-                case 2:
-                    System.out.println("3. Is Scrum gay?");
-                    System.out.println("a) Ja");
-                    System.out.println("b) Ja");
-                    System.out.println("c) Ja");
-                    System.out.println("d) Ja");
-                    break;
-                case 3:
-                    System.out.println("4. Bij welke sprint hoort deze userstory?");
-                    break;
+                }
+                case 2 -> {
+                    System.out.println("3. Welke Scrum waarde bevordert open communicatie?");
+                    System.out.println("a) Lef");
+                    System.out.println("b) Focus");
+                    System.out.println("c) Transparantie");
+                    System.out.println("d) Verantwoordelijkheid");
+                }
+                case 3 -> {
+                    System.out.println("4. Bij welke sprint hoort deze user story?");
+                    System.out.println("(Typ het sprintnummer of 'sprint 0')");
+                }
             }
 
             String antwoord = scanner.nextLine().trim().toLowerCase();
 
             if (antwoord.equals("help")) {
                 toonHelp();
-                System.out.println();
             } else if (antwoord.equals("status")) {
                 speler.status();
-                System.out.println();
             } else if (antwoord.equals("naar andere kamer")) {
                 System.out.println("Je verlaat deze kamer.");
                 return;
-            } else if (huidigeVraag == 3 && verwerkAntwoordOpenVraag(antwoord)) {
-                huidigeVraag++;
-                System.out.println("Je hebt de open vraag goed beantwoord!\n");
+            } else if (huidigeVraag == 3) {
+                boolean juist = verwerkAntwoordOpenVraag(antwoord);
+                updateScore(juist, speler);
+                if (juist) {
+                    huidigeVraag++;
+                    System.out.println("Correct! De open vraag is goed beantwoord.\n");
+                } else {
+                    speler.voegMonsterToe("Sprint Verwarring");
+                    deur.setOpen(false);
+                    deur.toonStatus();
+                    System.out.println("Fout! Monster 'Sprint Verwarring' verschijnt.\n");
+                }
             } else if (antwoord.matches("[a-d]")) {
                 boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
+                updateScore(correct, speler);
                 if (correct) {
                     huidigeVraag++;
                     System.out.println();
                 } else {
-                    System.out.println("Fout antwoord! De deur blijft gesloten en Monster 'Scrum Misverstanden' verschijnt!\n");
+                    speler.voegMonsterToe("Scrum Misverstanden");
+                    deur.setOpen(false);
+                    deur.toonStatus();
+                    System.out.println("Fout! Monster 'Scrum Misverstanden' verschijnt!\n");
                 }
             } else {
                 System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help' of 'naar andere kamer'.\n");
             }
         }
 
-        System.out.println("Gefeliciteerd! Je hebt alle vragen goed beantwoord en de laatste kamer voltooid.");
+        System.out.println("🎉 Gefeliciteerd! Je hebt alle vragen goed beantwoord en de laatste kamer voltooid.");
+        deur.setOpen(true);
+        deur.toonStatus();
         setVoltooid();
     }
 
-    // verwerkAntwoord bestaat nu alleen nog om updateScore te doen via strategie
-    // maar kan eventueel ook weg, als dat al in AntwoordFinaleTIA zit
     @Override
     public boolean verwerkAntwoord(String antwoord, Speler speler) {
         boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);

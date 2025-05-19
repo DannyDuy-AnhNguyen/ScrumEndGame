@@ -5,10 +5,12 @@ import java.util.Scanner;
 public class KamerPlanning extends Kamer {
     private Antwoord antwoordStrategie;
     private int huidigeVraag = 0;
+    private Deur deur;
 
-    public KamerPlanning(Antwoord antwoordStrategie) {
+    public KamerPlanning(Antwoord antwoordStrategie, Deur deur) {
         super("Sprint Planning");
         this.antwoordStrategie = antwoordStrategie;
+        this.deur = deur;
     }
 
     @Override
@@ -36,31 +38,41 @@ public class KamerPlanning extends Kamer {
 
             if (antwoord.equals("help")) {
                 toonHelp();
-                System.out.println();
             } else if (antwoord.equals("status")) {
                 speler.status();
-                System.out.println();
             } else if (antwoord.equals("naar andere kamer")) {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
             } else if (antwoord.matches("[a-d]")) {
-                boolean antwoordCorrect = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
-                System.out.println();
-                if (antwoordCorrect) {
+                boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
+                updateScore(correct, speler);
+
+                if (correct) {
                     huidigeVraag++;
+                } else {
+                    speler.voegMonsterToe("Misverstand");
+                    deur.setOpen(false);
+                    deur.toonStatus();
+                    System.out.println("Fout antwoord! Monster 'Misverstand' verschijnt.\n");
                 }
+
+                System.out.println();
             } else {
                 System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help' of 'naar andere kamer'.\n");
             }
         }
 
-        System.out.println("Je hebt beide vragen goed beantwoord!\n");
+        System.out.println("✅ Je hebt beide vragen goed beantwoord! De deur gaat open.");
+        deur.setOpen(true);
+        deur.toonStatus();
         setVoltooid();
     }
 
     @Override
     public boolean verwerkAntwoord(String antwoord, Speler speler) {
-        return false;
+        boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
+        updateScore(correct, speler);
+        return correct;
     }
 
     @Override

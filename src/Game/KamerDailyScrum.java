@@ -5,11 +5,12 @@ import java.util.Scanner;
 public class KamerDailyScrum extends Kamer {
     private Antwoord antwoordStrategie;
     private int huidigeVraag = 0;
+    private Deur deur;
 
-    // Constructor ontvangt het Antwoord object, zoals KamerPlanning
-    public KamerDailyScrum(Antwoord antwoordStrategie) {
-        super("Daily Scrum");  // alleen naam doorgeven aan Kamer superclass
+    public KamerDailyScrum(Antwoord antwoordStrategie, Deur deur) {
+        super("Daily Scrum");
         this.antwoordStrategie = antwoordStrategie;
+        this.deur = deur;
     }
 
     @Override
@@ -37,36 +38,39 @@ public class KamerDailyScrum extends Kamer {
 
             if (antwoord.equals("help")) {
                 toonHelp();
-                System.out.println();
             } else if (antwoord.equals("status")) {
                 speler.status();
-                System.out.println();
             } else if (antwoord.equals("naar andere kamer")) {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
             } else if (antwoord.matches("[a-d]")) {
-                boolean antwoordCorrect = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
+                boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
+                updateScore(correct, speler);
                 System.out.println();
-                if (antwoordCorrect) {
+
+                if (correct) {
                     huidigeVraag++;
                 } else {
-                    System.out.println("Fout antwoord! De deur blijft gesloten en Monster 'Verlies van Focus' verschijnt!\n");
+                    speler.voegMonsterToe("Verlies van Focus");
+                    deur.setOpen(false);
+                    deur.toonStatus();
                 }
             } else {
                 System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help' of 'naar andere kamer'.\n");
             }
         }
 
-        System.out.println("Je hebt alle vragen juist beantwoord! De deur gaat open.\n");
+        System.out.println("Je hebt alle vragen juist beantwoord! De deur gaat open.");
+        deur.setOpen(true);
+        deur.toonStatus();
         setVoltooid();
     }
 
     @Override
     public boolean verwerkAntwoord(String antwoord, Speler speler) {
-        boolean isCorrect = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
-        updateScore(isCorrect, speler);
-        if (isCorrect) setVoltooid();
-        return isCorrect;
+        boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
+        updateScore(correct, speler);
+        return correct;
     }
 
     @Override

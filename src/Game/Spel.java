@@ -18,11 +18,12 @@ public class Spel {
 
         // Voeg kamers toe
         // Bij de toegevoegde kamers zijn ook de bijbehorende antwoord (Strategy Klasse) bij toegevoegd.
-        kamers.add(new KamerPlanning(new AntwoordPlanning()));
-        kamers.add(new KamerReview(new AntwoordReview()));
-        kamers.add(new KamerScrumBoard(new AntwoordScrumBoard()));
-        kamers.add(new KamerRetrospective(new AntwoordRetrospective()));
-        kamers.add(new KamerDailyScrum(new AntwoordDailyScrum()));
+        kamers.add(new KamerPlanning(new AntwoordPlanning(), new Deur()));
+        kamers.add(new KamerReview(new AntwoordReview(), new Deur()));
+        kamers.add(new KamerScrumBoard(new AntwoordScrumBoard(), new Deur()));
+        kamers.add(new KamerRetrospective(new AntwoordRetrospective(), new Deur()));
+        kamers.add(new KamerDailyScrum(new AntwoordDailyScrum(), new Deur()));
+
     }
 
     public void start() {
@@ -72,7 +73,8 @@ public class Spel {
                         // Check of alle kamers voltooid zijn
                         if (alleKamersVoltooid()) {
                             System.out.println("Alle kamers voltooid! Je gaat nu naar de Finale TIA kamer.");
-                            Kamer finaleKamer = new KamerFinaleTIA(new AntwoordFinalTIA());
+                            Kamer finaleKamer = new KamerFinaleTIA(new AntwoordFinalTIA(), new Deur());
+
                             finaleKamer.betreed(speler);
                             // Laat scoreboard ook de finale status zien
                             scoreboard.update();
