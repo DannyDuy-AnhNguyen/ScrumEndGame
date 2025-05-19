@@ -49,18 +49,16 @@ public class KamerScrumBoard extends Kamer {
                 updateScore(correct, speler);
 
                 if (correct) {
-                    System.out.println("Correct!");
+                    System.out.println("✅ Correct!\n");
                     huidigeVraag++;
                 } else {
                     speler.voegMonsterToe("Board Chaos");
                     deur.setOpen(false);
                     deur.toonStatus();
-                    System.out.println("Fout! Monster 'Board Chaos' verschijnt! Probeer het opnieuw.\n");
+                    System.out.println("❌ Fout! Monster 'Board Chaos' verschijnt! Probeer het opnieuw.\n");
                 }
-
-                System.out.println();
             } else {
-                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'status', 'help' of 'naar andere kamer'.\n");
+                System.out.println("⚠️ Ongeldige invoer. Typ 'a', 'b', 'c', 'status', 'help' of 'naar andere kamer'.\n");
             }
         }
 

@@ -58,16 +58,16 @@ public class KamerReview extends Kamer {
 
                 if (correct) {
                     huidigeVraag++;
+                    System.out.println("✅ Correct!\n");
                 } else {
                     speler.voegMonsterToe("Sprint Confusie");
                     deur.setOpen(false);
                     deur.toonStatus();
-                    System.out.println("Monster 'Sprint Confusie' verschijnt! Probeer het opnieuw.\n");
+                    System.out.println("❌ Fout! Monster 'Sprint Confusie' verschijnt! Probeer het opnieuw.\n");
                 }
 
-                System.out.println();
             } else {
-                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help' of 'naar andere kamer'.\n");
+                System.out.println("⚠️ Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help' of 'naar andere kamer'.\n");
             }
         }
 

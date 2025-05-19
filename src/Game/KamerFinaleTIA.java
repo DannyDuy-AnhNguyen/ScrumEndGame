@@ -44,7 +44,7 @@ public class KamerFinaleTIA extends Kamer {
                 }
                 case 3 -> {
                     System.out.println("4. Bij welke sprint hoort deze user story?");
-                    System.out.println("(Typ het sprintnummer of 'sprint 0')");
+                    System.out.println("(Typ het sprintnummer of bijvoorbeeld 'sprint 0')");
                 }
             }
 
@@ -62,27 +62,27 @@ public class KamerFinaleTIA extends Kamer {
                 updateScore(juist, speler);
                 if (juist) {
                     huidigeVraag++;
-                    System.out.println("Correct! De open vraag is goed beantwoord.\n");
+                    System.out.println("✅ Correct! De open vraag is goed beantwoord.\n");
                 } else {
                     speler.voegMonsterToe("Sprint Verwarring");
                     deur.setOpen(false);
                     deur.toonStatus();
-                    System.out.println("Fout! Monster 'Sprint Verwarring' verschijnt.\n");
+                    System.out.println("❌ Fout! Monster 'Sprint Verwarring' verschijnt.\n");
                 }
             } else if (antwoord.matches("[a-d]")) {
                 boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
                 updateScore(correct, speler);
                 if (correct) {
                     huidigeVraag++;
-                    System.out.println();
+                    System.out.println("✅ Correct antwoord!\n");
                 } else {
                     speler.voegMonsterToe("Scrum Misverstanden");
                     deur.setOpen(false);
                     deur.toonStatus();
-                    System.out.println("Fout! Monster 'Scrum Misverstanden' verschijnt!\n");
+                    System.out.println("❌ Fout! Monster 'Scrum Misverstanden' verschijnt!\n");
                 }
             } else {
-                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help' of 'naar andere kamer'.\n");
+                System.out.println("⚠️ Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help' of 'naar andere kamer'.\n");
             }
         }
 

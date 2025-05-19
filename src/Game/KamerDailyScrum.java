@@ -20,18 +20,21 @@ public class KamerDailyScrum extends Kamer {
         while (huidigeVraag < 2) {
             System.out.println("Je betreedt de kamer: " + naam);
 
-            if (huidigeVraag == 0) {
-                System.out.println("1. Welke van de volgende rollen bestaat niet binnen Scrum?");
-                System.out.println("a) Projectleider");
-                System.out.println("b) Scrum Master");
-                System.out.println("c) Development Team");
-                System.out.println("d) Product Owner");
-            } else if (huidigeVraag == 1) {
-                System.out.println("2. Hoelang duurt een standaard sprint meestal?");
-                System.out.println("a) 1 tot 4 weken");
-                System.out.println("b) 1 tot 4 maanden");
-                System.out.println("c) 1 tot 4 dagen");
-                System.out.println("d) 1 tot 4 jaren");
+            switch (huidigeVraag) {
+                case 0 -> {
+                    System.out.println("1. Welke van de volgende rollen bestaat niet binnen Scrum?");
+                    System.out.println("a) Projectleider");
+                    System.out.println("b) Scrum Master");
+                    System.out.println("c) Development Team");
+                    System.out.println("d) Product Owner");
+                }
+                case 1 -> {
+                    System.out.println("2. Hoelang duurt een standaard sprint meestal?");
+                    System.out.println("a) 1 tot 4 weken");
+                    System.out.println("b) 1 tot 4 maanden");
+                    System.out.println("c) 1 tot 4 dagen");
+                    System.out.println("d) 1 tot 4 jaren");
+                }
             }
 
             String antwoord = scanner.nextLine().trim().toLowerCase();
@@ -46,7 +49,6 @@ public class KamerDailyScrum extends Kamer {
             } else if (antwoord.matches("[a-d]")) {
                 boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
                 updateScore(correct, speler);
-                System.out.println();
 
                 if (correct) {
                     huidigeVraag++;
@@ -54,13 +56,16 @@ public class KamerDailyScrum extends Kamer {
                     speler.voegMonsterToe("Verlies van Focus");
                     deur.setOpen(false);
                     deur.toonStatus();
+                    System.out.println("Monster 'Verlies van Focus' verschijnt! Probeer het opnieuw.\n");
                 }
+
+                System.out.println();
             } else {
                 System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help' of 'naar andere kamer'.\n");
             }
         }
 
-        System.out.println("Je hebt alle vragen juist beantwoord! De deur gaat open.");
+        System.out.println("✅ Je hebt alle vragen juist beantwoord! De deur gaat open.");
         deur.setOpen(true);
         deur.toonStatus();
         setVoltooid();

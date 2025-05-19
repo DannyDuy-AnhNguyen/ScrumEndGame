@@ -1,16 +1,40 @@
 package Game;
 
-//de strategy klasse voor KamerReview
-public class AntwoordReview implements Antwoord{
+public class AntwoordReview implements Antwoord {
+
+    @Override
     public boolean verwerkAntwoord(String antwoord, int huidigeVraag) {
-        if (huidigeVraag == 0) {
-            return antwoord.equals("c");
-        } else if (huidigeVraag == 1) {
-            return antwoord.equals("b");
-        } else if (huidigeVraag == 2) {
-            return antwoord.equals("b");
-        } else {
-            return false;
+        switch (huidigeVraag) {
+            case 0:
+                if (antwoord.equals("c")) {
+                    System.out.println("✅ Correct! De Sprint Review vindt plaats aan het einde van de sprint.");
+                    return true;
+                } else {
+                    System.out.println("❌ Fout! De Sprint Review komt altijd aan het einde, niet eerder.");
+                    return false;
+                }
+
+            case 1:
+                if (antwoord.equals("b")) {
+                    System.out.println("✅ Correct! Tijdens de Review wordt het increment bekeken en feedback verzameld.");
+                    return true;
+                } else {
+                    System.out.println("❌ Fout! Het draait om inspectie van het increment en waardevolle feedback.");
+                    return false;
+                }
+
+            case 2:
+                if (antwoord.equals("b")) {
+                    System.out.println("✅ Correct! Voordelen zijn transparantie, snelle feedback en alignment.");
+                    return true;
+                } else {
+                    System.out.println("❌ Fout! Denk aan samenwerking en directe terugkoppeling.");
+                    return false;
+                }
+
+            default:
+                System.out.println("❌ Ongeldige vraagindex.");
+                return false;
         }
     }
 }

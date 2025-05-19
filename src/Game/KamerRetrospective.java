@@ -47,17 +47,18 @@ public class KamerRetrospective extends Kamer {
             } else if (antwoord.matches("[a-c]")) {
                 boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
                 updateScore(correct, speler);
+
                 if (correct) {
                     huidigeVraag++;
+                    System.out.println("✅ Correct!\n");
                 } else {
                     speler.voegMonsterToe("Blame Game");
                     deur.setOpen(false);
                     deur.toonStatus();
-                    System.out.println("Monster 'Blame Game' verschijnt! Probeer het opnieuw.\n");
+                    System.out.println("❌ Fout! Monster 'Blame Game' verschijnt! Probeer het opnieuw.\n");
                 }
-                System.out.println();
             } else {
-                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'status', 'help' of 'naar andere kamer'.\n");
+                System.out.println("⚠️ Ongeldige invoer. Typ 'a', 'b', 'c', 'status', 'help' of 'naar andere kamer'.\n");
             }
         }
 
