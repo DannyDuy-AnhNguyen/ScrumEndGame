@@ -8,14 +8,14 @@ public class Spel {
     private Speler speler;
     private List<Kamer> kamers;
     private Scanner scanner;
-    private Scorebord scoreboard;
+    private Status status;
     private KamerFactory kamerFactory;
 
     public Spel() {
         this.scanner = new Scanner(System.in);
         this.speler = new Speler();
         this.kamers = new ArrayList<>();
-        this.scoreboard = new Scorebord(speler);
+        this.status = new Status(speler);
         this.kamerFactory = new KamerFactory();
 
         // Voeg kamers toe in de klasse "KamersFactory"
@@ -46,7 +46,7 @@ public class Spel {
                 System.out.println("Tot ziens!");
                 gameInProgress = false;
             } else if (input.equals("status")) {
-                scoreboard.update();
+                status.update();
                 System.out.println();
             } else if (input.equals("help")) {
                 toonHelp();
@@ -77,7 +77,7 @@ public class Spel {
                     if (gekozenKamer != null) {
                         if (!gekozenKamer.isVoltooid()) {
                             gekozenKamer.betreed(speler);
-                            scoreboard.update();
+                            status.update();
                             if (gekozenKamer.isVoltooid()) {
                                 System.out.println("Deze kamer is voltooid!");
                             }
@@ -89,7 +89,7 @@ public class Spel {
                             System.out.println("Alle kamers voltooid! Je gaat nu naar de Finale TIA kamer.");
                             Kamer finaleKamer = kamerFactory.getKamer("Finale TIA Kamer – Waarom Scrum?");
                             finaleKamer.betreed(speler);
-                            scoreboard.update();
+                            status.update();
                             gameInProgress = false;
                         }
                     } else {

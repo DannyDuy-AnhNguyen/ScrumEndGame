@@ -97,25 +97,4 @@ public class Speler {
             observer.update(this);
         }
     }
-
-    // === Statusweergave ===
-    public void status() {
-        System.out.println("=== STATUS ===");
-        System.out.println("Speler: " + naam);
-        System.out.println("Huidige kamer: " + (positie + 1));
-        System.out.println("Score: " + score);
-        System.out.println("Streak: " + streak);
-        System.out.println("Voltooide kamers: " + voltooideKamers.size());
-
-        if (!monsters.isEmpty()) {
-            System.out.println("Actieve monsters:");
-            for (String monster : monsters) {
-                System.out.println("👾 " + monster);
-            }
-        } else {
-            System.out.println("Geen actieve monsters.");
-        }
-
-        System.out.println("====================");
-    }
 }

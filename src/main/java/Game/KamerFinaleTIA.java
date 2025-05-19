@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class KamerFinaleTIA extends Kamer {
     private Antwoord antwoordStrategie;
     private int huidigeVraag = 0;
+    private Status status;
 
     public KamerFinaleTIA(Antwoord antwoordStrategie) {
         super("Finale TIA Kamer – Waarom Scrum?");
@@ -51,7 +52,7 @@ public class KamerFinaleTIA extends Kamer {
                 toonHelp();
                 System.out.println();
             } else if (antwoord.equals("status")) {
-                speler.status();
+                status.update();
                 System.out.println();
             } else if (antwoord.equals("naar andere kamer")) {
                 System.out.println("Je verlaat deze kamer.");
@@ -98,5 +99,9 @@ public class KamerFinaleTIA extends Kamer {
         System.out.println("Typ 'status' om je huidige status te zien.");
         System.out.println("Typ 'naar andere kamer' om deze kamer te verlaten.");
         System.out.println("Typ 'help' om deze hulp te tonen.");
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

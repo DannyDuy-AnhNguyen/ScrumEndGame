@@ -1,14 +1,14 @@
 package Game;
 
-public class Scorebord {
+public class Status {
     private Speler speler;
 
-    public Scorebord(Speler speler) {
+    public Status(Speler speler) {
         this.speler = speler;
     }
 
     public void update() {
-        System.out.println("\n=== SCOREBOARD ===");
+        System.out.println("\n=== STATUS ===");
         System.out.println("Speler: " + speler.getNaam());
         System.out.println("Score: " + speler.getScore());
         System.out.println("Voltooide kamers: " + speler.getVoltooideKamers().size());
