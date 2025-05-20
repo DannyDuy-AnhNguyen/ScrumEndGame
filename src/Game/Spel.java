@@ -73,7 +73,7 @@ public class Spel {
                         // Check of alle kamers voltooid zijn
                         if (alleKamersVoltooid()) {
                             System.out.println("Alle kamers voltooid! Je gaat nu naar de Finale TIA kamer.");
-                            Kamer finaleKamer = new KamerFinaleTIA(new AntwoordFinalTIA(), new Deur());
+                            Kamer finaleKamer = new KamerFinaleTIA(new AntwoordFinaleTIA(), new Deur());
 
                             finaleKamer.betreed(speler);
                             // Laat scoreboard ook de finale status zien
