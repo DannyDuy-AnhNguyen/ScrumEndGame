@@ -65,7 +65,7 @@ public class KamerPlanning extends Kamer {
             }
         }
 
-        System.out.println("✅ Je hebt beide vragen goed beantwoord! De deur gaat open.");
+        System.out.println("Je hebt beide vragen goed beantwoord! De deur gaat open.");
         deur.setOpen(true);
         deur.toonStatus();
         setVoltooid();

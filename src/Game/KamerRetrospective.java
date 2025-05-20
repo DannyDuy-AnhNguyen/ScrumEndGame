@@ -62,7 +62,7 @@ public class KamerRetrospective extends Kamer {
             }
         }
 
-        System.out.println("✅ Je hebt alle vragen juist beantwoord! De deur gaat open.");
+        System.out.println("Je hebt alle vragen juist beantwoord! De deur gaat open.");
         deur.setOpen(true);
         deur.toonStatus();
         setVoltooid();

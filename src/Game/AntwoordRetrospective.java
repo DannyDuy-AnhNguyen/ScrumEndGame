@@ -7,19 +7,19 @@ public class AntwoordRetrospective implements Antwoord {
         switch (huidigeVraag) {
             case 0:
                 if (antwoord.equals("c")) {
-                    System.out.println("✅ Correct! Het doel van de Sprint Retrospective is verbeteren door terug te kijken op het proces.");
+                    System.out.println(" Het doel van de Sprint Retrospective is verbeteren door terug te kijken op het proces.");
                     return true;
                 } else {
-                    System.out.println("❌ Fout! De retrospective gaat over procesverbetering, niet over het product.");
+                    System.out.println(" De retrospective gaat over procesverbetering, niet over het product.");
                     return false;
                 }
 
             case 1:
                 if (antwoord.equals("b")) {
-                    System.out.println("✅ Correct! De Sprint Retrospective vindt plaats na de Sprint Review.");
+                    System.out.println(" De Sprint Retrospective vindt plaats na de Sprint Review.");
                     return true;
                 } else {
-                    System.out.println("❌ Fout! De retrospective gebeurt altijd aan het einde van een sprint.");
+                    System.out.println(" De retrospective gebeurt altijd aan het einde van een sprint.");
                     return false;
                 }
 

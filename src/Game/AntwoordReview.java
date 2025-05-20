@@ -7,28 +7,28 @@ public class AntwoordReview implements Antwoord {
         switch (huidigeVraag) {
             case 0:
                 if (antwoord.equals("c")) {
-                    System.out.println("✅ Correct! De Sprint Review vindt plaats aan het einde van de sprint.");
+                    System.out.println(" De Sprint Review vindt plaats aan het einde van de sprint.");
                     return true;
                 } else {
-                    System.out.println("❌ Fout! De Sprint Review komt altijd aan het einde, niet eerder.");
+                    System.out.println(" De Sprint Review komt altijd aan het einde, niet eerder.");
                     return false;
                 }
 
             case 1:
                 if (antwoord.equals("b")) {
-                    System.out.println("✅ Correct! Tijdens de Review wordt het increment bekeken en feedback verzameld.");
+                    System.out.println(" Tijdens de Review wordt het increment bekeken en feedback verzameld.");
                     return true;
                 } else {
-                    System.out.println("❌ Fout! Het draait om inspectie van het increment en waardevolle feedback.");
+                    System.out.println(" Het draait om inspectie van het increment en waardevolle feedback.");
                     return false;
                 }
 
             case 2:
                 if (antwoord.equals("b")) {
-                    System.out.println("✅ Correct! Voordelen zijn transparantie, snelle feedback en alignment.");
+                    System.out.println(" Voordelen zijn transparantie, snelle feedback en alignment.");
                     return true;
                 } else {
-                    System.out.println("❌ Fout! Denk aan samenwerking en directe terugkoppeling.");
+                    System.out.println("Denk aan samenwerking en directe terugkoppeling.");
                     return false;
                 }
 

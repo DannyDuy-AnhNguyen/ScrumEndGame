@@ -7,19 +7,19 @@ public class AntwoordScrumBoard implements Antwoord {
         switch (huidigeVraag) {
             case 0:
                 if (antwoord.equals("a")) {
-                    System.out.println("✅ Correct! De juiste volgorde is: Epics > Userstories > Taken.");
+                    System.out.println(" De juiste volgorde is: Epics > Userstories > Taken.");
                     return true;
                 } else {
-                    System.out.println("❌ Fout! De juiste volgorde is: Epics > Userstories > Taken.");
+                    System.out.println(" De juiste volgorde is: Epics > Userstories > Taken.");
                     return false;
                 }
 
             case 1:
                 if (antwoord.equals("b")) {
-                    System.out.println("✅ Correct! Een volledig Scrumboard bevat: To Do, Doing, Testing en Done.");
+                    System.out.println(" Een volledig Scrumboard bevat: To Do, Doing, Testing en Done.");
                     return true;
                 } else {
-                    System.out.println("❌ Fout! Een compleet Scrumboard bevat alle stappen inclusief To Do en Testing.");
+                    System.out.println(" Een compleet Scrumboard bevat alle stappen inclusief To Do en Testing.");
                     return false;
                 }
 
