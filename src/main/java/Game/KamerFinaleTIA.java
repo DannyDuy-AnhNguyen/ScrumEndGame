@@ -19,31 +19,26 @@ public class KamerFinaleTIA extends Kamer {
         while (huidigeVraag < 4) {
             System.out.println("Welkom in de laatste kamer: " + naam);
 
-            switch (huidigeVraag) {
-                case 0:
-                    System.out.println("1. Wat vind je van Scrum?");
-                    System.out.println("a) Uitstekend");
-                    System.out.println("b) Neutraal");
-                    System.out.println("c) Slecht");
-                    break;
-                case 1:
-                    System.out.println("2. Uit welk jaar is Scrum ontstaan?");
-                    System.out.println("a) 1993");
-                    System.out.println("b) 1995");
-                    System.out.println("c) 2001");
-                    System.out.println("d) 2010");
-                    break;
-                case 2:
-                    System.out.println("3. Is Scrum gay?");
-                    System.out.println("a) Ja");
-                    System.out.println("b) Ja");
-                    System.out.println("c) Ja");
-                    System.out.println("d) Ja");
-                    break;
-                case 3:
-                    System.out.println("4. Bij welke sprint hoort deze userstory?");
-                    System.out.println("(Typ je antwoord, bijvoorbeeld 'Sprint 0')");
-                    break;
+            if (huidigeVraag == 0) {
+                System.out.println("1. Wat vind je van Scrum?");
+                System.out.println("a) Uitstekend");
+                System.out.println("b) Neutraal");
+                System.out.println("c) Slecht");
+            } else if (huidigeVraag == 1) {
+                System.out.println("2. Uit welk jaar is Scrum ontstaan?");
+                System.out.println("a) 1993");
+                System.out.println("b) 1995");
+                System.out.println("c) 2001");
+                System.out.println("d) 2010");
+            } else if (huidigeVraag == 2) {
+                System.out.println("3. Is Scrum gay?");
+                System.out.println("a) Ja");
+                System.out.println("b) Ja");
+                System.out.println("c) Ja");
+                System.out.println("d) Ja");
+            } else if (huidigeVraag == 3) {
+                System.out.println("4. Bij welke sprint hoort deze userstory?");
+                System.out.println("(Typ je antwoord, bijvoorbeeld 'Sprint 0')");
             }
 
             String antwoord = scanner.nextLine().trim().toLowerCase();

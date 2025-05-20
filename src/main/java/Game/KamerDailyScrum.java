@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class KamerDailyScrum extends Kamer {
     private Antwoord antwoordStrategie;
     private int huidigeVraag = 0;
+    private Status status;
 
     public KamerDailyScrum(Antwoord antwoordStrategie) {
         super("Daily Scrum");
@@ -13,6 +14,7 @@ public class KamerDailyScrum extends Kamer {
 
     @Override
     public void betreed(Speler speler) {
+        this.status = new Status(speler);
         Scanner scanner = new Scanner(System.in);
 
         while (huidigeVraag < 2) {
@@ -38,7 +40,7 @@ public class KamerDailyScrum extends Kamer {
                 toonHelp();
                 System.out.println();
             } else if (antwoord.equals("status")) {
-                speler.status();
+                status.update();
                 System.out.println();
             } else if (antwoord.equals("naar andere kamer")) {
                 System.out.println("Je verlaat deze kamer.\n");

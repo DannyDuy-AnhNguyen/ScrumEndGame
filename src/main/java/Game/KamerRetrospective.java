@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class KamerRetrospective extends Kamer {
     private Antwoord antwoordStrategie;
     private int huidigeVraag = 0;
+    private Status status;
 
     private final String[] vragen = {
             "Wat is het hoofddoel van de Sprint Retrospective?",
@@ -31,6 +32,7 @@ public class KamerRetrospective extends Kamer {
 
     @Override
     public void betreed(Speler speler) {
+        this.status = new Status(speler);
         Scanner scanner = new Scanner(System.in);
 
         while (huidigeVraag < vragen.length) {
@@ -47,7 +49,7 @@ public class KamerRetrospective extends Kamer {
                 toonHelp();
                 System.out.println();
             } else if (antwoord.equals("status")) {
-                speler.status();
+                status.update();
                 System.out.println();
             } else if (antwoord.equals("naar andere kamer")) {
                 System.out.println("Je verlaat deze kamer.\n");
