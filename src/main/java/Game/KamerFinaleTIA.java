@@ -19,9 +19,22 @@ public class KamerFinaleTIA extends Kamer {
         System.out.println();
     }
 
+    // Feedback per vraag
+    public void verwerkFeedback(int huidigeVraag) {
+        if (huidigeVraag == 0) {
+            System.out.println("Het is iemand die niet in de scrum werkt");
+        } else if (huidigeVraag == 1) {
+            System.out.println("Scrum is officieel ontstaan in 1995.");
+        } else if (huidigeVraag == 2) {
+            System.out.println("Deze vraag is grappig bedoeld, maar Scrum is serieus.");
+        } else if (huidigeVraag == 3) {
+            System.out.println("Sprint 0 wordt vaak gebruikt voor voorbereiding en planning.");
+        }
+    }
 
     @Override
     public void betreed(Speler speler) {
+        this.status = new Status(speler); // Initialiseer status
         Scanner scanner = new Scanner(System.in);
 
         while (huidigeVraag < 4) {
@@ -66,6 +79,7 @@ public class KamerFinaleTIA extends Kamer {
             } else if (antwoord.matches("[a-d]")) {
                 boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
                 if (correct) {
+                    verwerkFeedback(huidigeVraag);
                     huidigeVraag++;
                     System.out.println("Correct!\n");
                 } else {
@@ -82,16 +96,11 @@ public class KamerFinaleTIA extends Kamer {
 
     @Override
     public boolean verwerkAntwoord(String antwoord, Speler speler) {
-        // Update de score via de strategie, mocht dat nodig zijn
         boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
         updateScore(correct, speler);
         return correct;
     }
 
-    /**
-     * Controleert of het antwoord op de open vraag klopt.
-     * Toegestane antwoorden zijn o.a.: "0", "sprint 0", "nul", "sprintnul", "sprint0"
-     */
     public boolean verwerkAntwoordOpenVraag(String antwoord) {
         return antwoord.matches("^(0|sprint 0|nul|sprintnul|sprint0)$");
     }

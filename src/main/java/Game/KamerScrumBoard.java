@@ -20,6 +20,16 @@ public class KamerScrumBoard extends Kamer {
         System.out.println();
     }
 
+    //    De feedback die je krijgt voor elke vraag die je goed beantwoord
+    //    @Override
+    public void verwerkFeedback(int huidigeVraag) {
+        if (huidigeVraag == 0) {
+            System.out.println("Het is iemand die niet in de scrum werkt");
+        } else if(huidigeVraag == 1){
+            System.out.println("Meeste sprints duren van 1 tot 2 weken. Misschien zelfs een maand.");
+        }
+    }
+
     @Override
     public void betreed(Speler speler) {
         this.status = new Status(speler);
@@ -56,6 +66,7 @@ public class KamerScrumBoard extends Kamer {
                 if (correct) {
                     System.out.println("Correct!");
                     updateScore(true, speler);
+                    verwerkFeedback(huidigeVraag);
                     huidigeVraag++;
                     System.out.println();
                 } else {

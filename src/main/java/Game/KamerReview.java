@@ -19,6 +19,20 @@ public class KamerReview extends Kamer {
         System.out.println();
     }
 
+    //    De feedback die je krijgt voor elke vraag die je goed beantwoord
+    @Override
+    public void verwerkFeedback(int huidigeVraag) {
+        if (huidigeVraag == 0) {
+            System.out.println("Het is iemand die niet in de scrum werkt");
+        } else if(huidigeVraag == 1){
+            System.out.println("Meeste sprints duren van 1 tot 2 weken. Misschien zelfs een maand.");
+        } else if(huidigeVraag == 2){
+            System.out.println("Meeste sprints duren van 1 tot 2 weken. Misschien zelfs een maand.");
+        } else if(huidigeVraag == 3){
+            System.out.println("Meeste sprints duren van 1 tot 2 weken. Misschien zelfs een maand.");
+        }
+    }
+
     @Override
     public void betreed(Speler speler) {
         this.status = new Status(speler);

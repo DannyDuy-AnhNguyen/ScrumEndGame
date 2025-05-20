@@ -10,8 +10,10 @@ public class KamerDailyScrum extends Kamer {
     public KamerDailyScrum(Antwoord antwoordStrategie) {
         super("Daily Scrum");
         this.antwoordStrategie = antwoordStrategie;
+        this.deur.setOpen(false); // deur start altijd dicht
     }
 
+    // Intro text methode van elke kamer hetzelfde
     @Override
     public void betreedIntro(){
         System.out.println();
@@ -19,6 +21,15 @@ public class KamerDailyScrum extends Kamer {
         System.out.println();
     }
 
+    // De feedback die je krijgt voor elke vraag die je goed beantwoord
+    @Override
+    public void verwerkFeedback(int huidigeVraag) {
+        if (huidigeVraag == 0) {
+            System.out.println("Het is iemand die niet in de scrum werkt");
+        } else if(huidigeVraag == 1){
+            System.out.println("Meeste sprints duren van 1 tot 2 weken. Misschien zelfs een maand.");
+        }
+    }
 
     @Override
     public void betreed(Speler speler) {
@@ -58,9 +69,22 @@ public class KamerDailyScrum extends Kamer {
 
                 if (antwoordCorrect) {
                     speler.verhoogScore(10);
+                    verwerkFeedback(huidigeVraag);
                     huidigeVraag++;
-                    System.out.println("Correct! Je krijgt 10 punten.\n");
+
+                    // Deur open als laatste vraag juist beantwoord is
+                    if (huidigeVraag == 2) {
+                        setVoltooid();
+                        deur.setOpen(true);
+                        System.out.println("Je hebt alle vragen juist beantwoord! De deur gaat open.\n");
+                        speler.voegVoltooideKamerToe(2);
+                    } else {
+                        deur.setOpen(false);
+                        System.out.println("Correct! Je krijgt 10 punten.\n");
+                    }
+
                 } else {
+                    deur.setOpen(false); // deur blijft dicht bij fout antwoord
                     speler.voegMonsterToe("Verlies van Focus");
                     System.out.println("Fout antwoord! De deur blijft gesloten en Monster 'Verlies van Focus' verschijnt!\n");
                 }
@@ -68,17 +92,11 @@ public class KamerDailyScrum extends Kamer {
                 System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help' of 'naar andere kamer'.\n");
             }
         }
-
-        System.out.println("Je hebt alle vragen juist beantwoord! De deur gaat open.\n");
-        setVoltooid();
-
-        // Registreer dat deze kamer voltooid is (bijv. met index 2, pas aan naar jouw situatie)
-        speler.voegVoltooideKamerToe(2);
     }
 
     @Override
     public boolean verwerkAntwoord(String antwoord, Speler speler) {
-        // Dit gebruik je blijkbaar niet in deze kamer, want antwoorden worden direct in 'betreed' afgehandeld
+        // Niet gebruikt hier
         return false;
     }
 
