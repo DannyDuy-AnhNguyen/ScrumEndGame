@@ -1,6 +1,6 @@
 package Game;
 
-public class AntwoordFinalTIA implements Antwoord {
+public class AntwoordFinaleTIA implements Antwoord {
 
     @Override
     public boolean verwerkAntwoord(String antwoord, int vraagIndex) {
