@@ -32,12 +32,12 @@ public abstract class Kamer {
             speler.setStreak(speler.getStreak() + 1);
             int bonus = speler.getStreak() * 10; // 10 punten per antwoord + bonus afhankelijk van streak
             speler.verhoogScore(bonus);
-            System.out.println("Goed gedaan! Je krijgt " + bonus + " punten. (Streak: " + speler.getStreak() + ")");
+            System.out.println("Je krijgt " + bonus + " punten. (Streak: " + speler.getStreak() + ")");
         } else {
             // foute antwoord: -10 punten, reset streak
             speler.verlaagScore(10);
             speler.setStreak(0);
-            System.out.println("Fout antwoord! Je verliest 10 punten en je streak is gereset.");
+            System.out.println("Je verliest 10 punten en je streak is gereset.");
         }
     }
 

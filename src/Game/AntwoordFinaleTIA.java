@@ -7,28 +7,28 @@ public class AntwoordFinaleTIA implements Antwoord {
         switch (vraagIndex) {
             case 0:
                 if (antwoord.equals("c")) {
-                    System.out.println("✅ Correct! Scrum draait om Transparantie, Inspectie en Aanpassing.");
+                    System.out.println(" Scrum draait om Transparantie, Inspectie en Aanpassing.");
                     return true;
                 } else {
-                    System.out.println("❌ Fout! Denk goed na over het doel van Scrum.");
+                    System.out.println(" Denk goed na over het doel van Scrum.");
                     return false;
                 }
 
             case 1:
                 if (antwoord.equals("b")) {
-                    System.out.println("✅ Correct! Scrum werd officieel geïntroduceerd in 1995.");
+                    System.out.println(" Scrum werd officieel geïntroduceerd in 1995.");
                     return true;
                 } else {
-                    System.out.println("❌ Fout! Dat is niet het juiste jaar.");
+                    System.out.println(" Dat is niet het juiste jaar.");
                     return false;
                 }
 
             case 2:
                 if (antwoord.equals("c")) {
-                    System.out.println("✅ Correct! Transparantie bevordert open communicatie.");
+                    System.out.println(" Transparantie bevordert open communicatie.");
                     return true;
                 } else {
-                    System.out.println("❌ Fout! Denk aan de Scrum-waarden.");
+                    System.out.println(" Denk aan de Scrum-waarden.");
                     return false;
                 }
 
