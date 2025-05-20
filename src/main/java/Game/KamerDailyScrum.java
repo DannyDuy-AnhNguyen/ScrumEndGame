@@ -13,12 +13,20 @@ public class KamerDailyScrum extends Kamer {
     }
 
     @Override
+    public void betreedIntro(){
+        System.out.println();
+        System.out.println("Je bent nu in de kamer: " + naam);
+        System.out.println();
+    }
+
+
+    @Override
     public void betreed(Speler speler) {
         this.status = new Status(speler);
         Scanner scanner = new Scanner(System.in);
 
         while (huidigeVraag < 2) {
-            System.out.println("Je betreedt de kamer: " + naam);
+            betreedIntro();
 
             if (huidigeVraag == 0) {
                 System.out.println("1. Welke van de volgende rollen bestaat niet binnen Scrum?");

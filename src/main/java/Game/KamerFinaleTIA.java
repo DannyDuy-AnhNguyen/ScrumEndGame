@@ -13,11 +13,19 @@ public class KamerFinaleTIA extends Kamer {
     }
 
     @Override
+    public void betreedIntro(){
+        System.out.println();
+        System.out.println("Je bent nu in de kamer: " + naam);
+        System.out.println();
+    }
+
+
+    @Override
     public void betreed(Speler speler) {
         Scanner scanner = new Scanner(System.in);
 
         while (huidigeVraag < 4) {
-            System.out.println("Welkom in de laatste kamer: " + naam);
+            betreedIntro();
 
             if (huidigeVraag == 0) {
                 System.out.println("1. Wat vind je van Scrum?");

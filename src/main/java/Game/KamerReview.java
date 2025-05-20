@@ -13,13 +13,19 @@ public class KamerReview extends Kamer {
     }
 
     @Override
+    public void betreedIntro(){
+        System.out.println();
+        System.out.println("Je bent nu in de kamer: " + naam);
+        System.out.println();
+    }
+
+    @Override
     public void betreed(Speler speler) {
         this.status = new Status(speler);
         Scanner scanner = new Scanner(System.in);
 
         while (huidigeVraag < 3) {
-            System.out.println("Je bent nu in de kamer: " + naam);
-
+            betreedIntro();
             if(huidigeVraag == 0){
                 System.out.println("Wanneer wordt er een sprintreview gehouden?");
                 System.out.println("a) Aan het begin van de sprint");
