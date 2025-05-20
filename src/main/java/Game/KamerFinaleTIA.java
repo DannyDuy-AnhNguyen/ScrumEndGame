@@ -20,6 +20,7 @@ public class KamerFinaleTIA extends Kamer {
     }
 
     // Feedback per vraag
+    @Override
     public void verwerkFeedback(int huidigeVraag) {
         if (huidigeVraag == 0) {
             System.out.println("Het is iemand die niet in de scrum werkt");
@@ -33,34 +34,50 @@ public class KamerFinaleTIA extends Kamer {
     }
 
     @Override
+    public void verwerkOpdracht(int huidigeVraag){
+        if (huidigeVraag == 0) {
+            System.out.println("1. Wat vind je van Scrum?");
+            System.out.println("a) Uitstekend");
+            System.out.println("b) Neutraal");
+            System.out.println("c) Slecht");
+        } else if (huidigeVraag == 1) {
+            System.out.println("2. Uit welk jaar is Scrum ontstaan?");
+            System.out.println("a) 1993");
+            System.out.println("b) 1995");
+            System.out.println("c) 2001");
+            System.out.println("d) 2010");
+        } else if (huidigeVraag == 2) {
+            System.out.println("3. Is Scrum gay?");
+            System.out.println("a) Ja");
+            System.out.println("b) Ja");
+            System.out.println("c) Ja");
+            System.out.println("d) Ja");
+        } else if (huidigeVraag == 3) {
+            System.out.println("4. Bij welke sprint hoort deze userstory?");
+            System.out.println("(Typ je antwoord, bijvoorbeeld 'Sprint 0')");
+        }
+    }
+
+    @Override
+    public void verwerkResultaat(boolean correct, Speler speler){
+        if (correct) {
+            verwerkFeedback(huidigeVraag);
+            huidigeVraag++;
+            System.out.println("Correct!\n");
+        } else {
+            System.out.println("Fout antwoord! De deur blijft gesloten en Monster 'Scrum Misverstanden' verschijnt!\n");
+        }
+    }
+
+
+    @Override
     public void betreed(Speler speler) {
         this.status = new Status(speler); // Initialiseer status
         Scanner scanner = new Scanner(System.in);
 
         while (huidigeVraag < 4) {
             betreedIntro();
-
-            if (huidigeVraag == 0) {
-                System.out.println("1. Wat vind je van Scrum?");
-                System.out.println("a) Uitstekend");
-                System.out.println("b) Neutraal");
-                System.out.println("c) Slecht");
-            } else if (huidigeVraag == 1) {
-                System.out.println("2. Uit welk jaar is Scrum ontstaan?");
-                System.out.println("a) 1993");
-                System.out.println("b) 1995");
-                System.out.println("c) 2001");
-                System.out.println("d) 2010");
-            } else if (huidigeVraag == 2) {
-                System.out.println("3. Is Scrum gay?");
-                System.out.println("a) Ja");
-                System.out.println("b) Ja");
-                System.out.println("c) Ja");
-                System.out.println("d) Ja");
-            } else if (huidigeVraag == 3) {
-                System.out.println("4. Bij welke sprint hoort deze userstory?");
-                System.out.println("(Typ je antwoord, bijvoorbeeld 'Sprint 0')");
-            }
+            verwerkOpdracht(huidigeVraag);  //De vragen worden uit deze abstracte methode opgeroepen
 
             String antwoord = scanner.nextLine().trim().toLowerCase();
 
@@ -77,14 +94,9 @@ public class KamerFinaleTIA extends Kamer {
                 huidigeVraag++;
                 System.out.println("Je hebt de open vraag goed beantwoord!\n");
             } else if (antwoord.matches("[a-d]")) {
-                boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
-                if (correct) {
-                    verwerkFeedback(huidigeVraag);
-                    huidigeVraag++;
-                    System.out.println("Correct!\n");
-                } else {
-                    System.out.println("Fout antwoord! De deur blijft gesloten en Monster 'Scrum Misverstanden' verschijnt!\n");
-                }
+                boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag); // controleerd de resultaat wat de gebruiker gekozen heeft.
+                verwerkResultaat(correct, speler); // toont de resultaat of de speler het goed heeft of niet
+
             } else {
                 System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help' of 'naar andere kamer'.\n");
             }

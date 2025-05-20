@@ -37,6 +37,12 @@ public abstract class Kamer {
 
     public abstract void verwerkFeedback(int huidigeVraag);
 
+//    Bevat de vragen van de bestaande vragen oftewel de opdrachten om de kamer te voltooien
+    public abstract void verwerkOpdracht(int huidigeVraag);
+
+//    Deze functie controleert de resultaten van de gemaakte vraag.
+    public abstract void verwerkResultaat(boolean antwoordstrategie, Speler speler);
+
     // Methode om score te updaten per gegeven antwoord
     public void updateScore(boolean correct, Speler speler) {
         if (correct) {

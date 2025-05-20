@@ -25,9 +25,37 @@ public class KamerRetrospective extends Kamer {
     @Override
     public void verwerkFeedback(int huidigeVraag) {
         if (huidigeVraag == 0) {
-            System.out.println("Het is iemand die niet in de scrum werkt");
+            System.out.println("RetroSpective zorgt ervoor dat de teamleden weten wat er goed gaat, beter kan en hoe ze het kunnen verbeteren.");
         } else if(huidigeVraag == 1){
-            System.out.println("Meeste sprints duren van 1 tot 2 weken. Misschien zelfs een maand.");
+            System.out.println("Om te weten hoe de samenwerking daadwerkelijk gaat, is het verstandig om daar 1 tot 2 weken te geven of het beste na elke sprint.");
+        }
+    }
+
+    @Override
+    public void verwerkOpdracht(int huidigeVraag){
+        if(huidigeVraag == 0){
+            System.out.println("Wat is het hoofddoel van de Sprint Retrospective?");
+            System.out.println("a) De resultaten van het product demonstreren aan de klant.");
+            System.out.println("b) De product backlog aanpassen.");
+            System.out.println("c) Terugkijken op het proces en verbeteren waar mogelijk is.");
+        } else if(huidigeVraag == 1){
+            System.out.println("Wanneer vindt de Sprint Retrospective plaats?");
+            System.out.println("a) Aan het begin van de sprint");
+            System.out.println("b) Direct na de Sprint Review, aan het einde van de sprint");
+            System.out.println("c) Halverwege de Sprint");
+        }
+    }
+
+    @Override
+    public void verwerkResultaat(boolean correct, Speler speler){
+        if (correct) {
+            speler.verhoogScore(10);  // Score verhogen bij goed antwoord
+            verwerkFeedback(huidigeVraag);
+            huidigeVraag++;
+            System.out.println("Correct!\n");
+        } else {
+            speler.voegMonsterToe("Blame Game");
+            System.out.println("Monster 'Blame Game' verschijnt! Probeer het opnieuw.\n");
         }
     }
 
@@ -45,18 +73,7 @@ public class KamerRetrospective extends Kamer {
 
         while (huidigeVraag < 2) {
             betreedIntro();
-
-            if(huidigeVraag == 0){
-                System.out.println("Wat is het hoofddoel van de Sprint Retrospective?");
-                System.out.println("a) De resultaten van het product demonstreren aan de klant.");
-                System.out.println("b) De product backlog aanpassen.");
-                System.out.println("c) Terugkijken op het proces en verbeteren waar mogelijk is.");
-            } else if(huidigeVraag == 1){
-                System.out.println("Wanneer vindt de Sprint Retrospective plaats?");
-                System.out.println("a) Aan het begin van de sprint");
-                System.out.println("b) Direct na de Sprint Review, aan het einde van de sprint");
-                System.out.println("c) Halverwege de Sprint");
-            }
+            verwerkOpdracht(huidigeVraag);  //De vragen worden uit deze abstracte methode opgeroepen
 
             String antwoord = scanner.nextLine().trim().toLowerCase();
 
@@ -70,16 +87,9 @@ public class KamerRetrospective extends Kamer {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
             } else if (antwoord.matches("[a-c]")) {
-                boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
-                if (correct) {
-                    speler.verhoogScore(10);  // Score verhogen bij goed antwoord
-                    verwerkFeedback(huidigeVraag);
-                    huidigeVraag++;
-                    System.out.println("Correct!\n");
-                } else {
-                    speler.voegMonsterToe("Blame Game");
-                    System.out.println("Monster 'Blame Game' verschijnt! Probeer het opnieuw.\n");
-                }
+                boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag); // controleerd de resultaat wat de gebruiker gekozen heeft.
+                verwerkResultaat(correct, speler); // toont de resultaat of de speler het goed heeft of niet
+
             } else {
                 System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'status', 'help' of 'naar andere kamer'.\n");
             }

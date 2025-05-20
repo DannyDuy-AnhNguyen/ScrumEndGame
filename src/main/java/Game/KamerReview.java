@@ -25,13 +25,46 @@ public class KamerReview extends Kamer {
     @Override
     public void verwerkFeedback(int huidigeVraag) {
         if (huidigeVraag == 0) {
-            System.out.println("Het is iemand die niet in de scrum werkt");
+            System.out.println("Sprintreview wordt met je product owner gehouden om te kijken waar de scrumteam tot nu toe uitgevoerd heeft en of het voldaan is.");
         } else if(huidigeVraag == 1){
-            System.out.println("Meeste sprints duren van 1 tot 2 weken. Misschien zelfs een maand.");
+            System.out.println("Sprint Review zorgt ervoor dat de scrumteam de feedback verzameld en wat de Product Owner nu van het product vindt.");
         } else if(huidigeVraag == 2){
-            System.out.println("Meeste sprints duren van 1 tot 2 weken. Misschien zelfs een maand.");
-        } else if(huidigeVraag == 3){
-            System.out.println("Meeste sprints duren van 1 tot 2 weken. Misschien zelfs een maand.");
+            System.out.println("Dankzij Sprint Review weten beide kanten zowel de product owner als scrumteam wat er gedaan kan worden en wat er verwacht wordt.");
+        }
+    }
+
+    @Override
+    public void verwerkOpdracht(int huidigeVraag){
+        if(huidigeVraag == 0){
+            System.out.println("Wanneer wordt er een sprintreview gehouden?");
+            System.out.println("a) Aan het begin van de sprint");
+            System.out.println("b) Tijdens de sprint");
+            System.out.println("c) Aan het einde van de sprint");
+        } else if(huidigeVraag == 1){
+            System.out.println("Wat is het belangrijkste doel van de Sprint Review?");
+            System.out.println("a) De Scrum Master evalueren");
+            System.out.println("b) Het increment inspecteren en feedback verzamelen");
+            System.out.println("c) De volgende sprint alvast plannen");
+            System.out.println("d) Vorige sprint doornemen");
+        } else if(huidigeVraag == 2){
+            System.out.println("De voordelen van een Sprint Review zijn...?");
+            System.out.println("a) Meer vergaderingen = meer productiviteit");
+            System.out.println("b) Transparantie, snelle feedback, alignment met stakeholders");
+            System.out.println("c) Langer werken zonder pauzes");
+            System.out.println("d) De product owner tevreden houden");
+        }
+    }
+
+    @Override
+    public void verwerkResultaat(boolean correct, Speler speler){
+        if (correct) {
+            speler.verhoogScore(10); // score verhogen
+            verwerkFeedback(huidigeVraag);
+            huidigeVraag++;
+            System.out.println("Correct!\n");
+        } else {
+            speler.voegMonsterToe("Sprint Confusie");
+            System.out.println("Monster 'Sprint Confusie' verschijnt! Probeer het opnieuw.\n");
         }
     }
 
@@ -48,25 +81,7 @@ public class KamerReview extends Kamer {
 
         while (huidigeVraag < 3) {
             betreedIntro();
-
-            if(huidigeVraag == 0){
-                System.out.println("Wanneer wordt er een sprintreview gehouden?");
-                System.out.println("a) Aan het begin van de sprint");
-                System.out.println("b) Tijdens de sprint");
-                System.out.println("c) Aan het einde van de sprint");
-            } else if(huidigeVraag == 1){
-                System.out.println("Wat is het belangrijkste doel van de Sprint Review?");
-                System.out.println("a) De Scrum Master evalueren");
-                System.out.println("b) Het increment inspecteren en feedback verzamelen");
-                System.out.println("c) De volgende sprint alvast plannen");
-                System.out.println("d) Vorige sprint doornemen");
-            } else if(huidigeVraag == 2){
-                System.out.println("De voordelen van een Sprint Review zijn...?");
-                System.out.println("a) Meer vergaderingen = meer productiviteit");
-                System.out.println("b) Transparantie, snelle feedback, alignment met stakeholders");
-                System.out.println("c) Langer werken zonder pauzes");
-                System.out.println("d) De product owner tevreden houden");
-            }
+            verwerkOpdracht(huidigeVraag);  //De vragen worden uit deze abstracte methode opgeroepen
 
             String antwoord = scanner.nextLine().trim().toLowerCase();
 
@@ -80,16 +95,8 @@ public class KamerReview extends Kamer {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
             } else if (antwoord.matches("[a-d]")) {
-                boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
-                if (correct) {
-                    speler.verhoogScore(10); // score verhogen
-                    verwerkFeedback(huidigeVraag);
-                    huidigeVraag++;
-                    System.out.println("Correct!\n");
-                } else {
-                    speler.voegMonsterToe("Sprint Confusie");
-                    System.out.println("Monster 'Sprint Confusie' verschijnt! Probeer het opnieuw.\n");
-                }
+                boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag); // controleerd de resultaat wat de gebruiker gekozen heeft.
+                verwerkResultaat(correct, speler); // toont de resultaat of de speler het goed heeft of niet
             } else {
                 System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help' of 'naar andere kamer'.\n");
             }
