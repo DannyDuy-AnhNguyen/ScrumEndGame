@@ -10,12 +10,14 @@ public class KamerRetrospective extends Kamer {
     public KamerRetrospective(Antwoord antwoordStrategie) {
         super("Sprint Retrospective");
         this.antwoordStrategie = antwoordStrategie;
+        // Deur start standaard gesloten (aangenomen dat dat in Kamer constructor gebeurt)
     }
 
     @Override
     public void betreedIntro(){
         System.out.println();
         System.out.println("Je bent nu in de kamer: " + naam);
+        deur.toonStatus();
         System.out.println();
     }
 
@@ -32,6 +34,12 @@ public class KamerRetrospective extends Kamer {
 
     @Override
     public void betreed(Speler speler) {
+        if (!deur.isOpen()) {
+            System.out.println("🚪 De deur is gesloten, je kunt deze kamer nog niet betreden.");
+            deur.toonStatus();
+            return;
+        }
+
         this.status = new Status(speler);
         Scanner scanner = new Scanner(System.in);
 
@@ -49,9 +57,6 @@ public class KamerRetrospective extends Kamer {
                 System.out.println("b) Direct na de Sprint Review, aan het einde van de sprint");
                 System.out.println("c) Halverwege de Sprint");
             }
-//            System.out.println((huidigeVraag + 1) + ". " + vragen[huidigeVraag]);
-
-
 
             String antwoord = scanner.nextLine().trim().toLowerCase();
 
@@ -66,11 +71,13 @@ public class KamerRetrospective extends Kamer {
                 return;
             } else if (antwoord.matches("[a-c]")) {
                 boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
-                updateScore(correct, speler);
                 if (correct) {
+                    speler.verhoogScore(10);  // Score verhogen bij goed antwoord
+                    verwerkFeedback(huidigeVraag);
                     huidigeVraag++;
                     System.out.println("Correct!\n");
                 } else {
+                    speler.voegMonsterToe("Blame Game");
                     System.out.println("Monster 'Blame Game' verschijnt! Probeer het opnieuw.\n");
                 }
             } else {
@@ -80,6 +87,13 @@ public class KamerRetrospective extends Kamer {
 
         System.out.println("Je hebt alle vragen juist beantwoord!\n");
         setVoltooid();
+
+        // Deur openen na voltooiing
+        deur.setOpen(true);
+        System.out.println("De deur gaat open! Je kunt nu verder.");
+
+        // Kamer als voltooid registreren (pas index aan indien nodig)
+        speler.voegVoltooideKamerToe(2);
     }
 
     @Override

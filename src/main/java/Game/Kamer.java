@@ -3,6 +3,7 @@ package Game;
 public abstract class Kamer {
     protected String naam;
     protected boolean voltooid = false;
+    protected Deur deur;
 
     public Kamer(String naam) {
         this.naam = naam;

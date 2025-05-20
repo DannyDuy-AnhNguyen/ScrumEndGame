@@ -10,12 +10,14 @@ public class KamerReview extends Kamer {
     public KamerReview(Antwoord antwoordStrategie) {
         super("Sprint Review");
         this.antwoordStrategie = antwoordStrategie;
+        // Deur start standaard gesloten (als dat in Kamer constructor gebeurt)
     }
 
     @Override
     public void betreedIntro(){
         System.out.println();
         System.out.println("Je bent nu in de kamer: " + naam);
+        deur.toonStatus();
         System.out.println();
     }
 
@@ -35,23 +37,30 @@ public class KamerReview extends Kamer {
 
     @Override
     public void betreed(Speler speler) {
+        if (!deur.isOpen()) {
+            System.out.println("🚪 De deur is gesloten, je kunt deze kamer nog niet betreden.");
+            deur.toonStatus();
+            return;
+        }
+
         this.status = new Status(speler);
         Scanner scanner = new Scanner(System.in);
 
         while (huidigeVraag < 3) {
             betreedIntro();
+
             if(huidigeVraag == 0){
                 System.out.println("Wanneer wordt er een sprintreview gehouden?");
                 System.out.println("a) Aan het begin van de sprint");
                 System.out.println("b) Tijdens de sprint");
                 System.out.println("c) Aan het einde van de sprint");
-            }else if(huidigeVraag == 1){
+            } else if(huidigeVraag == 1){
                 System.out.println("Wat is het belangrijkste doel van de Sprint Review?");
                 System.out.println("a) De Scrum Master evalueren");
                 System.out.println("b) Het increment inspecteren en feedback verzamelen");
                 System.out.println("c) De volgende sprint alvast plannen");
                 System.out.println("d) Vorige sprint doornemen");
-            }else if(huidigeVraag == 2){
+            } else if(huidigeVraag == 2){
                 System.out.println("De voordelen van een Sprint Review zijn...?");
                 System.out.println("a) Meer vergaderingen = meer productiviteit");
                 System.out.println("b) Transparantie, snelle feedback, alignment met stakeholders");
@@ -72,11 +81,13 @@ public class KamerReview extends Kamer {
                 return;
             } else if (antwoord.matches("[a-d]")) {
                 boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
-                updateScore(correct, speler);
                 if (correct) {
+                    speler.verhoogScore(10); // score verhogen
+                    verwerkFeedback(huidigeVraag);
                     huidigeVraag++;
                     System.out.println("Correct!\n");
                 } else {
+                    speler.voegMonsterToe("Sprint Confusie");
                     System.out.println("Monster 'Sprint Confusie' verschijnt! Probeer het opnieuw.\n");
                 }
             } else {
@@ -86,6 +97,13 @@ public class KamerReview extends Kamer {
 
         System.out.println("Je hebt alle vragen juist beantwoord!\n");
         setVoltooid();
+
+        // Deur openen na voltooiing
+        deur.setOpen(true);
+        System.out.println("De deur gaat open! Je kunt nu verder.");
+
+        // Kamer als voltooid registreren (index 3? Pas aan naar juiste index)
+        speler.voegVoltooideKamerToe(3);
     }
 
     @Override

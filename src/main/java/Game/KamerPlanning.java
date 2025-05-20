@@ -7,7 +7,6 @@ public class KamerPlanning extends Kamer {
     private int huidigeVraag = 0;
     private Status status;
 
-
     public KamerPlanning(Antwoord antwoordStrategie) {
         super("Sprint Planning");
         this.antwoordStrategie = antwoordStrategie;

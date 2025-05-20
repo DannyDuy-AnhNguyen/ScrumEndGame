@@ -7,16 +7,17 @@ public class KamerScrumBoard extends Kamer {
     private int huidigeVraag = 0;
     private Status status;
 
-
     public KamerScrumBoard(Antwoord antwoordStrategie) {
         super("Scrum Board");
         this.antwoordStrategie = antwoordStrategie;
+        // Deur standaard dicht, tenzij anders ingesteld in Kamer
     }
 
     @Override
     public void betreedIntro(){
         System.out.println();
         System.out.println("Je bent nu in de kamer: " + naam);
+        deur.toonStatus();
         System.out.println();
     }
 
@@ -32,6 +33,12 @@ public class KamerScrumBoard extends Kamer {
 
     @Override
     public void betreed(Speler speler) {
+        if (!deur.isOpen()) {
+            System.out.println("🚪 De deur is gesloten, je kunt deze kamer nog niet betreden.");
+            deur.toonStatus();
+            return;
+        }
+
         this.status = new Status(speler);
         Scanner scanner = new Scanner(System.in);
 
@@ -80,12 +87,18 @@ public class KamerScrumBoard extends Kamer {
 
         System.out.println("Je hebt alle vragen juist beantwoord!\n");
         setVoltooid();
+
+        // Deur openen na voltooiing
+        deur.setOpen(true);
+        System.out.println("De deur gaat open! Je kunt nu verder.");
+
+        // Kamer als voltooid registreren (pas nummer aan indien nodig)
+        speler.voegVoltooideKamerToe(1);
     }
 
     @Override
     public boolean verwerkAntwoord(String antwoord, Speler speler) {
-        // Niet nodig meer, strategie regelt het
-        return false;
+        return false; // strategie regelt het
     }
 
     @Override
