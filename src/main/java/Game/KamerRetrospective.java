@@ -7,24 +7,6 @@ public class KamerRetrospective extends Kamer {
     private int huidigeVraag = 0;
     private Status status;
 
-    private final String[] vragen = {
-            "Wat is het hoofddoel van de Sprint Retrospective?",
-            "Wanneer vindt de Sprint Retrospective plaats?"
-    };
-
-    private final String[][] opties = {
-            {
-                    "a) De resultaten van het product demonstreren aan de klant.",
-                    "b) De product backlog aanpassen.",
-                    "c) Terugkijken op het proces en verbeteren waar mogelijk is."
-            },
-            {
-                    "a) Aan het begin van de sprint",
-                    "b) Direct na de Sprint Review, aan het einde van de sprint",
-                    "c) Halverwege de Sprint"
-            }
-    };
-
     public KamerRetrospective(Antwoord antwoordStrategie) {
         super("Sprint Retrospective");
         this.antwoordStrategie = antwoordStrategie;
@@ -35,13 +17,23 @@ public class KamerRetrospective extends Kamer {
         this.status = new Status(speler);
         Scanner scanner = new Scanner(System.in);
 
-        while (huidigeVraag < vragen.length) {
+        while (huidigeVraag < 2) {
             System.out.println("Je betreedt de kamer: " + naam);
-            System.out.println((huidigeVraag + 1) + ". " + vragen[huidigeVraag]);
 
-            for (String optie : opties[huidigeVraag]) {
-                System.out.println(optie);
+            if(huidigeVraag == 0){
+                System.out.println("Wat is het hoofddoel van de Sprint Retrospective?");
+                System.out.println("a) De resultaten van het product demonstreren aan de klant.");
+                System.out.println("b) De product backlog aanpassen.");
+                System.out.println("c) Terugkijken op het proces en verbeteren waar mogelijk is.");
+            } else if(huidigeVraag == 1){
+                System.out.println("Wanneer vindt de Sprint Retrospective plaats?");
+                System.out.println("a) Aan het begin van de sprint");
+                System.out.println("b) Direct na de Sprint Review, aan het einde van de sprint");
+                System.out.println("c) Halverwege de Sprint");
             }
+//            System.out.println((huidigeVraag + 1) + ". " + vragen[huidigeVraag]);
+
+
 
             String antwoord = scanner.nextLine().trim().toLowerCase();
 

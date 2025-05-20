@@ -8,7 +8,7 @@ public class Speler {
     private int positie;
     private int score = 0;
     private int streak = 0;
-    private List<Integer> voltooideKamers = new ArrayList<>();
+    private List<Integer> voltooideKamers = new ArrayList<>(); //    Hier wordt de kamer nummer
     private List<String> monsters = new ArrayList<>();
     private List<Observer> observers = new ArrayList<>();
 

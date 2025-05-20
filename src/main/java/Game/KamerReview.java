@@ -7,32 +7,6 @@ public class KamerReview extends Kamer {
     private int huidigeVraag = 0;
     private Status status;
 
-    private final String[] vragen = {
-            "Wanneer wordt er een sprintreview gehouden?",
-            "Wat is het belangrijkste doel van de Sprint Review?",
-            "De voordelen van een Sprint Review zijn...?"
-    };
-
-    private final String[][] opties = {
-            {
-                    "a) Aan het begin van de sprint",
-                    "b) Tijdens de sprint",
-                    "c) Aan het einde van de sprint"
-            },
-            {
-                    "a) De Scrum Master evalueren",
-                    "b) Het increment inspecteren en feedback verzamelen",
-                    "c) De volgende sprint alvast plannen",
-                    "d) Vorige sprint doornemen"
-            },
-            {
-                    "a) Meer vergaderingen = meer productiviteit",
-                    "b) Transparantie, snelle feedback, alignment met stakeholders",
-                    "c) Langer werken zonder pauzes",
-                    "d) De product owner tevreden houden"
-            }
-    };
-
     public KamerReview(Antwoord antwoordStrategie) {
         super("Sprint Review");
         this.antwoordStrategie = antwoordStrategie;
@@ -43,12 +17,26 @@ public class KamerReview extends Kamer {
         this.status = new Status(speler);
         Scanner scanner = new Scanner(System.in);
 
-        while (huidigeVraag < vragen.length) {
+        while (huidigeVraag < 3) {
             System.out.println("Je bent nu in de kamer: " + naam);
-            System.out.println((huidigeVraag + 1) + ". " + vragen[huidigeVraag]);
 
-            for (String optie : opties[huidigeVraag]) {
-                System.out.println(optie);
+            if(huidigeVraag == 0){
+                System.out.println("Wanneer wordt er een sprintreview gehouden?");
+                System.out.println("a) Aan het begin van de sprint");
+                System.out.println("b) Tijdens de sprint");
+                System.out.println("c) Aan het einde van de sprint");
+            }else if(huidigeVraag == 1){
+                System.out.println("Wat is het belangrijkste doel van de Sprint Review?");
+                System.out.println("a) De Scrum Master evalueren");
+                System.out.println("b) Het increment inspecteren en feedback verzamelen");
+                System.out.println("c) De volgende sprint alvast plannen");
+                System.out.println("d) Vorige sprint doornemen");
+            }else if(huidigeVraag == 2){
+                System.out.println("De voordelen van een Sprint Review zijn...?");
+                System.out.println("a) Meer vergaderingen = meer productiviteit");
+                System.out.println("b) Transparantie, snelle feedback, alignment met stakeholders");
+                System.out.println("c) Langer werken zonder pauzes");
+                System.out.println("d) De product owner tevreden houden");
             }
 
             String antwoord = scanner.nextLine().trim().toLowerCase();
