@@ -1,4 +1,4 @@
-package Game;
+package Game.monster;
 
 interface MonsterType {
 }

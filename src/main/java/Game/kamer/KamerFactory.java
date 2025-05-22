@@ -1,4 +1,6 @@
-package Game;
+package Game.kamer;
+
+import Game.antwoord.*;
 
 import java.util.HashMap;
 import java.util.List;

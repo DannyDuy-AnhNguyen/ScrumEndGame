@@ -1,4 +1,8 @@
-package Game;
+package Game.kamer;
+
+import Game.antwoord.Antwoord;
+import Game.core.Speler;
+import Game.core.Status;
 
 import java.util.Scanner;
 
@@ -10,6 +14,7 @@ public class KamerPlanning extends Kamer {
     public KamerPlanning(Antwoord antwoordStrategie) {
         super("Sprint Planning");
         this.antwoordStrategie = antwoordStrategie;
+        deur.setOpen(false);  // Zorg dat deur standaard dicht is bij start
     }
 
     @Override
@@ -23,26 +28,27 @@ public class KamerPlanning extends Kamer {
     @Override
     public void verwerkFeedback(int huidigeVraag) {
         if (huidigeVraag == 0) {
-            System.out.println("Bij sprint planning neemt alle mensen deel aan wat er geplant gaat worden.");
+            System.out.println("Bij de sprintplanning nemen alle betrokkenen deel aan wat er gepland gaat worden.");
         } else if (huidigeVraag == 1) {
-            System.out.println("Sprintplanning wordt er gekeken welke userstory er gemaakt kunt worden en welk niveau de userstory is. De niveau wordt bepaalt met de scrumteam met behulp van Sprint Poker.");
+            System.out.println("Tijdens de sprintplanning wordt vastgesteld wat het doel van de sprint is en welke backlog-items worden opgepakt.");
+            System.out.println("Het team bepaalt ook de moeilijkheidsgraad van user stories met behulp van Sprint Poker.");
         }
     }
 
     @Override
     public void verwerkOpdracht(int huidigeVraag){
         if (huidigeVraag == 0) {
-            System.out.println("Wie neemt deel aan de Sprint Planning?");
+            System.out.println("Vraag 1: Wie neemt deel aan de Sprint Planning?");
             System.out.println("a) Alleen de Scrum Master");
             System.out.println("b) Product Owner en Scrum Master");
-            System.out.println("c) Product Owner Scum Master en het hele Development Team");
-            System.out.println("d) Product Owner Scrum Master en het hele Development Team");
+            System.out.println("c) Product Owner, Scrum Master en het hele Development Team");
+            System.out.println("d) Product Owner, Scrum Master en het hele Development Team");
         } else if (huidigeVraag == 1) {
-            System.out.println("Wat wordt er tijdens de Sprint Planning vastgesteld?");
+            System.out.println("Vraag 2: Wat wordt er tijdens de Sprint Planning vastgesteld?");
             System.out.println("a) Welke teamleden vakantie hebben");
             System.out.println("b) Wat het doel van de sprint is en welke backlog-items worden opgepakt");
-            System.out.println("c) Hoe de vorige sprint geëvalueerd");
-            System.out.println("d) Wat de vastgestelde items van de backlog zijn als de product owner tevreden is met het product.");
+            System.out.println("c) Hoe de vorige sprint geëvalueerd is");
+            System.out.println("d) Wat de vastgestelde items van de backlog zijn als de product owner tevreden is met het product");
         }
     }
 
@@ -52,10 +58,10 @@ public class KamerPlanning extends Kamer {
             speler.verhoogScore(10);
             verwerkFeedback(huidigeVraag);
             huidigeVraag++;
-            System.out.println("Correct!\nJe krijgt 10 punten.\n");
+            System.out.println("\n✅ Correct! Je krijgt 10 punten.\n");
         } else {
             speler.voegMonsterToe("Misverstand");
-            System.out.println("Fout! Monster 'Misverstand' verschijnt! Probeer het opnieuw.\n");
+            System.out.println("\n❌ Fout! Monster 'Misverstand' verschijnt! Probeer het opnieuw.\n");
         }
     }
 
@@ -70,9 +76,11 @@ public class KamerPlanning extends Kamer {
         this.status = new Status(speler);
         Scanner scanner = new Scanner(System.in);
 
+        // Intro slechts 1 keer tonen
+        betreedIntro();
+
         while (huidigeVraag < 2) {
-            betreedIntro();
-            verwerkOpdracht(huidigeVraag);  //De vragen worden uit deze abstracte methode opgeroepen
+            verwerkOpdracht(huidigeVraag);
 
             String antwoord = scanner.nextLine().trim().toLowerCase();
 
@@ -86,26 +94,25 @@ public class KamerPlanning extends Kamer {
                 System.out.println("Je verlaat deze kamer.\n");
                 return;
             } else if (antwoord.matches("[a-d]")) {
-                boolean antwoordCorrect = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag); // controleerd de resultaat wat de gebruiker gekozen heeft.
-                verwerkResultaat(antwoordCorrect, speler); // toont de resultaat of de speler het goed heeft of niet
-
+                boolean antwoordCorrect = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
+                verwerkResultaat(antwoordCorrect, speler);
             } else {
                 System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help' of 'naar andere kamer'.\n");
             }
         }
 
-        System.out.println("Je hebt beide vragen goed beantwoord!\n");
+        // Na juiste beantwoording alle vragen
         setVoltooid();
-
-        deur.setOpen(true); // deur open zetten na voltooiing
-        System.out.println("De deur gaat open! Je kunt nu verder.");
-
-        speler.voegVoltooideKamerToe(1); // pas aan naar juiste index
+        deur.setOpen(true);
+        System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
+        speler.voegVoltooideKamerToe(2); // Pas nummer indien nodig
+        return;
     }
 
     @Override
     public boolean verwerkAntwoord(String antwoord, Speler speler) {
-        return false; // niet gebruikt hier
+        // Niet gebruikt in deze klasse
+        return false;
     }
 
     @Override

@@ -1,0 +1,32 @@
+//package Game;
+//
+//class HintContext{
+//    private Hint hint;
+//    private List<Hint> hintList;
+//
+//    HintContext(){
+//      this.hint = hint;
+//      this hintList = new ArrayList()<>;
+//    }
+//
+//
+//    public void setRightHint(Hint hintItem){
+//     this.hint = hintItem
+//    }
+//
+//    public void addHint(Hint hint){
+//     hintList.add(hint)
+//    }
+//
+//    public void updateHint(Hint hint){
+//     hintList.update(hint)
+//    }
+//
+//    public void removeHint(Hint hint){
+//     hintList.remove(hint)//// perhaps remove all hint for each sub class???
+//
+//    }
+//
+//}
+
+

@@ -1,4 +1,7 @@
-package Game;
+package Game.kamer;
+
+import Game.Deur;
+import Game.core.Speler;
 
 public abstract class Kamer {
     protected String naam;

@@ -1,4 +1,8 @@
-package Game;
+package Game.kamer;
+
+import Game.antwoord.Antwoord;
+import Game.core.Speler;
+import Game.core.Status;
 
 import java.util.Scanner;
 

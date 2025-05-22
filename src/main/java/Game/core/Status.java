@@ -1,4 +1,4 @@
-package Game;
+package Game.core;
 
 public class Status {
     private Speler speler;

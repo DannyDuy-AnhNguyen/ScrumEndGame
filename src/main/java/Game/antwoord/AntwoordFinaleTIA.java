@@ -1,4 +1,4 @@
-package Game;
+package Game.antwoord;
 
 // De strategy klasse voor KamerFinalTia
 public class AntwoordFinaleTIA implements Antwoord {

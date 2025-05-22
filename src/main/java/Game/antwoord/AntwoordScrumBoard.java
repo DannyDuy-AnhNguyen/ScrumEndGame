@@ -1,4 +1,4 @@
-package Game;
+package Game.antwoord;
 
 // de strategy klasse voor KamerScrumBoard
 public class AntwoordScrumBoard implements Antwoord {

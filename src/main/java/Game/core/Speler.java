@@ -1,4 +1,4 @@
-package Game;
+package Game.core;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,9 @@ public class Speler {
     private int positie;
     private int score = 0;
     private int streak = 0;
-    private List<Integer> voltooideKamers = new ArrayList<>(); //    Hier wordt de kamer nummer
+    private int sleutels = 1; // Start met 1 algemene sleutel
+
+    private List<Integer> voltooideKamers = new ArrayList<>();
     private List<String> monsters = new ArrayList<>();
     private List<Observer> observers = new ArrayList<>();
 
@@ -43,10 +45,11 @@ public class Speler {
     }
 
     public void verlaagScore(int punten) {
-        this.score -= punten;
-        if (this.score < 0) {
-            this.score = 0;
+        score -= punten;
+        if (score < 0) {
+            score = 0;
         }
+        notifyObservers();
     }
 
     public int getStreak() {
@@ -56,6 +59,29 @@ public class Speler {
     public void setStreak(int streak) {
         this.streak = streak;
         notifyObservers();
+    }
+
+    // === Sleutelsysteem ===
+    public int getSleutels() {
+        return sleutels;
+    }
+
+    public void voegSleutelToe() {
+        sleutels++;
+        System.out.println("🔑 Je hebt een sleutel verdiend! Totaal sleutels: " + sleutels);
+        notifyObservers();
+    }
+
+    public boolean gebruikSleutel() {
+        if (sleutels > 0) {
+            sleutels--;
+            System.out.println("🔓 Sleutel gebruikt. Resterende sleutels: " + sleutels);
+            notifyObservers();
+            return true;
+        } else {
+            System.out.println("❌ Je hebt geen sleutels om deze deur te openen.");
+            return false;
+        }
     }
 
     // === Voltooide kamers ===
