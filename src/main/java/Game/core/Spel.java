@@ -21,12 +21,12 @@ public class Spel {
         this.kamers = new ArrayList<>();
         this.status = new Status(speler);
         this.kamerFactory = new KamerFactory();
-        this.sleutels = 1; // Begin met 1 algemene sleutel
+        this.sleutels = 1;
 
         List<String> kamerKeys = kamerFactory.getKamerKeys();
         for (String key : kamerKeys) {
             Kamer kamer = kamerFactory.getKamer(key);
-            kamer.getDeur().setOpen(false); // alle deuren beginnen dicht
+            kamer.getDeur().setOpen(false);
             kamers.add(kamer);
         }
     }
@@ -37,8 +37,7 @@ public class Spel {
         speler.setNaam(scanner.nextLine());
 
         System.out.println("Welkom, " + speler.getNaam() + "! Deze commando's kan je op elk moment gebruiken:");
-        System.out.println("'status', 'help', 'ga naar kamer X' of 'stop'.");
-        System.out.println("Kies a, b, c of d als je een vraag krijgt.");
+        System.out.println("'status', 'help', 'ga naar kamer X', 'check', 'pak [item]' of 'pak [nummer]', 'gebruik [item]' of 'stop'.");
         System.out.println();
 
         while (true) {
@@ -56,8 +55,45 @@ public class Spel {
                 toonHelp();
             } else if (input.startsWith("ga naar kamer")) {
                 verwerkKamerCommando(input);
+            } else if (input.equals("check")) {
+                Kamer kamer = kamers.get(speler.getPositie());
+                List<Item> kamerItems = kamer.getItems();
+                if (kamerItems.isEmpty()) {
+                    System.out.println("📦 Geen items in deze kamer.");
+                } else {
+                    System.out.println("📦 Items in deze kamer:");
+                    for (int i = 0; i < kamerItems.size(); i++) {
+                        System.out.println((i + 1) + ") " + kamerItems.get(i));
+                    }
+                }
+            } else if (input.startsWith("pak ")) {
+                String itemInput = input.substring(4).trim();
+                Kamer kamer = kamers.get(speler.getPositie());
+                List<Item> kamerItems = kamer.getItems();
+                Item gekozenItem = null;
+
+                try {
+                    int index = Integer.parseInt(itemInput) - 1;
+                    if (index >= 0 && index < kamerItems.size()) {
+                        gekozenItem = kamerItems.remove(index);
+                    } else {
+                        System.out.println("❌ Ongeldig itemnummer.");
+                        continue;
+                    }
+                } catch (NumberFormatException e) {
+                    gekozenItem = kamer.neemItem(itemInput);
+                }
+
+                if (gekozenItem != null) {
+                    speler.voegItemToe(gekozenItem);
+                } else if (!itemInput.matches("\\d+")) {
+                    System.out.println("❌ Dat item is niet gevonden in deze kamer.");
+                }
+            } else if (input.startsWith("gebruik ")) {
+                String itemNaam = input.substring(8).trim();
+                speler.gebruikItem(itemNaam);
             } else {
-                System.out.println("Onbekend commando. Kies 'status', 'help', 'ga naar kamer X' of 'stop'.");
+                System.out.println("Onbekend commando. Gebruik 'status', 'help', 'ga naar kamer X', 'check', 'pak [item]', 'gebruik [item]' of 'stop'.");
             }
         }
     }
@@ -79,7 +115,6 @@ public class Spel {
             if (gekozenKamer != null) {
                 if (!gekozenKamer.getDeur().isOpen()) {
                     if (sleutels > 0 && !gekozenKamer.getNaam().toLowerCase().contains("finale")) {
-                        // Open de kamer met een sleutel
                         gekozenKamer.getDeur().setOpen(true);
                         sleutels--;
                         System.out.println("Je gebruikte een algemene sleutel om de deur naar '" + gekozenKamer.getNaam() + "' te openen.");
@@ -104,7 +139,6 @@ public class Spel {
                     System.out.println("Deze kamer is al voltooid.");
                 }
 
-                // Check of alle normale kamers voltooid zijn en finale kamer nog niet open is
                 if (alleNormaleKamersVoltooid() && !isFinaleKamerVoltooid()) {
                     Kamer finaleKamer = kamerFactory.getKamer("Finale TIA Kamer – Waarom Scrum?");
                     if (sleutels >= 5) {
@@ -114,15 +148,14 @@ public class Spel {
                             System.out.println("Je hebt 5 sleutels verzameld! De finale deur is nu open.");
                         }
 
-                        // Optioneel: automatisch doorsturen naar de finale kamer
-                    System.out.println("Je hebt genoeg sleutels om naar de finale kamer te gaan! Je gaat nu automatisch naar de finale kamer!");
-                    finaleKamer.betreed(speler);
-                    status.update();
-                    if (finaleKamer.isVoltooid()) {
-                        System.out.println("Gefeliciteerd, je hebt het spel voltooid!");
-                        System.exit(0);
-                    }
-                    return;
+                        System.out.println("Je hebt genoeg sleutels om naar de finale kamer te gaan! Je gaat nu automatisch naar de finale kamer!");
+                        finaleKamer.betreed(speler);
+                        status.update(speler);
+                        if (finaleKamer.isVoltooid()) {
+                            System.out.println("Gefeliciteerd, je hebt het spel voltooid!");
+                            System.exit(0);
+                        }
+                        return;
                     }
                 }
 
@@ -140,25 +173,13 @@ public class Spel {
     }
 
     private void printGefeliciteerdArt() {
-        String art =
-                "𝕲𝖊𝖋𝖊𝖑𝖎𝖈𝖎𝖙𝖊𝖊𝖗𝖉! 𝖏𝖊 𝖍𝖊𝖇𝖙 𝖍𝖊𝖙 𝖘𝖕𝖊𝖑 𝖛𝖔𝖑𝖙𝖔𝖔𝖎𝖉!\n" +
-                        "  𝕮𝖔𝖓𝖌𝖗𝖆𝖙𝖘! 𝕿𝖎𝖒𝖊 𝖙𝖔 𝖈𝖊𝖑𝖊𝖇𝖗𝖆𝖙𝖊 🎉\n" +
-                        "\n" +
-                        "  𝕯𝖎𝖙 𝖎𝖘 𝖏𝖊 𝖈𝖗𝖔𝖜𝖓 𝖔𝖋 𝖛𝖎𝖈𝖙𝖔𝖗𝖞!\n" +
-                        "  𝕬𝖑𝖑𝖊 𝖕𝖗𝖔𝖌𝖗𝖆𝖒𝖒𝖆 𝖎𝖘 𝖉𝖔𝖓𝖊, 𝖈𝖔𝖉𝖊𝖗.\n\n" +
-
-                        "　　　　＿＿\n" +
-                        "　　　🌸＞　　フ   I don't want likes I want ham sandwich\n" +
-                        "　　　| 　_　 _ l        (edit: Got ham sandwich)\n" +
-                        "　　　／` ミ_wノ\n" +
-                        "　　 /　　　 　 |\n" +
-                        "　　 /　 ヽ　　 ﾉ\n" +
-                        "　  │　　|　|　|\n" +
-                        "　／￣|　　 |　|　|\n" +
-                        "　| (￣ヽ＿_ヽ_)__)\n" +
-                        "　＼二つ\n";
-
-        System.out.println(art);
+        System.out.println("""
+                𝕲𝖊𝖋𝖊𝖑𝖎𝖈𝖎𝖙𝖊𝖊𝖗𝖉! 𝖏𝖊 𝖍𝖊𝖇𝖙 𝖍𝖊𝖙 𝖘𝖕𝖊𝖑 𝖛𝖔𝖑𝖙𝖔𝖔𝖎𝖉!
+                  𝕮𝖔𝖓𝖌𝖗𝖆𝖙𝖘! 𝕿𝖎𝖒𝖊 𝖙𝖔 𝖈𝖊𝖑𝖊𝖇𝖗𝖆𝖙𝖊 🎉
+                  
+                  𝕯𝖎𝖙 𝖎𝖘 𝖏𝖊 𝖈𝖗𝖔𝖜𝖓 𝖔𝖋 𝖛𝖎𝖈𝖙𝖔𝖗𝖞!
+                  𝕬𝖑𝖑𝖊 𝖕𝖗𝖔𝖌𝖗𝖆𝖒𝖒𝖆 𝖎𝖘 𝖉𝖔𝖓𝖊, 𝖈𝖔𝖉𝖊𝖗.
+                """);
     }
 
     private void toonKamerOpties() {
@@ -172,8 +193,7 @@ public class Spel {
 
     private boolean alleNormaleKamersVoltooid() {
         for (Kamer kamer : kamers) {
-            String naam = kamer.getNaam().toLowerCase();
-            if (!kamer.isVoltooid() && !naam.contains("finale")) {
+            if (!kamer.isVoltooid() && !kamer.getNaam().toLowerCase().contains("finale")) {
                 return false;
             }
         }
@@ -199,6 +219,9 @@ public class Spel {
         System.out.println("'status' - Bekijk je status en aantal sleutels.");
         System.out.println("'help' - Toon deze hulptekst.");
         System.out.println("'ga naar kamer X' - Ga naar een kamer die open is of gebruik een sleutel.");
+        System.out.println("'check' - Bekijk items in de kamer.");
+        System.out.println("'pak [item]' of 'pak [nummer]' - Pak een item uit de kamer.");
+        System.out.println("'gebruik [item]' - Gebruik een item uit je inventaris.");
         System.out.println("'stop' - Stop het spel.");
     }
 }

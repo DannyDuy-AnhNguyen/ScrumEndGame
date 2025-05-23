@@ -8,10 +8,11 @@ public class Speler {
     private int positie;
     private int score = 0;
     private int streak = 0;
-    private int sleutels = 1; // Start met 1 algemene sleutel
+    private int sleutels = 1;
 
     private List<Integer> voltooideKamers = new ArrayList<>();
     private List<String> monsters = new ArrayList<>();
+    private List<Item> inventory = new ArrayList<>();
     private List<Observer> observers = new ArrayList<>();
 
     // === Naam ===
@@ -111,6 +112,43 @@ public class Speler {
 
     public List<String> getMonsters() {
         return monsters;
+    }
+
+    // === Inventory functionaliteit ===
+    public void voegItemToe(Item item) {
+        if (inventory.size() >= 5) {
+            System.out.println("❌ Je inventory zit vol (max 5 items).");
+            return;
+        }
+
+        inventory.add(item);
+        System.out.println("👜 Je hebt het item '" + item.getNaam() + "' opgepakt.");
+        notifyObservers();
+
+        // 🥚 Easter Egg check
+        if (inventory.size() == 5 && inventory.stream().allMatch(i -> i.getNaam().equalsIgnoreCase("Rots"))) {
+            System.out.println("🥚 EASTER EGG: Je inventory zit VOL met nutteloze rotsen. 🤡");
+        }
+    }
+
+    public boolean heeftItem(String naam) {
+        return inventory.stream().anyMatch(i -> i.getNaam().equalsIgnoreCase(naam));
+    }
+
+    public void gebruikItem(String naam) {
+        Item item = inventory.stream()
+                .filter(i -> i.getNaam().equalsIgnoreCase(naam))
+                .findFirst()
+                .orElse(null);
+
+        if (item == null) {
+            System.out.println("❌ Je hebt het item '" + naam + "' niet.");
+            return;
+        }
+
+        System.out.println("🧪 Je gebruikt het item: " + item.getNaam() + " (" + item.getEffect() + ")");
+        inventory.remove(item);
+        notifyObservers();
     }
 
     // === Observer pattern ===

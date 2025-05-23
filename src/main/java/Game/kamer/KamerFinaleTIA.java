@@ -1,6 +1,7 @@
 package Game.kamer;
 
 import Game.antwoord.Antwoord;
+import Game.core.Item;
 import Game.core.Speler;
 import Game.core.Status;
 
@@ -23,7 +24,6 @@ public class KamerFinaleTIA extends Kamer {
         System.out.println();
     }
 
-    // Feedback per vraag
     @Override
     public void verwerkFeedback(int huidigeVraag) {
         if (huidigeVraag == 0) {
@@ -73,15 +73,14 @@ public class KamerFinaleTIA extends Kamer {
         }
     }
 
-
     @Override
     public void betreed(Speler speler) {
-        this.status = new Status(speler); // Initialiseer status
+        this.status = new Status(speler);
         Scanner scanner = new Scanner(System.in);
 
         while (huidigeVraag < 4) {
             betreedIntro();
-            verwerkOpdracht(huidigeVraag);  //De vragen worden uit deze abstracte methode opgeroepen
+            verwerkOpdracht(huidigeVraag);
 
             String antwoord = scanner.nextLine().trim().toLowerCase();
 
@@ -89,7 +88,17 @@ public class KamerFinaleTIA extends Kamer {
                 toonHelp();
                 System.out.println();
             } else if (antwoord.equals("status")) {
-                status.update();
+                status.update(speler);
+                System.out.println();
+            } else if (antwoord.equals("check")) {
+                if (items.isEmpty()) {
+                    System.out.println("📦 Geen items in deze kamer.");
+                } else {
+                    System.out.println("📦 Items in deze kamer:");
+                    for (Item item : items) {
+                        System.out.println("- " + item);
+                    }
+                }
                 System.out.println();
             } else if (antwoord.equals("naar andere kamer")) {
                 System.out.println("Je verlaat deze kamer.");
@@ -98,11 +107,10 @@ public class KamerFinaleTIA extends Kamer {
                 huidigeVraag++;
                 System.out.println("Je hebt de open vraag goed beantwoord!\n");
             } else if (antwoord.matches("[a-d]")) {
-                boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag); // controleerd de resultaat wat de gebruiker gekozen heeft.
-                verwerkResultaat(correct, speler); // toont de resultaat of de speler het goed heeft of niet
-
+                boolean correct = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
+                verwerkResultaat(correct, speler);
             } else {
-                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help' of 'naar andere kamer'.\n");
+                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'check', 'help' of 'naar andere kamer'.\n");
             }
         }
 
@@ -125,6 +133,7 @@ public class KamerFinaleTIA extends Kamer {
     public void toonHelp() {
         System.out.println("Typ 'a', 'b', 'c' of 'd' om een antwoord te kiezen.");
         System.out.println("Typ 'status' om je huidige status te zien.");
+        System.out.println("Typ 'check' om items in deze kamer te bekijken.");
         System.out.println("Typ 'naar andere kamer' om deze kamer te verlaten.");
         System.out.println("Typ 'help' om deze hulp te tonen.");
     }

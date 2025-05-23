@@ -1,6 +1,7 @@
 package Game.kamer;
 
 import Game.antwoord.Antwoord;
+import Game.core.Item;
 import Game.core.Speler;
 import Game.core.Status;
 
@@ -10,12 +11,12 @@ public class KamerRetrospective extends Kamer {
     private Antwoord antwoordStrategie;
     private int huidigeVraag = 0;
     private Status status;
-    private boolean introGetoond = false;  // Zorg dat intro maar 1x getoond wordt
+    private boolean introGetoond = false;
 
     public KamerRetrospective(Antwoord antwoordStrategie) {
         super("Sprint Retrospective");
         this.antwoordStrategie = antwoordStrategie;
-        deur.setOpen(false); // deur standaard dicht bij start
+        deur.setOpen(false);
     }
 
     @Override
@@ -77,7 +78,6 @@ public class KamerRetrospective extends Kamer {
         this.status = new Status(speler);
         Scanner scanner = new Scanner(System.in);
 
-        // Intro slechts 1 keer tonen
         betreedIntro();
 
         while (huidigeVraag < 2) {
@@ -89,7 +89,17 @@ public class KamerRetrospective extends Kamer {
                 toonHelp();
                 System.out.println();
             } else if (antwoord.equals("status")) {
-                status.update();
+                status.update(speler);
+                System.out.println();
+            } else if (antwoord.equals("check")) {
+                if (items.isEmpty()) {
+                    System.out.println("📦 Geen items in deze kamer.");
+                } else {
+                    System.out.println("📦 Items in deze kamer:");
+                    for (Item item : items) {
+                        System.out.println("- " + item);
+                    }
+                }
                 System.out.println();
             } else if (antwoord.equals("naar andere kamer")) {
                 System.out.println("Je verlaat deze kamer.\n");
@@ -98,20 +108,18 @@ public class KamerRetrospective extends Kamer {
                 boolean antwoordCorrect = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
                 verwerkResultaat(antwoordCorrect, speler);
             } else {
-                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help' of 'naar andere kamer'.\n");
+                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'check', 'help' of 'naar andere kamer'.\n");
             }
         }
 
-        // Na juiste beantwoording alle vragen
         setVoltooid();
         deur.setOpen(true);
         System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
-        speler.voegVoltooideKamerToe(2); // Pas nummer indien nodig
+        speler.voegVoltooideKamerToe(2);
     }
 
     @Override
     public boolean verwerkAntwoord(String antwoord, Speler speler) {
-        // Niet gebruikt in deze klasse
         return false;
     }
 
@@ -119,6 +127,7 @@ public class KamerRetrospective extends Kamer {
     public void toonHelp() {
         System.out.println("Typ 'a', 'b' of 'c' om een antwoord te kiezen.");
         System.out.println("Typ 'status' om je huidige status te zien.");
+        System.out.println("Typ 'check' om items in deze kamer te bekijken.");
         System.out.println("Typ 'naar andere kamer' om deze kamer te verlaten.");
         System.out.println("Typ 'help' om deze hulp te tonen.");
     }

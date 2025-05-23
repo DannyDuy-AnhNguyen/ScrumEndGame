@@ -1,20 +1,33 @@
 package Game.kamer;
 
 import Game.antwoord.Antwoord;
+import Game.core.Item;
 import Game.core.Speler;
 import Game.core.Status;
+import Game.hint.HintContext;
+import Game.hint.HelpHint;
+import Game.hint.FunnyHint;
 
 import java.util.Scanner;
 
 public class KamerDailyScrum extends Kamer {
     private final Antwoord antwoordStrategie;
     private int huidigeVraag = 0;
+    private final HintContext hintContext = new HintContext();
     private Status status;
 
     public KamerDailyScrum(Antwoord antwoordStrategie) {
         super("Daily Scrum");
         this.antwoordStrategie = antwoordStrategie;
-        deur.setOpen(false); // deur start altijd dicht
+        deur.setOpen(false);
+
+        // 🎯 Hints voor vraag 0
+        hintContext.voegHintToe(0, new HelpHint("Scrum kent maar een paar officiële rollen."));
+        hintContext.voegHintToe(0, new FunnyHint("De projectleider zit waarschijnlijk koffie te drinken ergens."));
+
+        // 🎯 Hints voor vraag 1
+        hintContext.voegHintToe(1, new HelpHint("Een sprint is bedoeld om snel resultaat te boeken."));
+        hintContext.voegHintToe(1, new FunnyHint("Als je denkt aan jaren... denk kleiner. Véél kleiner."));
     }
 
     @Override
@@ -55,18 +68,29 @@ public class KamerDailyScrum extends Kamer {
             speler.verhoogScore(10);
             verwerkFeedback(huidigeVraag);
             huidigeVraag++;
-            System.out.println("\nCorrect! Je krijgt 10 punten.\n");
+            System.out.println("\n✅ Correct! Je krijgt 10 punten.\n");
 
             if (huidigeVraag == 2) {
                 setVoltooid();
                 deur.setOpen(true);
-                System.out.println("Je hebt alle vragen juist beantwoord! De deur gaat open.");
-                speler.voegVoltooideKamerToe(2); // Pas index aan indien nodig
+                speler.voegVoltooideKamerToe(2);
+
+                // Update de status meteen na voltooiing
+                if (status != null) {
+                    status.update(speler);
+                }
+
+                System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
             }
 
         } else {
             speler.voegMonsterToe("Verlies van Focus");
-            System.out.println("\nFout! Monster 'Verlies van Focus' verschijnt! Probeer het opnieuw.\n");
+            System.out.println("\n❌ Fout! Monster 'Verlies van Focus' verschijnt! Probeer het opnieuw.\n");
+
+            // 👇 Toon een hint
+            hintContext.toonWillekeurigeHint(huidigeVraag);
+
+            System.out.println("Probeer het opnieuw.\n");
         }
     }
 
@@ -81,7 +105,6 @@ public class KamerDailyScrum extends Kamer {
         this.status = new Status(speler);
         Scanner scanner = new Scanner(System.in);
 
-        // Intro slechts 1 keer tonen
         betreedIntro();
 
         while (huidigeVraag < 2) {
@@ -93,7 +116,17 @@ public class KamerDailyScrum extends Kamer {
                 toonHelp();
                 System.out.println();
             } else if (antwoord.equals("status")) {
-                status.update();
+                status.update(speler);
+                System.out.println();
+            } else if (antwoord.equals("check")) {
+                if (items.isEmpty()) {
+                    System.out.println("📦 Geen items in deze kamer.");
+                } else {
+                    System.out.println("📦 Items in deze kamer:");
+                    for (Item item : items) {
+                        System.out.println("- " + item);
+                    }
+                }
                 System.out.println();
             } else if (antwoord.equals("naar andere kamer")) {
                 System.out.println("Je verlaat deze kamer.\n");
@@ -102,27 +135,32 @@ public class KamerDailyScrum extends Kamer {
                 boolean antwoordCorrect = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
                 verwerkResultaat(antwoordCorrect, speler);
             } else {
-                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help' of 'naar andere kamer'.\n");
+                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'check', 'help' of 'naar andere kamer'.\n");
             }
         }
 
-        // Na juiste beantwoording alle vragen
-        setVoltooid();
-        deur.setOpen(true);
-        System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
-        speler.voegVoltooideKamerToe(2); // Pas nummer indien nodig
-        return;
+        // Voor het geval het while-loop eindigt zonder alle vragen beantwoord te hebben
+        if (!isVoltooid()) {
+            setVoltooid();
+            deur.setOpen(true);
+            speler.voegVoltooideKamerToe(2);
+            if (status != null) {
+                status.update(speler);
+            }
+            System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
+        }
     }
 
     @Override
     public boolean verwerkAntwoord(String antwoord, Speler speler) {
-        return false; // Niet gebruikt
+        return false;
     }
 
     @Override
     public void toonHelp() {
         System.out.println("Typ het letterantwoord: a, b, c of d");
         System.out.println("Gebruik 'status' om je huidige status te zien.");
+        System.out.println("Gebruik 'check' om items in deze kamer te bekijken.");
         System.out.println("Gebruik 'help' om deze hulp te zien.");
         System.out.println("Gebruik 'naar andere kamer' om deze kamer te verlaten.");
     }

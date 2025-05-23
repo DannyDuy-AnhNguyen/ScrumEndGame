@@ -9,6 +9,6 @@ public class FunnyHint implements Hint {
 
     @Override
     public void toon() {
-        System.out.println("💡 Hint: " + tekst);
+        System.out.println("😂 FUNNY HINT: " + tekst);
     }
 }

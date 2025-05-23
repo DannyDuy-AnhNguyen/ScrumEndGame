@@ -9,6 +9,6 @@ public class HelpHint implements Hint {
 
     @Override
     public void toon() {
-        System.out.println("💡 Hint: " + tekst);
+        System.out.println("📘 HINT: " + tekst);
     }
 }

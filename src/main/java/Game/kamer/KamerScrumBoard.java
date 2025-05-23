@@ -1,6 +1,7 @@
 package Game.kamer;
 
 import Game.antwoord.Antwoord;
+import Game.core.Item;
 import Game.core.Speler;
 import Game.core.Status;
 
@@ -10,12 +11,12 @@ public class KamerScrumBoard extends Kamer {
     private Antwoord antwoordStrategie;
     private int huidigeVraag = 0;
     private Status status;
-    private boolean introGetoond = false; // intro 1x tonen
+    private boolean introGetoond = false;
 
     public KamerScrumBoard(Antwoord antwoordStrategie) {
         super("Scrum Board");
         this.antwoordStrategie = antwoordStrategie;
-        deur.setOpen(false); // deur standaard dicht bij start
+        deur.setOpen(false);
     }
 
     @Override
@@ -80,7 +81,6 @@ public class KamerScrumBoard extends Kamer {
         this.status = new Status(speler);
         Scanner scanner = new Scanner(System.in);
 
-        // Intro slechts 1 keer tonen
         betreedIntro();
 
         while (huidigeVraag < 2) {
@@ -92,7 +92,17 @@ public class KamerScrumBoard extends Kamer {
                 toonHelp();
                 System.out.println();
             } else if (antwoord.equals("status")) {
-                status.update();
+                status.update(speler);
+                System.out.println();
+            } else if (antwoord.equals("check")) {
+                if (items.isEmpty()) {
+                    System.out.println("📦 Geen items in deze kamer.");
+                } else {
+                    System.out.println("📦 Items in deze kamer:");
+                    for (Item item : items) {
+                        System.out.println("- " + item);
+                    }
+                }
                 System.out.println();
             } else if (antwoord.equals("naar andere kamer")) {
                 System.out.println("Je verlaat deze kamer.\n");
@@ -101,28 +111,27 @@ public class KamerScrumBoard extends Kamer {
                 boolean antwoordCorrect = antwoordStrategie.verwerkAntwoord(antwoord, huidigeVraag);
                 verwerkResultaat(antwoordCorrect, speler);
             } else {
-                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help' of 'naar andere kamer'.\n");
+                System.out.println("Ongeldige invoer. Typ 'a', 'b', 'c', 'd', 'status', 'help', 'check' of 'naar andere kamer'.\n");
             }
         }
 
-        // Na juiste beantwoording alle vragen
         setVoltooid();
         deur.setOpen(true);
         System.out.println("🎉 Je hebt alle vragen juist beantwoord! De deur gaat open.");
-        speler.voegVoltooideKamerToe(2); // Pas nummer indien nodig
-        return;
+        speler.voegVoltooideKamerToe(2);
     }
 
     @Override
     public boolean verwerkAntwoord(String antwoord, Speler speler) {
-        return false; // niet gebruikt, strategie regelt dit
+        return false;
     }
 
     @Override
     public void toonHelp() {
-        System.out.println("Typ het letterantwoord: a, b of c");
+        System.out.println("Typ het letterantwoord: a, b, c of d");
         System.out.println("Gebruik 'status' om je huidige status te zien.");
         System.out.println("Gebruik 'help' om deze hulp te zien.");
+        System.out.println("Gebruik 'check' om de items in de kamer te bekijken.");
         System.out.println("Gebruik 'naar andere kamer' om deze kamer te verlaten.");
     }
 }

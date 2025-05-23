@@ -1,43 +1,57 @@
 package Game.kamer;
 
 import Game.antwoord.*;
-
+import Game.core.ItemDropper;
+import Game.hint.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//Deze klasse zorgt voor OCP, omdat je het niet in de spel (onze main waar ons spel werkt) aangepast hoeft te worden.
-//Als er aanpassingen plaats vindt, dan kun je in deze klasse dingen aanpassen.
 public class KamerFactory {
-//    De Map zorgt ervoor dat de attribuut kamer de bijbehorende String en natuurlijk de kamer klasse toegevoegd wordt
     private final Map<String, Kamer> kamers = new HashMap<>();
 
-    // Bij de toegevoegde kamers zijn ook de bijbehorende antwoord (Strategy Klasse) bij toegevoegd. Zie in de Constructor
-    //Als er nieuwe kamers gemaakt worden, dan wordt het ook hierbij toegevoegd, anders werkt het spel niet meer🙂
     public KamerFactory() {
-        kamers.put(normaliseer("Sprint Planning"), new KamerPlanning(new AntwoordPlanning()));
-        kamers.put(normaliseer("Sprint Review"), new KamerReview(new AntwoordReview()));
-        kamers.put(normaliseer("Scrum Board"), new KamerScrumBoard(new AntwoordScrumBoard()));
-        kamers.put(normaliseer("Sprint Retrospective"), new KamerRetrospective(new AntwoordRetrospective()));
-        kamers.put(normaliseer("Daily Scrum"), new KamerDailyScrum(new AntwoordDailyScrum()));
+        KamerPlanning planning = new KamerPlanning(new AntwoordPlanning());
+        planning.getItems().addAll(ItemDropper.genereerItemsVoorKamer());
+        voegHintsToeVoorPlanning(planning);
+        kamers.put(normaliseer("Sprint Planning"), planning);
 
-        // Als alle kamers voltooid zijn, dan pas mag de speler naar de finale kamer
-        kamers.put(normaliseer("Finale TIA Kamer – Waarom Scrum?"), new KamerFinaleTIA(new AntwoordFinaleTIA()));
+        KamerReview review = new KamerReview(new AntwoordReview());
+        review.getItems().addAll(ItemDropper.genereerItemsVoorKamer());
+        voegHintsToeVoorReview(review);
+        kamers.put(normaliseer("Sprint Review"), review);
 
+        KamerDailyScrum daily = new KamerDailyScrum(new AntwoordDailyScrum());
+        daily.getItems().addAll(ItemDropper.genereerItemsVoorKamer());
+        voegHintsToeVoorDaily(daily);
+        kamers.put(normaliseer("Daily Scrum"), daily);
     }
 
-//    Deze klasse zorgt ervoor dat je de kamer kunt oproepen. Dit wordt alleen gebruikt voor de Finale kamer.
+    private String normaliseer(String s) {
+        return s.toLowerCase().replaceAll("\\s+", "");
+    }
+
     public Kamer getKamer(String key) {
         return kamers.get(normaliseer(key));
     }
 
-//    De lijst van bestaande kamers.
-    public List<String> getKamerKeys(){
-        return List.of("Sprint Planning", "Sprint Review", "Scrum Board", "Sprint Retrospective", "Daily Scrum");
+    public List<String> getKamerKeys() {
+        return List.of("Sprint Planning", "Sprint Review", "Daily Scrum");
     }
 
-//    Omdat in de normaliseer ding spatie er tussen zit, wordt er gebruikt gemaakt van dit zodat je in de scanner in gewoon de spatie kunt typen.
-    private String normaliseer(String s) {
-        return s.toLowerCase().replaceAll("\\s+", "");
+    // 👇 Hier voeg je per kamer hints toe
+    private void voegHintsToeVoorPlanning(KamerPlanning kamer) {
+//        kamer.getHintContext().voegHintToe(0, new HelpHint("Bij de Sprint Planning doet iedereen mee."));
+//        kamer.getHintContext().voegHintToe(1, new FunnyHint("Sprint Poker is geen kaartspel... meestal."));
+    }
+
+    private void voegHintsToeVoorReview(KamerReview kamer) {
+//        kamer.getHintContext().voegHintToe(0, new HelpHint("Sprint Review is aan het einde van de Sprint."));
+//        kamer.getHintContext().voegHintToe(1, new FunnyHint("Feedback is je beste vriend hier!"));
+    }
+
+    private void voegHintsToeVoorDaily(KamerDailyScrum kamer) {
+//        kamer.getHintContext().voegHintToe(0, new HelpHint("Een projectleider is geen Scrum-rol!"));
+//        kamer.getHintContext().voegHintToe(1, new FunnyHint("Niet elke sprint is een marathon, meestal 1-4 weken."));
     }
 }
