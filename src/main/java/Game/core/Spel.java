@@ -49,7 +49,7 @@ public class Spel {
                 System.out.println("Tot ziens!");
                 break;
             } else if (input.equals("status")) {
-                status.update();
+                status.update(speler);
                 toonSleutels();
             } else if (input.equals("help")) {
                 toonHelp();
@@ -126,7 +126,7 @@ public class Spel {
 
                 if (!gekozenKamer.isVoltooid()) {
                     gekozenKamer.betreed(speler);
-                    status.update();
+                    status.update(speler);
 
                     if (gekozenKamer.isVoltooid()) {
                         System.out.println("Deze kamer is voltooid!");
