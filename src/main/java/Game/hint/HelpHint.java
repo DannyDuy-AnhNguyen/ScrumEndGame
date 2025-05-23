@@ -1,4 +1,4 @@
-package Game;
+package Game.hint;
 
 public class HelpHint implements Hint {
     private final String tekst;

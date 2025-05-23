@@ -1,4 +1,4 @@
-package Game;
+package Game.hint;
 
 public interface Hint {
     void toon();
