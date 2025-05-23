@@ -4,6 +4,9 @@ import Game.antwoord.Antwoord;
 import Game.core.Item;
 import Game.core.Speler;
 import Game.core.Status;
+import Game.hint.FunnyHint;
+import Game.hint.HelpHint;
+import Game.hint.HintContext;
 
 import java.util.Scanner;
 
@@ -11,12 +14,24 @@ public class KamerRetrospective extends Kamer {
     private Antwoord antwoordStrategie;
     private int huidigeVraag = 0;
     private Status status;
+    private final HintContext hintContext = new HintContext();
     private boolean introGetoond = false;
 
     public KamerRetrospective(Antwoord antwoordStrategie) {
         super("Sprint Retrospective");
         this.antwoordStrategie = antwoordStrategie;
         deur.setOpen(false);
+        toonHint();
+    }
+
+    public void toonHint(){
+        // 🎯 Hints voor vraag 0
+        hintContext.voegHintToe(0, new HelpHint("Bij de Sprint Planning doet iedereen mee."));
+        hintContext.voegHintToe(0, new FunnyHint("Sprint Planning is het plannen met iedereen om .. een dorp aan te vallen."));
+
+        // 🎯 Hints voor vraag 1
+        hintContext.voegHintToe(1, new HelpHint("In de sprint planning wordt gekeken wat het doel de aankomende sprint"));
+        hintContext.voegHintToe(1, new FunnyHint("Om een doelpunt te maken moet je sprinten naar het doel om een doelpunt te scoren."));
     }
 
     @Override
@@ -64,6 +79,9 @@ public class KamerRetrospective extends Kamer {
         } else {
             speler.voegMonsterToe("Blame Game");
             System.out.println("\n❌ Fout! Monster 'Blame Game' verschijnt! Probeer het opnieuw.\n");
+
+            // 👇 Toon een hint
+            hintContext.toonWillekeurigeHint(huidigeVraag);
         }
     }
 

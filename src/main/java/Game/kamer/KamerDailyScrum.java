@@ -20,7 +20,11 @@ public class KamerDailyScrum extends Kamer {
         super("Daily Scrum");
         this.antwoordStrategie = antwoordStrategie;
         deur.setOpen(false);
+        toonHint();
+    }
 
+//    @Override
+    public void toonHint(){
         // 🎯 Hints voor vraag 0
         hintContext.voegHintToe(0, new HelpHint("Scrum kent maar een paar officiële rollen."));
         hintContext.voegHintToe(0, new FunnyHint("De projectleider zit waarschijnlijk koffie te drinken ergens."));

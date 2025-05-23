@@ -63,6 +63,9 @@ public abstract class Kamer {
     public abstract void verwerkOpdracht(int huidigeVraag);
     public abstract void verwerkResultaat(boolean antwoordstrategie, Speler speler);
 
+    //Hint abstract method
+//    public abstract void toonHint();
+
     public void updateScore(boolean correct, Speler speler) {
         if (correct) {
             speler.setStreak(speler.getStreak() + 1);

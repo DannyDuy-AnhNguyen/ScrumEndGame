@@ -4,18 +4,33 @@ import Game.antwoord.Antwoord;
 import Game.core.Item;
 import Game.core.Speler;
 import Game.core.Status;
+import Game.hint.FunnyHint;
+import Game.hint.HelpHint;
+import Game.hint.HintContext;
 
 import java.util.Scanner;
 
 public class KamerPlanning extends Kamer {
     private Antwoord antwoordStrategie;
     private int huidigeVraag = 0;
+    private final HintContext hintContext = new HintContext();
     private Status status;
 
     public KamerPlanning(Antwoord antwoordStrategie) {
         super("Sprint Planning");
         this.antwoordStrategie = antwoordStrategie;
         deur.setOpen(false);
+        toonHint();
+    }
+
+    public void toonHint(){
+        // 🎯 Hints voor vraag 0
+        hintContext.voegHintToe(0, new HelpHint("Bij de Sprint Planning doet iedereen mee."));
+        hintContext.voegHintToe(0, new FunnyHint("Sprint Planning is het plannen met iedereen om .. een dorp aan te vallen."));
+
+        // 🎯 Hints voor vraag 1
+        hintContext.voegHintToe(1, new HelpHint("In de sprint planning wordt gekeken wat het doel de aankomende sprint"));
+        hintContext.voegHintToe(1, new FunnyHint("Om een doelpunt te maken moet je sprinten naar het doel om een doelpunt te scoren."));
     }
 
     @Override
@@ -42,7 +57,7 @@ public class KamerPlanning extends Kamer {
             System.out.println("Vraag 1: Wie neemt deel aan de Sprint Planning?");
             System.out.println("a) Alleen de Scrum Master");
             System.out.println("b) Product Owner en Scrum Master");
-            System.out.println("c) Product Owner, Scrum Master en het hele Development Team");
+            System.out.println("c) Product Owner, Scum Master en het hele Development Team");
             System.out.println("d) Product Owner, Scrum Master en het hele Development Team");
         } else if (huidigeVraag == 1) {
             System.out.println("Vraag 2: Wat wordt er tijdens de Sprint Planning vastgesteld?");
@@ -63,6 +78,9 @@ public class KamerPlanning extends Kamer {
         } else {
             speler.voegMonsterToe("Misverstand");
             System.out.println("\n❌ Fout! Monster 'Misverstand' verschijnt! Probeer het opnieuw.\n");
+
+            // 👇 Toon een hint
+            hintContext.toonWillekeurigeHint(huidigeVraag);
         }
     }
 
