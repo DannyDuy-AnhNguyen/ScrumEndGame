@@ -1,14 +1,20 @@
-package Game;
+package Game.core;
 
-public class Scorebord {
+public class Status implements Observer {
     private Speler speler;
 
-    public Scorebord(Speler speler) {
+    public Status(Speler speler) {
         this.speler = speler;
+        speler.voegObserverToe(this);  // toevoegen als observer
     }
 
-    public void update() {
-        System.out.println("\n=== SCOREBOARD ===");
+    @Override
+    public void update(Speler speler) {
+        toonStatus();
+    }
+
+    public void toonStatus() {
+        System.out.println("\n=== STATUS ===");
         System.out.println("Speler: " + speler.getNaam());
         System.out.println("Score: " + speler.getScore());
         System.out.println("Voltooide kamers: " + speler.getVoltooideKamers().size());

@@ -1,3 +1,5 @@
+package Game;
+
 import java.sql.*;
 
 public class DatabaseTest {

@@ -1,7 +1,7 @@
 package Game;
 
 public class Deur {
-    private boolean open = false;
+    private boolean open = true;  // Standaard open, zodat je kamers direct kunt betreden
 
     public void setOpen(boolean open) {
         this.open = open;

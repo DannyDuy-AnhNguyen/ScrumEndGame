@@ -1,4 +1,4 @@
-package Game;
+package Game.antwoord;
 
 public class AntwoordRetrospective implements Antwoord {
 

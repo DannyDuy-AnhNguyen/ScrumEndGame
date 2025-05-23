@@ -1,4 +1,0 @@
-package Game;
-
-interface MonsterType {
-}
